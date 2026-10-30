@@ -1,0 +1,27 @@
+{
+  "kind": "flux",
+  "version": "1",
+  "comfyui_commit": "b5a432157de6b8884f81104cd02926adf4d597e4",
+  "container_image": "ghcr.io/acdevmedia/flux-comfyui:1",
+  "default_mode": "dev",
+  "models": [
+    {
+      "repo": "Comfy-Org/Flux-1-Dev",
+      "revision": "10cf201a3d49f7ff4de84d6a97d6a32cdfa8cb86",
+      "file": "flux1-dev-fp8.safetensors",
+      "destination": "checkpoints/flux1-dev-fp8.safetensors",
+      "sha256": "d7e2763ff79562d8617adb1efcd4205439050d98d7cf884db35a961f39a1eee2",
+      "size": 17246524772,
+      "variant": "dev"
+    },
+    {
+      "repo": "Comfy-Org/Flux-1-Schnell",
+      "revision": "d31e04067066d92c55ece2b01748dcc337725d7a",
+      "file": "flux1-schnell-fp8.safetensors",
+      "destination": "checkpoints/flux1-schnell-fp8.safetensors",
+      "sha256": "efd9854e68978e1ec622df62472d68165837d7257ffaa5dce36d2f569ac28796",
+      "size": 17236328572,
+      "variant": "schnell"
+    }
+  ]
+}

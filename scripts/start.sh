@@ -16,9 +16,9 @@ python3 -c 'import torch; assert torch.cuda.is_available(), "An NVIDIA CUDA GPU 
 ln -sfn /opt/acdev/ComfyUI/custom_nodes /workspace/ComfyUI/custom_nodes
 python3 /opt/acdev/scripts/download-models.py
 python3 - <<'PY'
-import json,shutil
+import json,os,shutil
 from pathlib import Path
-p=json.loads(Path('/opt/acdev/config/profile.json').read_text())
+p=json.loads(Path('/opt/acdev/versions/'+os.environ.get('STUDIO_VERSION','3')+'/profile.json').read_text())
 for workflow in (Path('/opt/acdev/versions')/p['version']/'workflows').glob('*.json'):
  target=Path('/workspace/ComfyUI/user/default/workflows')/(p['kind']+'-'+p['version']+'-'+workflow.name)
  if not target.exists():shutil.copyfile(workflow,target)

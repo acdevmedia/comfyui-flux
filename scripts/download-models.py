@@ -2,15 +2,16 @@
 import hashlib,json,os,shutil,sys
 from pathlib import Path
 from huggingface_hub import hf_hub_download,snapshot_download
-p=json.loads(Path('/opt/acdev/config/profile.json').read_text())
+version=os.getenv('STUDIO_VERSION','3')
+p=json.loads(Path('/opt/acdev/versions/%s/profile.json'%version).read_text())
 mode=os.getenv('MODEL_MODE','both')
 if mode not in ('base','distilled','both'):raise SystemExit('MODEL_MODE must be base, distilled or both')
 token=os.getenv('HF_TOKEN','').strip()
 if not token or token.startswith(('{{','YOUR_')):raise SystemExit('Set HF_TOKEN from Runpod Secret HUGGINGFACE_TOKEN; accept each model gate with the same Hugging Face account.')
 root=Path('/workspace/ComfyUI/models');root.mkdir(parents=True,exist_ok=True)
 for m in p['models']:
- if mode=='base' and 'diffusion_models/flux3-image-klein-int8' in m['file']:continue
- if mode=='distilled' and 'diffusion_models/flux3-image-klein-base' in m['file']:continue
+ variant=m.get('variant')
+ if mode!='both' and variant and variant!=mode:continue
  dest=root/m['destination'];dest.parent.mkdir(parents=True,exist_ok=True)
  marker=dest.with_suffix('.verified.json');expected={'sha256':m['sha256'],'size':m['size']}
  if dest.exists() and dest.stat().st_size==m['size'] and marker.exists() and json.loads(marker.read_text())==expected:continue
