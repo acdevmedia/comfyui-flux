@@ -18,12 +18,12 @@ class FluxStudio:
             'mode': (['distilled', 'base'],),
             'width': ('INT', {'default': 1280, 'min': 256, 'max': 2048, 'step': 16}),
             'height': ('INT', {'default': 720, 'min': 256, 'max': 2048, 'step': 16}),
-            'seed': ('INT', {'default': 42, 'min': 0, 'max': 2**63-1, 'control_after_generate': False}),
+            'seed': ('INT', {'default': 0, 'min': 0, 'max': 2**63-1, 'control_after_generate': True}),
             'steps': ('INT', {'default': 16, 'min': 1, 'max': 100}),
             'guidance': ('FLOAT', {'default': 1.0, 'min': 1.0, 'max': 10.0, 'step': 0.1}),
             'sampler': (['euler', 'er_sde', 'heun'],),
             'scheduler': (['simple', 'normal', 'beta'],),
-            'upsample_prompt': ('BOOLEAN', {'default': True}),
+            'upsample_prompt': ('BOOLEAN', {'default': False}),
             'max_prompt_tokens': ('INT', {'default': 1024, 'min': 128, 'max': 4096}),
         }, 'optional': {'reference_image': ('IMAGE', {'rawLink': True})}}
 

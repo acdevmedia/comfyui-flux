@@ -46,12 +46,13 @@
         "distilled",
         1280,
         720,
-        42,
+        0,
+        "randomize",
         16,
         1.0,
         "euler",
         "simple",
-        true,
+        false,
         1024
       ],
       "title": "Reference image edit \u2014 distilled"

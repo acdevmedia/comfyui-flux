@@ -40,12 +40,13 @@
         "distilled",
         1280,
         720,
-        42,
+        0,
+        "randomize",
         16,
         1.0,
         "euler",
         "simple",
-        true,
+        false,
         1024
       ],
       "title": "Prompt + shot settings \u2014 distilled"

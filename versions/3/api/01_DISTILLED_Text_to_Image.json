@@ -7,12 +7,12 @@
       "mode": "distilled",
       "width": 1280,
       "height": 720,
-      "seed": 42,
+      "seed": 0,
       "steps": 16,
       "guidance": 1.0,
       "sampler": "euler",
       "scheduler": "simple",
-      "upsample_prompt": true,
+      "upsample_prompt": false,
       "max_prompt_tokens": 1024
     }
   },

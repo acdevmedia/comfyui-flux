@@ -28,13 +28,21 @@ Storage is temporary. The template does not attach a network volume. First-boot 
 
 The simple node exposes prompt, negative prompt, mode, dimensions, seed, steps, guidance, sampler, schedule, prompt upsampling and its token budget. Canvas defaults to **1280 × 720**.
 
-A broad general-purpose **negative prompt** is filled in by default, covering optical defects, exposure and colour faults, anatomy errors, framing mistakes, and overlays such as watermarks, signatures, captions and UI furniture. Clear or edit it freely. It applies **only when guidance is above 1.0**: the distilled path runs at guidance 1.0 with no effective CFG branch, so the field is ignored there and the node passes an empty negative rather than pretending otherwise. Long keyword-style negatives are a weaker lever on a flow-matching model with a language-model text encoder than they were on older checkpoints; a short, specific negative usually beats a long one. It expands into native loader, text-generation, sampler and decode nodes. Prompt expansion runs locally through the pinned Qwen3.5 9B upsampler, enabled by default. Disable it only when you supply a detailed scene caption. Model precision is INT8 ConvRot for the transformer and text encoders; precision and distillation are separate choices. Native ComfyUI offloading controls model residency.
+A broad general-purpose **negative prompt** is filled in by default, covering optical defects, exposure and colour faults, anatomy errors, framing mistakes, and overlays such as watermarks, signatures, captions and UI furniture. Clear or edit it freely. It applies **only when guidance is above 1.0**: the distilled path runs at guidance 1.0 with no effective CFG branch, so the field is ignored there and the node passes an empty negative rather than pretending otherwise. Long keyword-style negatives are a weaker lever on a flow-matching model with a language-model text encoder than they were on older checkpoints; a short, specific negative usually beats a long one. It expands into native loader, text-generation, sampler and decode nodes. Prompt expansion runs locally through the pinned Qwen3.5 9B upsampler and is **off by default**. It is a second large model: 9.75 GB of weights that must be resident alongside the transformer and text encoder, and on a 48 GB card the three compete, so ComfyUI swaps models between the expansion pass and sampling. Enabling it can add minutes per image. Turn it on when you want a short prompt fleshed out and can accept the cost; write a detailed prompt yourself and leave it off for fast iteration. Model precision is INT8 ConvRot for the transformer and text encoders; precision and distillation are separate choices. Native ComfyUI offloading controls model residency.
 
 The advanced graphs preserve the official template structure, with the upsampler filename changed from W4A8 to the downloaded INT8 checkpoint. Original system prompt and graph sources: [Comfy-Org templates](https://github.com/Comfy-Org/workflow_templates/tree/abb9cf6477b59c52dbe234c67f82318dadd872b2/templates), [BFL ComfyUI model card](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy).
 
+## Seeds
+
+The seed widget carries ComfyUI's standard **control after generate** control, set to `randomize` in every packaged workflow, so each run uses a new seed. Set it to `fixed` to reproduce an exact image, or `increment` to walk a series. Earlier releases pinned the seed at 42 with the control disabled, which made every run of a workflow produce the same picture.
+
 ## Image preview ribbon
 
-A strip of recent output images is pinned along the bottom of the ComfyUI window. It refreshes when a queued graph finishes, collapses to a title bar, and opens any thumbnail full size with a download link. It reads the recent `/history` entries through ComfyUI's own `/view` endpoint and never scans the output directory.
+A strip of recent output images sits along the bottom of the ComfyUI window and refreshes as each queued graph finishes, so you can queue a long batch and watch it fill.
+
+Click any thumbnail to open the viewer. **Left and right arrow keys** move through the batch, **space** picks the current image, **D** downloads it and **Escape** closes. The tick in the corner of a thumbnail picks it without opening the viewer. **Download picked** then saves just those files, which is the point: queue fifty, skim them, keep the three that worked.
+
+Picks live for the session and are never uploaded. The ribbon reads the recent `/history` entries through ComfyUI's own `/view` endpoint, skips transient previews, and never scans the output directory.
 
 ## Environment variables
 

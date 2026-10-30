@@ -46,12 +46,13 @@
         "base",
         1280,
         720,
-        42,
+        0,
+        "randomize",
         50,
         3.5,
         "euler",
         "simple",
-        true,
+        false,
         1024
       ],
       "title": "Reference image edit \u2014 base"
