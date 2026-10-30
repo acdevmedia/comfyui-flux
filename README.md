@@ -23,6 +23,7 @@ Storage is temporary. The template does not attach a network volume. First-boot 
 
 - **01 Distilled Text to Image:** 16 steps, guidance 1.0, Euler/simple. Fast iteration.
 - **02 Base Text to Image:** 50 steps, guidance 3.5, Euler/simple. Undistilled checkpoint.
+- **03–04 Image Edit:** upload a picture and describe the changes; uses the same base or distilled checkpoint as generation.
 - **10–13 Advanced:** editable upstream ComfyUI graphs for text generation and reference-image editing. Upload your own image for editing; example asset names are placeholders.
 
 The simple node exposes prompt, mode, dimensions, seed, steps, guidance, sampler, schedule, prompt upsampling and its token budget. It expands into native loader, text-generation, sampler and decode nodes. Prompt expansion runs locally through the pinned Qwen3.5 9B upsampler, enabled by default. Disable it only when you supply a detailed scene caption. Model precision is INT8 ConvRot for the transformer and text encoders; precision and distillation are separate choices. Native ComfyUI offloading controls model residency.
@@ -44,8 +45,12 @@ The advanced graphs preserve the official template structure, with the upsampler
 
 ## Build, validate and update
 
-All container builds and runtime tests run in **GitHub Actions**. Do not build on the local workstation. Push to `develop` or `main`, or dispatch the build workflow. The workflow runs source checks, builds on an Actions runner, starts a CPU-only ComfyUI service inside the build to verify graph schemas, then publishes the image. It launches a disposable A100 Pod using that exact image digest and generates a 512×512 image with each checkpoint. Validation checks dimensions, pixel variance and entropy; these detect blank outputs, not artistic quality. PNGs, system metadata and results are uploaded as Actions artifacts. A `finally` block and an unconditional cleanup step delete the test Pod.
+All container builds and runtime tests run in **GitHub Actions**. Do not build on the local workstation. Push to `develop` or `main`, or dispatch the build workflow. Paid GPU tests are opt-in through the `gpu_smoke` dispatch input; ordinary pushes build and run CPU checks only. The workflow runs source checks, builds on an Actions runner, starts a CPU-only ComfyUI service inside the build to verify graph schemas, then publishes the image. When dispatched with `gpu_smoke=true`, it launches a disposable A100 Pod using that exact image digest and generates a 512×512 image and an image-edit result with each checkpoint, grouping each pair to keep that model loaded. Validation checks dimensions, pixel variance and entropy; these detect blank outputs, not artistic quality. PNGs, system metadata and results are uploaded as Actions artifacts. A `finally` block and an unconditional cleanup step delete the test Pod.
 
 The package must be public on GHCR for anonymous template users; account registry credentials can support private validation. Configure Actions secrets `RUNPOD_API_KEY` and, if needed, `RUNPOD_REGISTRY_AUTH_ID`. The `.runpod` listing uses the same image build and environment defaults; its required readiness test does not replace the GPU generation tests. For Serverless browser use, keep exactly one active worker and supply Runpod authentication on HTTP and WebSocket requests. The Pod template is the straightforward browser deployment.
 
 Build and GPU-validation status must be confirmed in Actions before treating a revision as tested. Captured package versions are stored in `/opt/acdev/python-lock.txt` inside each image. To update a model generation, add a new version profile, regenerate its workflow defaults and manifests, update the corresponding container tags, and repeat the remote tests. No runtime dependency upgrades or branch-head model downloads occur during Pod startup.
+
+## Image editing and model reuse
+
+The simple FLUX node also has an optional reference-image socket. Connect an uploaded image to enable instruction-based editing; disconnect it for text-to-image. The image is encoded with the same VAE and attached as native reference conditioning. The local prompt upsampler sees the image when connected. Loader identities and filenames are shared across paired workflows so ComfyUI can reuse cached models. Switching between base and distilled selects different checkpoints.

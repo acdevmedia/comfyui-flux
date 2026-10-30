@@ -23,10 +23,10 @@ class FluxStudio:
             'scheduler': (['simple', 'normal', 'beta'],),
             'upsample_prompt': ('BOOLEAN', {'default': True}),
             'max_prompt_tokens': ('INT', {'default': 1024, 'min': 128, 'max': 4096}),
-        }}
+        }, 'optional': {'reference_image': ('IMAGE', {'rawLink': True})}}
 
     def generate(self, prompt, mode, width, height, seed, steps, guidance, sampler, scheduler,
-                 upsample_prompt, max_prompt_tokens):
+                 upsample_prompt, max_prompt_tokens, reference_image=None):
         graph = GraphBuilder()
         expanded = prompt
         if upsample_prompt:
@@ -38,17 +38,24 @@ class FluxStudio:
                       'sampling_mode.seed': seed, 'sampling_mode.presence_penalty': 1.5,
                       'thinking': False, 'use_default_template': True, 'mtp': 'off',
                       'system_prompt': Path('/opt/acdev/config/flux-system-prompt.txt').read_text()}
+            if reference_image is not None:
+                params['image'] = reference_image
+                params['system_prompt'] = 'Expand this image-editing request into a detailed instruction. Describe only the requested changes, preserve everything else, and refer to the uploaded picture as <ref_image_0>.'
             expanded = graph.node('TextGenerate', **params).out(0)
         model_name = 'flux3-image-klein-base-int8-convrot.safetensors' if mode == 'base' else 'flux3-image-klein-int8-convrot.safetensors'
         model = graph.node('UNETLoader', unet_name=model_name, weight_dtype='default')
         clip = graph.node('CLIPLoader', clip_name='qwen3vl_4b_int8_convrot.safetensors', type='flux3', device='default')
         positive = graph.node('CLIPTextEncode', clip=clip.out(0), text=expanded)
         negative = graph.node('CLIPTextEncode', clip=clip.out(0), text='')
+        vae = graph.node('VAELoader', vae_name='flux2-vae.safetensors')
+        if reference_image is not None:
+            reference = graph.node('VAEEncode', pixels=reference_image, vae=vae.out(0))
+            positive = graph.node('ReferenceLatent', conditioning=positive.out(0), latent=reference.out(0))
+            negative = graph.node('ReferenceLatent', conditioning=negative.out(0), latent=reference.out(0))
         latent = graph.node('EmptyFlux2LatentImage', width=width, height=height, batch_size=1)
         samples = graph.node('KSampler', model=model.out(0), positive=positive.out(0), negative=negative.out(0),
                              latent_image=latent.out(0), seed=seed, steps=steps, cfg=guidance,
                              sampler_name=sampler, scheduler=scheduler, denoise=1.0)
-        vae = graph.node('VAELoader', vae_name='flux2-vae.safetensors')
         image = graph.node('VAEDecode', samples=samples.out(0), vae=vae.out(0))
         return {'result': (image.out(0), expanded), 'expand': graph.finalize()}
 

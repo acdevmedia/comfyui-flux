@@ -1,0 +1,38 @@
+{
+  "1": {
+    "class_type": "AcdevFluxStudio",
+    "inputs": {
+      "prompt": "In <ref_image_0>, turn the afternoon lighting into cool blue evening light. Keep the subject, layout and lettering unchanged.",
+      "mode": "distilled",
+      "width": 1024,
+      "height": 1024,
+      "seed": 42,
+      "steps": 16,
+      "guidance": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "upsample_prompt": true,
+      "max_prompt_tokens": 1024,
+      "reference_image": [
+        "10",
+        0
+      ]
+    }
+  },
+  "2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "1",
+        0
+      ],
+      "filename_prefix": "FLUX3/distilled"
+    }
+  },
+  "10": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "upload_your_image.png"
+    }
+  }
+}
