@@ -13,9 +13,11 @@ class FluxStudio:
     def INPUT_TYPES(cls):
         return {'required': {
             'prompt': ('STRING', {'multiline': True, 'default': 'A fox reading a newspaper in a sunny Paris cafe, editorial illustration, warm colors.'}),
+            # Only applied when guidance > 1.0; the distilled path runs without an effective CFG branch.
+            'negative_prompt': ('STRING', {'multiline': True, 'default': 'blurry, out of focus, motion blur, lowres, pixelated, jpeg artifacts, compression artifacts, banding, moire, chromatic aberration, heavy grain, oversharpened, overexposed, blown highlights, underexposed, crushed blacks, washed out, oversaturated, bad anatomy, deformed, disfigured, mutated, extra limbs, extra fingers, missing fingers, fused fingers, malformed hands, poorly drawn face, asymmetric eyes, bad proportions, cropped head, cut off, out of frame, duplicate, cloned face, watermark, signature, logo, copyright notice, username, timestamp, stock photo caption, subtitles, ui overlay, hud, border, frame, letterbox, amateur, sloppy, unfinished, placeholder, error message'}),
             'mode': (['distilled', 'base'],),
-            'width': ('INT', {'default': 1024, 'min': 256, 'max': 2048, 'step': 16}),
-            'height': ('INT', {'default': 1024, 'min': 256, 'max': 2048, 'step': 16}),
+            'width': ('INT', {'default': 1280, 'min': 256, 'max': 2048, 'step': 16}),
+            'height': ('INT', {'default': 720, 'min': 256, 'max': 2048, 'step': 16}),
             'seed': ('INT', {'default': 42, 'min': 0, 'max': 2**63-1, 'control_after_generate': False}),
             'steps': ('INT', {'default': 16, 'min': 1, 'max': 100}),
             'guidance': ('FLOAT', {'default': 1.0, 'min': 1.0, 'max': 10.0, 'step': 0.1}),
@@ -25,7 +27,7 @@ class FluxStudio:
             'max_prompt_tokens': ('INT', {'default': 1024, 'min': 128, 'max': 4096}),
         }, 'optional': {'reference_image': ('IMAGE', {'rawLink': True})}}
 
-    def generate(self, prompt, mode, width, height, seed, steps, guidance, sampler, scheduler,
+    def generate(self, prompt, negative_prompt, mode, width, height, seed, steps, guidance, sampler, scheduler,
                  upsample_prompt, max_prompt_tokens, reference_image=None):
         graph = GraphBuilder()
         expanded = prompt
@@ -46,7 +48,7 @@ class FluxStudio:
         model = graph.node('UNETLoader', unet_name=model_name, weight_dtype='default')
         clip = graph.node('CLIPLoader', clip_name='qwen3vl_4b_int8_convrot.safetensors', type='flux3', device='default')
         positive = graph.node('CLIPTextEncode', clip=clip.out(0), text=expanded)
-        negative = graph.node('CLIPTextEncode', clip=clip.out(0), text='')
+        negative = graph.node('CLIPTextEncode', clip=clip.out(0), text=negative_prompt if guidance > 1.0 else '')
         vae = graph.node('VAELoader', vae_name='flux2-vae.safetensors')
         if reference_image is not None:
             reference = graph.node('VAEEncode', pixels=reference_image, vae=vae.out(0))

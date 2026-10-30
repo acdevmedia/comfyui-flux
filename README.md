@@ -21,14 +21,20 @@ Storage is temporary. The template does not attach a network volume. First-boot 
 
 ## Simple workflows
 
-- **01 Distilled Text to Image:** 16 steps, guidance 1.0, Euler/simple. Fast iteration.
-- **02 Base Text to Image:** 50 steps, guidance 3.5, Euler/simple. Undistilled checkpoint.
+- **01 Distilled Text to Image:** 16 steps, guidance 1.0, Euler/simple, 1280 × 720. Fast iteration.
+- **02 Base Text to Image:** 50 steps, guidance 3.5, Euler/simple, 1280 × 720. Undistilled checkpoint.
 - **03–04 Image Edit:** upload a picture and describe the changes; uses the same base or distilled checkpoint as generation.
 - **10–13 Advanced:** editable upstream ComfyUI graphs for text generation and reference-image editing. Upload your own image for editing; example asset names are placeholders.
 
-The simple node exposes prompt, mode, dimensions, seed, steps, guidance, sampler, schedule, prompt upsampling and its token budget. It expands into native loader, text-generation, sampler and decode nodes. Prompt expansion runs locally through the pinned Qwen3.5 9B upsampler, enabled by default. Disable it only when you supply a detailed scene caption. Model precision is INT8 ConvRot for the transformer and text encoders; precision and distillation are separate choices. Native ComfyUI offloading controls model residency.
+The simple node exposes prompt, negative prompt, mode, dimensions, seed, steps, guidance, sampler, schedule, prompt upsampling and its token budget. Canvas defaults to **1280 × 720**.
+
+A broad general-purpose **negative prompt** is filled in by default, covering optical defects, exposure and colour faults, anatomy errors, framing mistakes, and overlays such as watermarks, signatures, captions and UI furniture. Clear or edit it freely. It applies **only when guidance is above 1.0**: the distilled path runs at guidance 1.0 with no effective CFG branch, so the field is ignored there and the node passes an empty negative rather than pretending otherwise. Long keyword-style negatives are a weaker lever on a flow-matching model with a language-model text encoder than they were on older checkpoints; a short, specific negative usually beats a long one. It expands into native loader, text-generation, sampler and decode nodes. Prompt expansion runs locally through the pinned Qwen3.5 9B upsampler, enabled by default. Disable it only when you supply a detailed scene caption. Model precision is INT8 ConvRot for the transformer and text encoders; precision and distillation are separate choices. Native ComfyUI offloading controls model residency.
 
 The advanced graphs preserve the official template structure, with the upsampler filename changed from W4A8 to the downloaded INT8 checkpoint. Original system prompt and graph sources: [Comfy-Org templates](https://github.com/Comfy-Org/workflow_templates/tree/abb9cf6477b59c52dbe234c67f82318dadd872b2/templates), [BFL ComfyUI model card](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy).
+
+## Image preview ribbon
+
+A strip of recent output images is pinned along the bottom of the ComfyUI window. It refreshes when a queued graph finishes, collapses to a title bar, and opens any thumbnail full size with a download link. It reads the recent `/history` entries through ComfyUI's own `/view` endpoint and never scans the output directory.
 
 ## Environment variables
 

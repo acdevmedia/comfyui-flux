@@ -3,9 +3,10 @@
     "class_type": "AcdevFluxStudio",
     "inputs": {
       "prompt": "A witty editorial poster of a red fox reading a newspaper at a Paris cafe. Warm afternoon sunshine, elegant ink illustration, inviting composition.",
+      "negative_prompt": "blurry, out of focus, motion blur, lowres, pixelated, jpeg artifacts, compression artifacts, banding, moire, chromatic aberration, heavy grain, oversharpened, overexposed, blown highlights, underexposed, crushed blacks, washed out, oversaturated, bad anatomy, deformed, disfigured, mutated, extra limbs, extra fingers, missing fingers, fused fingers, malformed hands, poorly drawn face, asymmetric eyes, bad proportions, cropped head, cut off, out of frame, duplicate, cloned face, watermark, signature, logo, copyright notice, username, timestamp, stock photo caption, subtitles, ui overlay, hud, border, frame, letterbox, amateur, sloppy, unfinished, placeholder, error message",
       "mode": "distilled",
-      "width": 1024,
-      "height": 1024,
+      "width": 1280,
+      "height": 720,
       "seed": 42,
       "steps": 16,
       "guidance": 1.0,
