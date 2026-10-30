@@ -32,11 +32,15 @@ The simple node exposes prompt, negative prompt, mode, dimensions, seed, steps, 
 
 **Negative prompt.** A broad general-purpose negative prompt is filled in, covering optical defects, exposure and colour faults, anatomy errors, framing mistakes, and overlays such as watermarks and captions. It is passed **only when guidance is above 1.0**, and the reference configuration is cfg 1.0, so at the defaults it is inert — there is no unconditional branch for it to steer. Raise guidance above 1.0 to make it take effect, at the cost of a second forward pass per step. The field is kept because it is the only way to use a negative at all, not because the defaults use one.
 
-**Prompt expansion** runs locally through the pinned Qwen3.5 9B upsampler and is **on by default**, matching the reference graphs. Black Forest Labs state that the model relies on it and that raw, short prompts without it give poor adherence and distorted output. It is a second large model — 9.75 GB resident alongside the transformer and text encoder — so it costs time on every image. Turn it off only when you are writing long, detailed prompts yourself.
+**Prompt expansion** runs locally through the pinned Qwen3.5 9B upsampler and is **off by default**, which departs from the reference graphs deliberately. Black Forest Labs state that the model relies on it and that raw, short prompts without it give poor adherence and distorted output, so turn it on when adherence matters. It is a second large model — 9.75 GB resident alongside the transformer and text encoder — and the three compete on a 48 GB card, so ComfyUI swaps between the expansion pass and sampling and the cost lands on every image. Leave it off for fast iteration with prompts you have written out in detail.
 
 **Prompt wording matters more than parameters.** The Qwen text encoder attaches adjectives the way a reader would: "dark brunette woman" binds *dark* to the person, and can yield very dark skin, while "dark-haired brunette" binds it to the hair. Say which noun each adjective modifies.
 
 The advanced graphs preserve the official template structure, with the upsampler filename changed from W4A8 to the downloaded INT8 checkpoint. Original system prompt and graph sources: [Comfy-Org templates](https://github.com/Comfy-Org/workflow_templates/tree/abb9cf6477b59c52dbe234c67f82318dadd872b2/templates), [BFL ComfyUI model card](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy).
+
+## Image editing and model reuse
+
+The simple FLUX node also has an optional reference-image socket. Connect an uploaded image to enable instruction-based editing; disconnect it for text-to-image. The image is encoded with the same VAE and attached as native reference conditioning. The local prompt upsampler sees the image when connected. Loader identities and filenames are shared across paired workflows so ComfyUI can reuse cached models. Switching between base and distilled selects different checkpoints.
 
 ## Seeds
 
@@ -70,10 +74,6 @@ All container builds and runtime tests run in **GitHub Actions**. Do not build o
 The package must be public on GHCR for anonymous template users; account registry credentials can support private validation. Configure Actions secrets `RUNPOD_API_KEY` and, if needed, `RUNPOD_REGISTRY_AUTH_ID`. The `.runpod` listing uses the same image build and environment defaults; its required readiness test does not replace the GPU generation tests. For Serverless browser use, keep exactly one active worker and supply Runpod authentication on HTTP and WebSocket requests. The Pod template is the straightforward browser deployment.
 
 Build and GPU-validation status must be confirmed in Actions before treating a revision as tested. Captured package versions are stored in `/opt/acdev/python-lock.txt` inside each image. To update a model generation, add a new version profile, regenerate its workflow defaults and manifests, update the corresponding container tags, and repeat the remote tests. No runtime dependency upgrades or branch-head model downloads occur during Pod startup.
-
-## Image editing and model reuse
-
-The simple FLUX node also has an optional reference-image socket. Connect an uploaded image to enable instruction-based editing; disconnect it for text-to-image. The image is encoded with the same VAE and attached as native reference conditioning. The local prompt upsampler sees the image when connected. Loader identities and filenames are shared across paired workflows so ComfyUI can reuse cached models. Switching between base and distilled selects different checkpoints.
 
 ## Troubleshooting
 
