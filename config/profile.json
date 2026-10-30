@@ -1,0 +1,49 @@
+{
+  "kind": "flux",
+  "version": "3",
+  "comfyui_commit": "b5a432157de6b8884f81104cd02926adf4d597e4",
+  "container_image": "ghcr.io/acdevmedia/flux-comfyui:3",
+  "default_mode": "distilled",
+  "models": [
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
+      "file": "diffusion_models/flux3-image-klein-base-int8-convrot.safetensors",
+      "destination": "diffusion_models/flux3-image-klein-base-int8-convrot.safetensors",
+      "sha256": "8949ecfc1bf3871b08be02cf43ec7276a4914e1a86eade6b5eb8f4204426bc92",
+      "size": 5807427339
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
+      "file": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
+      "destination": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
+      "sha256": "847d8933548afd93df4af2cac2498e70891bf28d9dae06d695f536992e168fe2",
+      "size": 5827874779
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
+      "file": "text_encoders/qwen3vl_4b_int8_convrot.safetensors",
+      "destination": "text_encoders/qwen3vl_4b_int8_convrot.safetensors",
+      "sha256": "32de113cbf8282b02cbff0794b637b9d6676da09314a1db5a30bcea9bf4ee01c",
+      "size": 4858559240
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
+      "file": "text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
+      "destination": "text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
+      "sha256": "cb8cb9b9dcd2569509de755dca54d96fd93a16a7aabfd2f4051f0a144230620f",
+      "size": 9748113996
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
+      "file": "vae/flux2-vae.safetensors",
+      "destination": "vae/flux2-vae.safetensors",
+      "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+      "size": 336211292
+    }
+  ]
+}

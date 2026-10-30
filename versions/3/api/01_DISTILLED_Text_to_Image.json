@@ -1,0 +1,28 @@
+{
+  "1": {
+    "class_type": "AcdevFluxStudio",
+    "inputs": {
+      "prompt": "A witty editorial poster of a red fox reading a newspaper at a Paris cafe. Warm afternoon sunshine, elegant ink illustration, inviting composition.",
+      "mode": "distilled",
+      "width": 1024,
+      "height": 1024,
+      "seed": 42,
+      "steps": 16,
+      "guidance": 1.0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "upsample_prompt": true,
+      "max_prompt_tokens": 1024
+    }
+  },
+  "2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "1",
+        0
+      ],
+      "filename_prefix": "FLUX3/distilled"
+    }
+  }
+}
