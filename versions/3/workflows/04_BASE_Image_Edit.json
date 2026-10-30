@@ -48,11 +48,11 @@
         720,
         0,
         "randomize",
-        50,
-        3.5,
-        "euler",
+        15,
+        1.0,
+        "er_sde",
         "simple",
-        false,
+        true,
         1024
       ],
       "title": "Reference image edit \u2014 base"

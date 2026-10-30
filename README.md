@@ -21,14 +21,20 @@ Storage is temporary. The template does not attach a network volume. First-boot 
 
 ## Simple workflows
 
-- **01 Distilled Text to Image:** 16 steps, guidance 1.0, Euler/simple, 1280 × 720. Fast iteration.
-- **02 Base Text to Image:** 50 steps, guidance 3.5, Euler/simple, 1280 × 720. Undistilled checkpoint.
+- **01 Distilled Text to Image:** 15 steps, cfg 1.0, er_sde/simple, 1280 × 720.
+- **02 Base Text to Image:** the undistilled checkpoint on the same reference settings — 15 steps, cfg 1.0, er_sde/simple, 1280 × 720.
 - **03–04 Image Edit:** upload a picture and describe the changes; uses the same base or distilled checkpoint as generation.
 - **10–13 Advanced:** editable upstream ComfyUI graphs for text generation and reference-image editing. Upload your own image for editing; example asset names are placeholders.
 
 The simple node exposes prompt, negative prompt, mode, dimensions, seed, steps, guidance, sampler, schedule, prompt upsampling and its token budget. Canvas defaults to **1280 × 720**.
 
-A broad general-purpose **negative prompt** is filled in by default, covering optical defects, exposure and colour faults, anatomy errors, framing mistakes, and overlays such as watermarks, signatures, captions and UI furniture. Clear or edit it freely. It applies **only when guidance is above 1.0**: the distilled path runs at guidance 1.0 with no effective CFG branch, so the field is ignored there and the node passes an empty negative rather than pretending otherwise. Long keyword-style negatives are a weaker lever on a flow-matching model with a language-model text encoder than they were on older checkpoints; a short, specific negative usually beats a long one. It expands into native loader, text-generation, sampler and decode nodes. Prompt expansion runs locally through the pinned Qwen3.5 9B upsampler and is **off by default**. It is a second large model: 9.75 GB of weights that must be resident alongside the transformer and text encoder, and on a 48 GB card the three compete, so ComfyUI swaps models between the expansion pass and sampling. Enabling it can add minutes per image. Turn it on when you want a short prompt fleshed out and can accept the cost; write a detailed prompt yourself and leave it off for fast iteration. Model precision is INT8 ConvRot for the transformer and text encoders; precision and distillation are separate choices. Native ComfyUI offloading controls model residency.
+**Guidance.** Both official FLUX 3 Klein graphs — base and distilled — sample at **cfg 1.0** with 15 `er_sde`/`simple` steps. The model is guidance-distilled, so classifier-free guidance is not how it is steered, and raising cfg between about 1.5 and 4 changes the image very little while making ComfyUI run a second forward pass per step. The packaged defaults match the reference graphs. Earlier releases ran base at 50 steps and cfg 3.5, roughly seven times the compute for no benefit.
+
+**Negative prompt.** A broad general-purpose negative prompt is filled in, covering optical defects, exposure and colour faults, anatomy errors, framing mistakes, and overlays such as watermarks and captions. It is passed **only when guidance is above 1.0**, and the reference configuration is cfg 1.0, so at the defaults it is inert — there is no unconditional branch for it to steer. Raise guidance above 1.0 to make it take effect, at the cost of a second forward pass per step. The field is kept because it is the only way to use a negative at all, not because the defaults use one.
+
+**Prompt expansion** runs locally through the pinned Qwen3.5 9B upsampler and is **on by default**, matching the reference graphs. Black Forest Labs state that the model relies on it and that raw, short prompts without it give poor adherence and distorted output. It is a second large model — 9.75 GB resident alongside the transformer and text encoder — so it costs time on every image. Turn it off only when you are writing long, detailed prompts yourself.
+
+**Prompt wording matters more than parameters.** The Qwen text encoder attaches adjectives the way a reader would: "dark brunette woman" binds *dark* to the person, and can yield very dark skin, while "dark-haired brunette" binds it to the hair. Say which noun each adjective modifies.
 
 The advanced graphs preserve the official template structure, with the upsampler filename changed from W4A8 to the downloaded INT8 checkpoint. Original system prompt and graph sources: [Comfy-Org templates](https://github.com/Comfy-Org/workflow_templates/tree/abb9cf6477b59c52dbe234c67f82318dadd872b2/templates), [BFL ComfyUI model card](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy).
 
