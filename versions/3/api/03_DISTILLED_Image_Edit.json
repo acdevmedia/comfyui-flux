@@ -12,7 +12,7 @@
       "guidance": 1.0,
       "sampler": "er_sde",
       "scheduler": "simple",
-      "upsample_prompt": true,
+      "upsample_prompt": false,
       "max_prompt_tokens": 1024,
       "reference_image": [
         "10",

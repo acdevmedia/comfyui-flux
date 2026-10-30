@@ -46,7 +46,7 @@
         1.0,
         "er_sde",
         "simple",
-        true,
+        false,
         1024
       ],
       "title": "Prompt + shot settings \u2014 distilled"

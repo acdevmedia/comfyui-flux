@@ -25,7 +25,7 @@ class FluxStudio:
             'guidance': ('FLOAT', {'default': 1.0, 'min': 1.0, 'max': 10.0, 'step': 0.1}),
             'sampler': (['er_sde', 'euler', 'heun'],),
             'scheduler': (['simple', 'normal', 'beta'],),
-            'upsample_prompt': ('BOOLEAN', {'default': True}),
+            'upsample_prompt': ('BOOLEAN', {'default': False}),
             'max_prompt_tokens': ('INT', {'default': 1024, 'min': 128, 'max': 4096}),
         }, 'optional': {'reference_image': ('IMAGE', {'rawLink': True})}}
 
