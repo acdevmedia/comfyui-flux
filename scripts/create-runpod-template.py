@@ -4,8 +4,11 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 
 def main():
- parser=argparse.ArgumentParser();parser.add_argument('--dry-run',action='store_true');args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--dry-run',action='store_true');parser.add_argument('--generation',default='2',help='container generation: 1, 2 (default, config/runpod-template.json) or 3');args=parser.parse_args()
  p=json.loads((ROOT/'config/runpod-template.json').read_text());p['readme']=(ROOT/'README.md').read_text()
+ if args.generation!='2':
+  g=json.loads((ROOT/'config/runpod-generations.json').read_text())[args.generation]
+  p['name']=g['name'];p['env']={**p['env'],**g['env']};p['imageName']='ghcr.io/acdevmedia/flux-comfyui:'+args.generation
  if args.dry_run:print(json.dumps(p,indent=2));return
  values={}
  if (ROOT/'.env').exists():
@@ -17,7 +20,7 @@ def main():
   req=urllib.request.Request(url,data=json.dumps(data).encode() if data is not None else None,headers={'Authorization':'Bearer '+key,'Content-Type':'application/json','User-Agent':'Mozilla/5.0'})
   with urllib.request.urlopen(req,timeout=45) as response:return json.load(response)
  recorded=ROOT/'.runpod/template-source.json'
- known=json.loads(recorded.read_text())['templateId'] if recorded.exists() else None
+ known=json.loads(recorded.read_text())['templateId'] if recorded.exists() and args.generation=='2' else None
  templates=request('https://rest.runpod.io/v1/templates')
  matches=[t for t in templates if t['id']==known] or [t for t in templates if t['name']==p['name']]
  assert len(matches)<=1,'Duplicate account templates; resolve before updating'

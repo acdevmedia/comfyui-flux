@@ -1,6 +1,6 @@
 {
   "templateId": "3l6xecpzep",
-  "templateName": "Flux Image ComfyUI One-Click",
+  "templateName": "Flux 2 Image ComfyUI One-Click",
   "imageName": "ghcr.io/acdevmedia/flux-comfyui:2",
   "containerDiskInGb": 200,
   "volumeMountPath": "/workspace",

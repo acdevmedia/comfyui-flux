@@ -4,6 +4,14 @@ Synced to account template **Flux 2 Image ComfyUI One-Click** (`3l6xecpzep`) on 
 
 [Open template](https://console.runpod.io/deploy?template=3l6xecpzep)
 
+There are three Pod templates, one per container generation. They share everything except the name, image tag, `STUDIO_VERSION` and `MODEL_MODE`; `config/runpod-template.json` is the `:2` template and `config/runpod-generations.json` holds the overrides for the others. Create or update one with `python3 scripts/create-runpod-template.py --generation 1|2|3`.
+
+| Template | Id | Image | `MODEL_MODE` |
+| --- | --- | --- | --- |
+| Flux 1 Image ComfyUI One-Click | `hrf2a1d7f7` | `:1` | `dev` |
+| Flux 2 Image ComfyUI One-Click | `3l6xecpzep` | `:2` | `dev` |
+| Flux 3 Image ComfyUI Klein One-Click | `0gayum1now` | `:3` | `distilled` |
+
 Image: `ghcr.io/acdevmedia/flux-comfyui:2`. Container disk: **200 GB**. Workspace: `/workspace`. Template service: `8188/http` (ComfyUI). The gateway port 8000 is used by the Hub/Serverless listing only and is not exposed by the Pod template. No persistent volume is requested; `volumeInGb` is 0 and storage is temporary.
 
 `config/runpod-template.json` holds the Pod defaults. `.runpod/template-source.json` records the account source. `.runpod/hub.json` exposes the same values through Hub inputs or fixed values. `.runpod/tests.json` uses the same defaults for readiness tests. `.runpod/test_template_sync.py` fails if any of those four files, this document or the README drift apart.
