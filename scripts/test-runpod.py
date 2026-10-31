@@ -80,6 +80,8 @@ def main():
   (OUT/'system.json').write_text(json.dumps(stats,indent=2))
   info=request(base+'/object_info');results={};source_images={}
   paths=list((ROOT/'versions'/PROFILE['version']/'api').glob('*.json'))
+  assert paths,'Generation %s packages no API graphs, so there is nothing to validate; '\
+    'add them before running a paid GPU test against it.'%PROFILE['version']
   def sort_key(path):
    graph=json.loads(path.read_text())
    mode=next(n['inputs']['mode'] for n in graph.values() if n['class_type'].endswith('Studio'))

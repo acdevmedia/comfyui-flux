@@ -1,48 +1,42 @@
 {
   "kind": "flux",
-  "version": "3",
+  "version": "2",
   "comfyui_commit": "b5a432157de6b8884f81104cd02926adf4d597e4",
-  "container_image": "ghcr.io/acdevmedia/flux-comfyui:3",
-  "default_mode": "distilled",
+  "container_image": "ghcr.io/acdevmedia/flux-comfyui:2",
+  "default_mode": "klein",
   "models": [
     {
-      "repo": "black-forest-labs/flux-3-image-klein-comfy",
-      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
-      "file": "diffusion_models/flux3-image-klein-base-int8-convrot.safetensors",
-      "destination": "diffusion_models/flux3-image-klein-base-int8-convrot.safetensors",
-      "sha256": "8949ecfc1bf3871b08be02cf43ec7276a4914e1a86eade6b5eb8f4204426bc92",
-      "size": 5807427339
+      "repo": "Comfy-Org/Flux-2-Klein-4B",
+      "revision": "5b3abca5c0dc1ecd4eaf3340868d09063fc1c965",
+      "file": "split_files/diffusion_models/flux-2-klein-4b.safetensors",
+      "destination": "diffusion_models/flux-2-klein-4b.safetensors",
+      "sha256": "3d2a43fd022501eebe77b10ba31282d768d126129c83b9e5d4464bc9f5040bc0",
+      "size": 7751105712,
+      "variant": "klein"
     },
     {
-      "repo": "black-forest-labs/flux-3-image-klein-comfy",
-      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
-      "file": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
-      "destination": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
-      "sha256": "847d8933548afd93df4af2cac2498e70891bf28d9dae06d695f536992e168fe2",
-      "size": 5827874779
+      "repo": "Comfy-Org/Flux-2-Klein-4B",
+      "revision": "5b3abca5c0dc1ecd4eaf3340868d09063fc1c965",
+      "file": "split_files/diffusion_models/flux-2-klein-base-4b.safetensors",
+      "destination": "diffusion_models/flux-2-klein-base-4b.safetensors",
+      "sha256": "ac81f9ca8c08599d9ddbdec53c8cdef213a5e401b6f9bcfb8f132f2191cc6fec",
+      "size": 7751105712,
+      "variant": "base"
     },
     {
-      "repo": "black-forest-labs/flux-3-image-klein-comfy",
-      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
-      "file": "text_encoders/qwen3vl_4b_int8_convrot.safetensors",
-      "destination": "text_encoders/qwen3vl_4b_int8_convrot.safetensors",
-      "sha256": "32de113cbf8282b02cbff0794b637b9d6676da09314a1db5a30bcea9bf4ee01c",
-      "size": 4858559240
+      "repo": "Comfy-Org/Flux-2-Klein-4B",
+      "revision": "5b3abca5c0dc1ecd4eaf3340868d09063fc1c965",
+      "file": "split_files/text_encoders/qwen_3_4b.safetensors",
+      "destination": "text_encoders/qwen_3_4b.safetensors",
+      "sha256": "f459cd74b7868799ea82f97601a650afcedc399596dc262f302e3505761c9995",
+      "size": 8044982048
     },
     {
-      "repo": "black-forest-labs/flux-3-image-klein-comfy",
-      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
-      "file": "text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
-      "destination": "text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
-      "sha256": "cb8cb9b9dcd2569509de755dca54d96fd93a16a7aabfd2f4051f0a144230620f",
-      "size": 9748113996
-    },
-    {
-      "repo": "black-forest-labs/flux-3-image-klein-comfy",
-      "revision": "feef60b0aaf63a4773ace96636ebbcf43b881312",
-      "file": "vae/flux2-vae.safetensors",
+      "repo": "Comfy-Org/Flux-2-Klein-4B",
+      "revision": "5b3abca5c0dc1ecd4eaf3340868d09063fc1c965",
+      "file": "split_files/vae/flux2-vae.safetensors",
       "destination": "vae/flux2-vae.safetensors",
-      "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+      "sha256": "2d2ae7a1e3d7d2ee7da6bbe58d555a9a9d7c1909db79adaa1ecf75a67367536f",
       "size": 336211292
     }
   ]

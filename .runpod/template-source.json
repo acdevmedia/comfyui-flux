@@ -1,7 +1,7 @@
 {
   "templateId": "3l6xecpzep",
-  "templateName": "Flux 3 Image ComfyUI Klein One-Click",
-  "imageName": "ghcr.io/acdevmedia/flux-comfyui:3",
+  "templateName": "Flux 2 Klein Image ComfyUI One-Click",
+  "imageName": "ghcr.io/acdevmedia/flux-comfyui:2",
   "containerDiskInGb": 200,
   "volumeMountPath": "/workspace",
   "ports": [
@@ -11,7 +11,7 @@
     "HF_TOKEN": "{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}",
     "HF_HOME": "/workspace/.cache/huggingface",
     "MODEL_MODE": "both",
-    "STUDIO_VERSION": "3",
+    "STUDIO_VERSION": "2",
     "PORT": "8000",
     "PORT_HEALTH": "8001"
   },

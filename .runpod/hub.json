@@ -1,5 +1,5 @@
 {
-  "title": "Flux 3 Image ComfyUI Klein One-Click",
+  "title": "Flux 2 Klein Image ComfyUI One-Click",
   "description": "Local flux base and distilled image generation with simple, editable ComfyUI workflows.",
   "type": "serverless",
   "category": "image",
@@ -29,7 +29,7 @@
       },
       {
         "key": "STUDIO_VERSION",
-        "value": "3"
+        "value": "2"
       },
       {
         "key": "PORT",
