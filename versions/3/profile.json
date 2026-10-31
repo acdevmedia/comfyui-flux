@@ -11,7 +11,8 @@
       "file": "diffusion_models/flux3-image-klein-base-int8-convrot.safetensors",
       "destination": "diffusion_models/flux3-image-klein-base-int8-convrot.safetensors",
       "sha256": "8949ecfc1bf3871b08be02cf43ec7276a4914e1a86eade6b5eb8f4204426bc92",
-      "size": 5807427339
+      "size": 5807427339,
+      "variant": "base"
     },
     {
       "repo": "black-forest-labs/flux-3-image-klein-comfy",
@@ -19,7 +20,8 @@
       "file": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
       "destination": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
       "sha256": "847d8933548afd93df4af2cac2498e70891bf28d9dae06d695f536992e168fe2",
-      "size": 5827874779
+      "size": 5827874779,
+      "variant": "distilled"
     },
     {
       "repo": "black-forest-labs/flux-3-image-klein-comfy",

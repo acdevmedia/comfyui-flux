@@ -5,7 +5,9 @@ from huggingface_hub import hf_hub_download,snapshot_download
 version=os.getenv('STUDIO_VERSION','3')
 p=json.loads(Path('/opt/acdev/versions/%s/profile.json'%version).read_text())
 mode=os.getenv('MODEL_MODE','both')
-if mode not in ('base','distilled','both'):raise SystemExit('MODEL_MODE must be base, distilled or both')
+variants=sorted({m.get('variant') for m in p['models']+p.get('snapshots',[]) if m.get('variant')})
+allowed=variants+['both'] if variants else ['both']
+if mode not in allowed:raise SystemExit('MODEL_MODE for generation %s must be one of: %s'%(version,', '.join(allowed)))
 token=os.getenv('HF_TOKEN','').strip()
 if not token or token.startswith(('{{','YOUR_')):raise SystemExit('Set HF_TOKEN from Runpod Secret HUGGINGFACE_TOKEN; accept each model gate with the same Hugging Face account.')
 root=Path('/workspace/ComfyUI/models');root.mkdir(parents=True,exist_ok=True)
