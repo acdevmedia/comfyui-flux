@@ -1,8 +1,8 @@
-# Flux 2 Image ComfyUI One-Click
+# Flux Image ComfyUI One-Click
 
 [![Runpod](https://api.runpod.io/badge/acdevmedia/comfyui-flux)](https://console.runpod.io/hub/listing/acdevmedia/comfyui-flux)
 
-FLUX.2 on ComfyUI: text-to-image and image-to-image with `dev` (the default) or the fast Klein 4B "turbo" variant. FLUX.1 and the gated FLUX 3 Klein are available as other container tags.
+FLUX on ComfyUI: one repository for FLUX.1, FLUX.2 and FLUX 3 Klein, each with text-to-image and image-to-image. FLUX.2 (`dev`, or the fast Klein 4B "turbo" variant) is the default; FLUX.1 and the gated FLUX 3 Klein are other container tags.
 
 ## Model generations
 
