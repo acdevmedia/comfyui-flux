@@ -23,7 +23,7 @@ for v in versions:
   groups=[graph.get('nodes') or []]+[s.get('nodes') or [] for s in (graph.get('definitions') or {}).get('subgraphs',[])]
   for nodes in groups:
    for n in nodes:
-    if not str(n.get('type','')).endswith('Loader'):continue
+    if str(n.get('type','')) in ('Note','MarkdownNote'):continue
     for value in (n.get('widgets_values') or []):
      if isinstance(value,str) and value.endswith('.safetensors'):
       assert value in names,(wf.name,n['type'],'references unpinned weight '+value)

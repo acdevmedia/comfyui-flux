@@ -8,19 +8,21 @@ FLUX 3 Image Klein: native ComfyUI base and distilled text-to-image generation, 
 
 One repository, one image build, three containers — the tag selects which generation of weights the Pod downloads and which workflows it installs.
 
-| Tag | Generation | Weights | Download | Workflows |
+| Tag | Generation | Variants | Resident | GPU |
 | --- | --- | --- | --- | --- |
-| `:3` | **FLUX 3 Image Klein** | base + distilled INT8, Qwen3-VL encoder, upsampler | ~26.6 GB | text to image, image edit, advanced upstream graphs |
-| `:2` | **FLUX.2 Klein 4B** (default) | klein + klein-base 4B, Qwen3-4B encoder, FLUX.2 VAE | ~23.9 GB | text to image, image edit (base and distilled) |
-| `:1` | **FLUX.1** | dev and schnell all-in-one FP8 checkpoints | ~34.5 GB | text to image (dev and schnell) |
+| `:2` | **FLUX.2** (default) | `dev` (default), `turbo` = Klein 4B | 56.6 GB / 23.9 GB | 80 GB for dev, 48 GB for turbo |
+| `:3` | FLUX 3 Image Klein | base, distilled | 26.6 GB | 48 GB |
+| `:1` | FLUX.1 | dev, schnell | 34.5 GB | 48 GB |
 
-Each tag is the same image with a different baked `STUDIO_VERSION`; nothing model-specific is in the layers, so they share every layer but the last. Set `MODEL_MODE` to a variant name to download only part of a generation.
+`MODEL_MODE` picks the variant, so a `:2` Pod downloads only what it needs: `dev` for the full model, `turbo` for Klein 4B, `both` for roughly 80 GB of weights.
 
-**FLUX 3 is the GPU-tested generation**, and remains available on `:3`. FLUX.2 Klein is the default because it is the current open FLUX.2 line, fits a 48 GB card with headroom, and ships both text-to-image and image editing. Generations 1 and 2 ship pinned weights, checksums and the upstream workflow templates, and they pass source and reference checks, but no GPU validation has been run against them — `docs/VALIDATION.md` records what has actually been exercised. The FLUX.2 workflows are Comfy-Org's own templates with the loader filenames pointed at the pinned weights; the FLUX.1 dev graph is adapted from the upstream schnell template with dev's step count and a `FluxGuidance` node.
+**FLUX.2 `dev` needs an 80 GB card.** Its resident set is about 56.6 GB — a 35.5 GB transformer, an 18 GB Mistral text encoder, the VAE and the Turbo LoRA — which does not fit 48 GB. Deploy dev on an H100 or A100 80 GB, or set `MODEL_MODE=turbo` and run Klein 4B on a 48 GB card.
 
-There is no open-weight **FLUX.2 Ultra** or **pro**: those are Black Forest Labs' hosted API tiers, and the published FLUX.2 line is `dev` plus the Klein family.
+There is no open-weight **FLUX.2 Ultra** or **pro**: those are Black Forest Labs' hosted API tiers. The published FLUX.2 line is `dev` plus the Klein family, and `dev` is the strongest of them.
 
-Not included, and why: FLUX.1 Kontext, Fill, Depth, Canny and Redux need text encoders that are no longer published in a ComfyUI-packaged repository; FLUX.2-dev needs about 53 GB of weights resident, beyond a 48 GB card; FLUX.2 Klein 9B has no diffusion weights in its ComfyUI repository.
+Each tag is the same image with a different baked `STUDIO_VERSION`; nothing model-specific is in the layers. **FLUX 3 is the only GPU-tested generation.** Generations 1 and 2 ship pinned weights, checksums and upstream workflow templates and pass source and reference checks, but no GPU validation has been run against them; `docs/VALIDATION.md` records what has actually been exercised.
+
+Not included, and why: FLUX.1 Kontext, Fill, Depth, Canny and Redux need text encoders no longer published in a ComfyUI-packaged repository; FLUX.2 Klein 9B has no diffusion weights in its ComfyUI repository.
 
 Container: **`ghcr.io/acdevmedia/flux-comfyui:3`**. Image releases also receive a version tag (`3.0.0`) and an immutable `sha-<commit>` tag. Source pins, model revisions and checksums live under `versions/3/`. New model generations get their own profile and container major tag; rebuilds retain the model family tag and always get a new commit tag.
 
@@ -76,7 +78,7 @@ Picks live for the session and are never uploaded. The ribbon reads the recent `
 
 - `HF_TOKEN`: Hugging Face read credential, mapped to `{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`. Required; access must be approved for each gated repository.
 - `HF_HOME=/workspace/.cache/huggingface`: Hugging Face cache/metadata location.
-- `MODEL_MODE=both`: download both variants. `base` or `distilled` limits first-boot downloads. Both variants share the pinned text encoders, prompt upsampler and VAE, so neither choice skips those components.
+- `MODEL_MODE=dev`: which variant to download — `dev`, `turbo` (Klein 4B) or `both`. `base` or `distilled` limits first-boot downloads. Both variants share the pinned text encoders, prompt upsampler and VAE, so neither choice skips those components.
 - `STUDIO_VERSION=2`: which generation this image serves, baked at build time from the matching `versions/<n>/profile.json`. It selects the weights downloaded on first boot and the workflows installed. Pull the `:1` or `:3` tag for another generation rather than changing this on a running Pod.
 - `PORT=8000`: gateway HTTP port used by the Runpod Hub/Serverless listing. The Pod template does not expose it; Pod users reach ComfyUI directly on 8188.
 - `PORT_HEALTH=8001`: readiness service used by the Hub listing; `/ping` returns 503 until ComfyUI responds with device information. Not exposed by the Pod template.

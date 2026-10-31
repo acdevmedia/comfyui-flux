@@ -13,7 +13,7 @@
   "env": {
     "HF_TOKEN": "{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}",
     "HF_HOME": "/workspace/.cache/huggingface",
-    "MODEL_MODE": "both",
+    "MODEL_MODE": "dev",
     "STUDIO_VERSION": "2",
     "PORT": "8000",
     "PORT_HEALTH": "8001"

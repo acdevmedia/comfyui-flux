@@ -28,9 +28,9 @@ Hugging Face cache and metadata directory on container storage.
 
 ### `MODEL_MODE`
 
-Default: `both`.
+Default: `dev`.
 
-Which checkpoints the first boot downloads: `both`, `base` or `distilled`. Both variants share the pinned text encoders, upsampler and VAE.
+Which variant of the generation to download. On FLUX.2 that is `dev` (the full model, about 56.6 GB resident) or `turbo` (Klein 4B, about 23.9 GB), and `both` fetches everything, roughly 80 GB. Shared components such as the VAE download either way.
 
 ### `STUDIO_VERSION`
 

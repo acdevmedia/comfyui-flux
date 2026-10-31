@@ -25,7 +25,7 @@
       },
       {
         "key": "MODEL_MODE",
-        "value": "both"
+        "value": "dev"
       },
       {
         "key": "STUDIO_VERSION",
