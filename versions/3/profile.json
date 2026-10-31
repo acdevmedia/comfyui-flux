@@ -4,6 +4,7 @@
   "comfyui_commit": "b5a432157de6b8884f81104cd02926adf4d597e4",
   "container_image": "ghcr.io/acdevmedia/flux-comfyui:3",
   "default_mode": "distilled",
+  "gated": true,
   "models": [
     {
       "repo": "black-forest-labs/flux-3-image-klein-comfy",

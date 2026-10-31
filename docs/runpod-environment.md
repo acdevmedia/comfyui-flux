@@ -10,7 +10,7 @@ Image: `ghcr.io/acdevmedia/flux-comfyui:2`. Container disk: **200 GB**. Workspac
 
 ## Credentials
 
-Create Runpod Secret `HUGGINGFACE_TOKEN` with a Hugging Face read token, using the account that accepted the gated model agreement for `black-forest-labs/flux-3-image-klein-comfy`. Secret references are passed through unchanged; no credential values are stored in this repository or baked into the image.
+**Only the `:3` tag (FLUX 3) needs a token.** FLUX.1 and FLUX.2 download anonymously, so the default `:2` Pod needs no Hugging Face account. For `:3`, create Runpod Secret `HUGGINGFACE_TOKEN` with a Hugging Face read token, using the account that accepted the gated model agreement for `black-forest-labs/flux-3-image-klein-comfy`. Secret references are passed through unchanged; no credential values are stored in this repository or baked into the image.
 
 ## Template variables
 
@@ -18,7 +18,7 @@ Create Runpod Secret `HUGGINGFACE_TOKEN` with a Hugging Face read token, using t
 
 Default: `{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`.
 
-Hugging Face read token supplied through the Runpod Secret HUGGINGFACE_TOKEN. Required; the gated repository agreement must be accepted by the same account before first boot.
+Hugging Face read token supplied through the Runpod Secret HUGGINGFACE_TOKEN. Required only for the gated `:3` generation, where the repository agreement must be accepted by the same account before first boot; ignored by `:1` and `:2`.
 
 ### `HF_HOME`
 

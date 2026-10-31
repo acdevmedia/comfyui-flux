@@ -1,6 +1,6 @@
 {
   "title": "Flux 2 Image ComfyUI One-Click",
-  "description": "Local flux base and distilled image generation with simple, editable ComfyUI workflows.",
+  "description": "FLUX.2 dev and Klein image generation and editing in ComfyUI, with simple, editable workflows. Defaults to dev, which needs an 80 GB GPU; set MODEL_MODE=turbo for Klein on a 48 GB card.",
   "type": "serverless",
   "category": "image",
   "config": {
@@ -8,7 +8,7 @@
     "endpointType": "LB",
     "containerDiskInGb": 200,
     "gpuCount": 1,
-    "gpuIds": "ADA_48_PRO,AMPERE_48",
+    "gpuIds": "AMPERE_80,ADA_80_PRO",
     "allowedCudaVersions": [
       "12.8",
       "12.9",

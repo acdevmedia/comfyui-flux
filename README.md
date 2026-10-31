@@ -28,16 +28,22 @@ Container: **`ghcr.io/acdevmedia/flux-comfyui:3`**. Image releases also receive 
 
 ## Start on Runpod
 
-1. Sign in to Hugging Face and accept the model access agreements for each linked repository using the account that owns your token:
-   - [black-forest-labs/flux-3-image-klein-comfy](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy)
-   Agreements apply separately to each repository. Accepting one does not grant access to the others.
-2. Create a Hugging Face **read** token and add it to Runpod Secrets as **HUGGINGFACE_TOKEN**. The template maps this secret to `HF_TOKEN`; do not paste credentials into public template fields.
-3. Create/update the template with `python3 scripts/create-runpod-template.py`. Use `--dry-run` to review its payload. This small API helper reads the ignored local `.env`; it does not build an image or download models.
-4. Launch on a **48 GB** GPU with a **200 GB container disk** and no persistent volume. **L40S** and **A40** are both validated; the L40S is roughly twice as fast for this workload, and **RTX A6000** is the other 48 GB option. Peak residency is about 21 GB: one transformer, the Qwen3-VL text encoder, the prompt upsampler and the VAE. A 24 GB card is not enough; an 80 GB A100 is not required and costs several times as much. First boot downloads the pinned weights into `/workspace/ComfyUI/models`.
-5. Open **Connect → HTTP 8188 / ComfyUI**. The template exposes ComfyUI only; the service reports Ready once the weights finish downloading. If the Connect link returns **HTTP 403**, open a blank tab and paste `https://<pod-id>-8188.proxy.runpod.net` into the address bar — see Troubleshooting. No additional installation is required.
-6. In the workflow sidebar, choose the base or distilled workflow, edit the prompt and shot settings, and click Queue. Save generated images before deleting/replacing the Pod.
+1. Create or update the template with `python3 scripts/create-runpod-template.py`, or `--dry-run` to review the payload first. It only calls the Runpod API; it builds nothing and downloads no weights.
+2. **Pick a card for the variant you want:**
 
-Storage is temporary. The template does not attach a network volume. First-boot downloads are resumable, existing workflow edits are preserved, and no model weights or credentials are baked into the container.
+   | Tag and variant | Needs | Validated on |
+   | --- | --- | --- |
+   | `:2` **FLUX.2 dev** (the default) | **80 GB**, about 56.6 GB resident | A100 80 GB |
+   | `:2` `MODEL_MODE=turbo` (Klein 4B) | 48 GB, about 24 GB resident | A40 |
+   | `:3` FLUX 3 | 48 GB, about 21 GB resident | L40S, A40 |
+   | `:1` FLUX.1 | 48 GB | not run |
+
+   Use a **200 GB container disk** and no persistent volume, or 300 GB if you load both FLUX.2 variants. A 24 GB card is not enough for any of them. First boot downloads the pinned weights into `/workspace/ComfyUI/models`.
+3. **Only for `:3` (FLUX 3), set up Hugging Face access.** That repository is gated: accept the agreement for [black-forest-labs/flux-3-image-klein-comfy](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy) with the account that owns your token, then add a Hugging Face **read** token to Runpod Secrets as **HUGGINGFACE_TOKEN**. The template maps that secret to `HF_TOKEN`; never paste credentials into public template fields. **FLUX.1 and FLUX.2 are ungated and need no account or token.**
+4. Open **Connect → HTTP 8188 / ComfyUI** once the service reports Ready. The template exposes ComfyUI only. If the Connect link returns **HTTP 403**, open a blank tab and paste `https://<pod-id>-8188.proxy.runpod.net` into the address bar; see Troubleshooting.
+5. Pick a workflow in the sidebar, edit the prompt and settings, and click Queue. Save generated images before deleting or replacing the Pod.
+
+Storage is temporary. The template attaches no network volume. First-boot downloads resume, your workflow edits persist across restarts, and no model weights or credentials are baked into the image.
 
 ## Simple workflows
 
@@ -76,7 +82,7 @@ Picks live for the session and are never uploaded. The ribbon reads the recent `
 
 ## Environment variables
 
-- `HF_TOKEN`: Hugging Face read credential, mapped to `{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`. Required; access must be approved for each gated repository.
+- `HF_TOKEN`: Hugging Face read credential, mapped to `{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`. **Required only for `:3` (FLUX 3)**, whose repository is gated and must be accepted by the same account. FLUX.1 and FLUX.2 download anonymously, so the default `:2` Pod needs no token.
 - `HF_HOME=/workspace/.cache/huggingface`: Hugging Face cache/metadata location.
 - `MODEL_MODE=dev`: which variant to download — `dev`, `turbo` (Klein 4B) or `both`. `base` or `distilled` limits first-boot downloads. Both variants share the pinned text encoders, prompt upsampler and VAE, so neither choice skips those components.
 - `STUDIO_VERSION=2`: which generation this image serves, baked at build time from the matching `versions/<n>/profile.json`. It selects the weights downloaded on first boot and the workflows installed. Pull the `:1` or `:3` tag for another generation rather than changing this on a running Pod.
@@ -100,4 +106,4 @@ Build and GPU-validation status must be confirmed in Actions before treating a r
 - **Connect opens ComfyUI with HTTP 403:** ComfyUI's browser-origin guard rejects cross-site page navigations, and a link clicked from the Runpod dashboard or any other site counts as cross-site. This image patches the guard at build time to permit only a safe top-level `GET /` navigation; cross-site API, WebSocket, form and subresource requests stay blocked. On a Pod built from an older digest, open a blank tab and paste `https://<pod-id>-8188.proxy.runpod.net` into the address bar, which the browser sends as a same-origin navigation.
 - **Connect shows ERR_INVALID_RESPONSE:** the same 403, returned with a body the browser cannot render. Treat it as the entry above.
 - **ComfyUI does not become ready:** first boot downloads the pinned weights before ComfyUI starts. Check the Pod logs; the service answers only after it reports device information.
-- **Out of GPU memory:** use a 48 GB card. A 24 GB card cannot hold the distilled path.
+- **Out of GPU memory:** FLUX.2 `dev` needs an 80 GB card; on a 48 GB card set `MODEL_MODE=turbo` to run Klein 4B. A 24 GB card cannot hold any variant.

@@ -5,11 +5,16 @@ from huggingface_hub import hf_hub_download,snapshot_download
 version=os.getenv('STUDIO_VERSION','3')
 p=json.loads(Path('/opt/acdev/versions/%s/profile.json'%version).read_text())
 mode=os.getenv('MODEL_MODE','both')
-variants=sorted({m.get('variant') for m in p['models']+p.get('snapshots',[]) if m.get('variant')})
+# A variant need not own a file (Qwen's standard mode is the base model without the LoRA), so the
+# profile may declare its variants outright; otherwise infer them from the tagged models.
+variants=list(p.get('variants') or sorted({m.get('variant') for m in p['models']+p.get('snapshots',[]) if m.get('variant')}))
 allowed=variants+['both'] if variants else ['both']
 if mode not in allowed:raise SystemExit('MODEL_MODE for generation %s must be one of: %s'%(version,', '.join(allowed)))
 token=os.getenv('HF_TOKEN','').strip()
-if not token or token.startswith(('{{','YOUR_')):raise SystemExit('Set HF_TOKEN from Runpod Secret HUGGINGFACE_TOKEN; accept each model gate with the same Hugging Face account.')
+if token.startswith(('{{','YOUR_')):token=''
+# Z-Image's weights are ungated, so a token is optional; it is still honoured when supplied.
+if p.get('gated') and not token:raise SystemExit('This generation needs HF_TOKEN from Runpod Secret HUGGINGFACE_TOKEN, with each gate accepted by that account.')
+token=token or None
 root=Path('/workspace/ComfyUI/models');root.mkdir(parents=True,exist_ok=True)
 for m in p['models']:
  variant=m.get('variant')
