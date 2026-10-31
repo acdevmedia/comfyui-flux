@@ -10,7 +10,7 @@
       "revision": "9630c1b4b6e690497ae0c19bb6b1b35d4ebedcb7",
       "file": "split_files/diffusion_models/flux2_dev_fp8mixed.safetensors",
       "destination": "diffusion_models/flux2_dev_fp8mixed.safetensors",
-      "sha256": "2f159bd5e5a9511d9470e23f303b5e44da33c6c7ee037f29777679178a3430ac",
+      "sha256": "863a82e4ff950a42a6b0e80bea824828f129eb1a8fbbdbd9e8cb29859127b486",
       "size": 35455599592,
       "variant": "dev"
     },
@@ -19,7 +19,7 @@
       "revision": "9630c1b4b6e690497ae0c19bb6b1b35d4ebedcb7",
       "file": "split_files/text_encoders/mistral_3_small_flux2_fp8.safetensors",
       "destination": "text_encoders/mistral_3_small_flux2_fp8.safetensors",
-      "sha256": "b73f9469e53febf30945d0b5209308ee677362f4b6c74b39a927b50d5794a203",
+      "sha256": "e3467b7d912a234fb929cdf215dc08efdb011810b44bc21081c4234cc75b370e",
       "size": 18034640095,
       "variant": "dev"
     },
@@ -28,7 +28,7 @@
       "revision": "5b3abca5c0dc1ecd4eaf3340868d09063fc1c965",
       "file": "split_files/diffusion_models/flux-2-klein-4b.safetensors",
       "destination": "diffusion_models/flux-2-klein-4b.safetensors",
-      "sha256": "3d2a43fd022501eebe77b10ba31282d768d126129c83b9e5d4464bc9f5040bc0",
+      "sha256": "ec3d4e733a771f61c052fb4856c48b336c55eaf2c65487c2a1faeb9bbda7a343",
       "size": 7751105712,
       "variant": "turbo"
     },
@@ -37,7 +37,7 @@
       "revision": "5b3abca5c0dc1ecd4eaf3340868d09063fc1c965",
       "file": "split_files/diffusion_models/flux-2-klein-base-4b.safetensors",
       "destination": "diffusion_models/flux-2-klein-base-4b.safetensors",
-      "sha256": "ac81f9ca8c08599d9ddbdec53c8cdef213a5e401b6f9bcfb8f132f2191cc6fec",
+      "sha256": "9c5fed22b76baea749d88fc2abe3ad53245e7b21a0d353a762665eea00043b92",
       "size": 7751105712,
       "variant": "turbo"
     },
@@ -46,7 +46,7 @@
       "revision": "5b3abca5c0dc1ecd4eaf3340868d09063fc1c965",
       "file": "split_files/text_encoders/qwen_3_4b.safetensors",
       "destination": "text_encoders/qwen_3_4b.safetensors",
-      "sha256": "f459cd74b7868799ea82f97601a650afcedc399596dc262f302e3505761c9995",
+      "sha256": "6c671498573ac2f7a5501502ccce8d2b08ea6ca2f661c458e708f36b36edfc5a",
       "size": 8044982048,
       "variant": "turbo"
     },
@@ -55,7 +55,7 @@
       "revision": "5b3abca5c0dc1ecd4eaf3340868d09063fc1c965",
       "file": "split_files/vae/flux2-vae.safetensors",
       "destination": "vae/flux2-vae.safetensors",
-      "sha256": "2d2ae7a1e3d7d2ee7da6bbe58d555a9a9d7c1909db79adaa1ecf75a67367536f",
+      "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
       "size": 336211292
     },
     {
@@ -63,7 +63,7 @@
       "revision": "9630c1b4b6e690497ae0c19bb6b1b35d4ebedcb7",
       "file": "split_files/loras/Flux2TurboComfyv2.safetensors",
       "destination": "loras/Flux2TurboComfyv2.safetensors",
-      "sha256": "cabb037fabfc156a37fb27f8d1580591ee0667937d5e5aa0da4eddd7614c7739",
+      "sha256": "dfc97af0180d432269361a7bc36b4a7df6a2a3ffb630763f8c3343d3d1991d87",
       "size": 2760814872,
       "variant": "dev"
     }

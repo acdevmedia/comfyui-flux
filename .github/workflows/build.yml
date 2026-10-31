@@ -29,6 +29,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - name: Validate source
         run: python3 scripts/check-source.py
+      - name: Verify pinned checksums against Hugging Face
+        # Gated repositories mask hashes from anonymous callers, so those pins are skipped
+        # unless an HF_TOKEN secret for an account that accepted the gate is configured.
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python3 scripts/verify-pins.py
       - name: Validate Runpod template parity and gateway handler
         run: |
           python3 -m pip install --quiet aiohttp

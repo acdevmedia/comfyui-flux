@@ -1,5 +1,5 @@
 """Lightweight checks intended for GitHub Actions, without models or GPU."""
-import ast,json,subprocess
+import ast,json,re,subprocess
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
 p=json.loads((root/'config/profile.json').read_text())
@@ -15,7 +15,7 @@ assert p['version'] in versions
 for v in versions:
  q=json.loads((root/'versions'/v/'profile.json').read_text())
  assert q['version']==v and len(q['comfyui_commit'])==40
- for m in q['models']:assert len(m['sha256'])==64 and len(m['revision'])==40 and m['size']>0,(v,m['file'])
+ for m in q['models']:assert re.fullmatch(r'[0-9a-f]{64}',m['sha256']) and len(m['revision'])==40 and m['size']>0,(v,m['file'],'sha256 must be 64 lowercase hex characters')
  for m in q.get('snapshots',[]):assert len(m['revision'])==40
  names={m['destination'].split('/')[-1] for m in q['models']}
  for wf in (root/'versions'/v/'workflows').glob('*.json'):
