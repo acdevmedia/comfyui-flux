@@ -39,6 +39,66 @@ def logs(pod_id):
    (OUT/'startup.log').write_text(result.stdout+result.stderr)
  except Exception as exc:print('Diagnostic retrieval:',type(exc).__name__,flush=True)
 
+def graph_mode(path,graph):
+ """Variant label: the Studio node's mode input if there is one, else the filename token."""
+ for n in graph.values():
+  if n['class_type'].endswith('Studio') and 'mode' in n['inputs']:return str(n['inputs']['mode'])
+ parts=path.stem.split('_')
+ return parts[1] if len(parts)>1 else 'default'
+
+def is_edit(graph):return any(n['class_type']=='LoadImage' for n in graph.values())
+
+def apply_test_settings(graph,reuse):
+ """Shrink to 512 and fix the seed so runs are comparable; randomise only when reusing a Pod."""
+ for n in graph.values():
+  c,i=n['class_type'],n['inputs']
+  if c.endswith('Studio'):i.update(width=512,height=512)
+  if c in ('EmptySD3LatentImage','EmptyFlux2LatentImage','EmptyLatentImage'):i.update(width=512,height=512)
+  if c=='ImageScaleToTotalPixels':i['megapixels']=0.25
+  # A fixed seed keeps runs comparable; a reused Pod needs a fresh one to defeat ComfyUI's cache.
+  seed=random.randrange(1,2**31) if reuse else 42
+  for key in ('seed','noise_seed'):
+   if key in i and not isinstance(i[key],list):i[key]=seed
+  if c=='SaveImage':i['filename_prefix']='validation/'+graph_label[0]
+
+def synthetic_source(index=0):
+ """A structured 512x512 picture for edit-only graphs, which have nothing to generate one from."""
+ from PIL import Image,ImageDraw
+ img=Image.new('RGB',(512,512));px=img.load()
+ for y in range(512):
+  for x in range(512):
+   r,g,b=(40+x//4,60+y//5,150-x//6)
+   px[x,y]=((r,g,b),(b,r,g),(g,b,r))[index%3]   # a different palette per reference slot
+ d=ImageDraw.Draw(img)
+ d.ellipse((150,120,360,330),fill=(224,172,105),outline=(30,20,10),width=4)
+ d.rectangle((60,380,450,470),fill=(190,60,50),outline=(255,255,255),width=3)
+ buf=io.BytesIO();img.save(buf,'PNG');return buf.getvalue()
+
+def upload_image(base,data,filename):
+ boundary='acdev-validation-upload'
+ body=(f'--{boundary}\r\nContent-Disposition: form-data; name="image"; filename="{filename}"\r\nContent-Type: image/png\r\n\r\n'.encode()+data+f'\r\n--{boundary}--\r\n'.encode())
+ req=urllib.request.Request(base+'/upload/image',data=body,headers={'Content-Type':'multipart/form-data; boundary='+boundary,'User-Agent':'acdev-validation'})
+ with urllib.request.urlopen(req,timeout=45) as response:return json.load(response)['name']
+
+def judge(raw,edit,source):
+ """Reject blank, flat and passthrough frames. Texture-heavy corruption still needs a human eye."""
+ from PIL import Image,ImageStat,ImageChops
+ image=Image.open(io.BytesIO(raw)).convert('RGB');m=ImageStat.Stat(image)
+ if edit:assert abs(image.size[0]-512)<=32 and abs(image.size[1]-512)<=32,image.size
+ else:assert image.size==(512,512),image.size
+ assert max(m.stddev)>8,'Output is blank or nearly uniform'
+ assert image.entropy()>3,'Output lacks image detail'
+ flat=image.resize((128,128)).quantize(colors=16).convert('RGB')
+ dominant=max(c for c,_ in flat.getcolors(4096))/(128*128)
+ if (image.entropy()<5.5 and max(m.stddev)<40) or dominant>0.75:
+  raise AssertionError('Output looks like a flat frame or refusal card (entropy %.2f, stddev %.1f, %.0f%% one colour)'%(image.entropy(),max(m.stddev),dominant*100))
+ if edit:
+  diff=ImageStat.Stat(ImageChops.difference(source.resize(image.size),image))
+  assert max(diff.mean)>0.5,'Editing returned the unchanged source image'
+ return image,m
+
+graph_label=['']
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--cleanup',action='store_true');parser.add_argument('--keep',action='store_true');parser.add_argument('--pod',default='');args=parser.parse_args()
  global KEEP
@@ -51,12 +111,14 @@ def main():
  for suffix in ('','.pub'):(OUT/('test-key'+suffix)).unlink(missing_ok=True)
  subprocess.run(['ssh-keygen','-q','-t','ed25519','-N','','-f',str(OUT/'test-key')],stdin=subprocess.DEVNULL,check=True)
  config=json.loads((ROOT/'config/runpod-template.json').read_text());env={**config['env'],'PUBLIC_KEY':(OUT/'test-key.pub').read_text().strip()}
+ # The matrix executes every packaged graph, so the Pod needs every variant's weights.
+ env['MODEL_MODE']=os.environ.get('VALIDATION_MODEL_MODE','both')
  payload={'name':f'acdev-{PROFILE["kind"]}-{os.environ.get("GITHUB_RUN_ID","test")}-validation','imageName':config['imageName'].split(':')[0]+'@'+digest,'cloudType':'SECURE','computeType':'GPU','gpuTypeIds':GPU_TYPES,'gpuTypePriority':'availability','gpuCount':1,'containerDiskInGb':200,'volumeInGb':0,'volumeMountPath':'/workspace','ports':['8188/http','2222/tcp'],'supportPublicIp':True,'env':env}
  if os.environ.get('RUNPOD_REGISTRY_AUTH_ID'):payload['containerRegistryAuthId']=os.environ['RUNPOD_REGISTRY_AUTH_ID']
  def deadline(signum, frame):raise TimeoutError('Validation deadline reached; deleting test pod')
  signal.signal(signal.SIGALRM, deadline)
  signal.signal(signal.SIGTERM, deadline)
- signal.alarm(45 * 60)
+ signal.alarm(int(os.environ.get('VALIDATION_DEADLINE_MINUTES','45')) * 60)
  pod={'id':args.pod} if args.pod else None
  if not args.pod:
   existing=[x for x in cloud('/pods') if x.get('name')==payload['name']]
@@ -78,32 +140,30 @@ def main():
   else:raise TimeoutError('Pod did not become ready in 30 minutes')
   stats=request(base+'/system_stats');assert any(d.get('type')=='cuda' for d in stats['devices']),stats
   (OUT/'system.json').write_text(json.dumps(stats,indent=2))
-  info=request(base+'/object_info');results={};source_images={}
+  info=request(base+'/object_info');results={};generated={}
   paths=list((ROOT/'versions'/PROFILE['version']/'api').glob('*.json'))
   assert paths,'Generation %s packages no API graphs, so there is nothing to validate; '\
     'add them before running a paid GPU test against it.'%PROFILE['version']
-  def sort_key(path):
-   graph=json.loads(path.read_text())
-   mode=next(n['inputs']['mode'] for n in graph.values() if n['class_type'].endswith('Studio'))
-   return (mode, 'Image_Edit' in path.name)
-  for path in sorted(paths,key=sort_key):
-   graph=json.loads(path.read_text())
-   for n in graph.values():
-    assert n['class_type'] in info,n['class_type']
-    if n['class_type'].endswith('Studio'):
-     n['inputs'].update(width=512,height=512)
-     if args.pod:n['inputs']['seed']=random.randrange(1,2**31)
-    if n['class_type']=='SaveImage':n['inputs']['filename_prefix']='validation/'+path.stem
-   mode=next(n['inputs']['mode'] for n in graph.values() if n['class_type'].endswith('Studio'))
-   if any(n['class_type']=='LoadImage' for n in graph.values()):
-    assert mode in source_images,'Generate a source image before editing'
-    boundary='acdev-validation-upload'
-    filename='validation-'+mode+'.png'
-    body=(f'--{boundary}\r\nContent-Disposition: form-data; name="image"; filename="{filename}"\r\nContent-Type: image/png\r\n\r\n'.encode()+source_images[mode]+f'\r\n--{boundary}--\r\n'.encode())
-    req=urllib.request.Request(base+'/upload/image',data=body,headers={'Content-Type':'multipart/form-data; boundary='+boundary,'User-Agent':'acdev-validation'})
-    with urllib.request.urlopen(req,timeout=45) as response:uploaded=json.load(response)
-    for node in graph.values():
-     if node['class_type']=='LoadImage':node['inputs']['image']=uploaded['name']
+  only=os.environ.get('VALIDATION_ONLY','').strip().upper()
+  if only:   # test one variant's graphs, so a Pod only needs that variant's weights
+   paths=[p for p in paths if only in p.name.upper()]
+   assert paths,'VALIDATION_ONLY=%s matches no packaged graph'%only
+  loaded={p:json.loads(p.read_text()) for p in paths}
+  # Generate before editing within a variant, so an edit can start from the model's own output.
+  for path in sorted(paths,key=lambda q:(graph_mode(q,loaded[q]),is_edit(loaded[q]),q.name)):
+   graph=loaded[path];mode=graph_mode(path,graph);edit=is_edit(graph);graph_label[0]=path.stem
+   for n in graph.values():assert n['class_type'] in info,'Unknown node type in '+path.name+': '+n['class_type']
+   apply_test_settings(graph,bool(args.pod))
+   source=None
+   if edit:
+    from PIL import Image
+    source_bytes=generated.get(mode) or synthetic_source()
+    source=Image.open(io.BytesIO(source_bytes)).convert('RGB')
+    for index,node in enumerate(n for n in graph.values() if n['class_type']=='LoadImage'):
+     # Two-reference graphs (a design and a target) are meaningless with the same picture twice, so
+     # slots after the first get a distinct synthetic image.
+     data=source_bytes if index==0 else synthetic_source(index)
+     node['inputs']['image']=upload_image(base,data,f'validation-{mode}-{index+1}.png')
    begin=time.monotonic();queued=request(base+'/prompt','POST',{'prompt':graph});pid=queued['prompt_id']
    while time.monotonic()-begin<900:
     history=request(base+'/history/'+pid)
@@ -113,17 +173,8 @@ def main():
      assert images,'No image was produced'
      raw=request(base+'/view?'+urllib.parse.urlencode(images[0]),raw=True)
      (OUT/(path.stem+'.png')).write_bytes(raw)
-     from PIL import Image,ImageStat
-     image=Image.open(io.BytesIO(raw)).convert('RGB');metrics=ImageStat.Stat(image)
-     assert image.size==(512,512),image.size
-     assert max(metrics.stddev)>8,'Output is blank or nearly uniform'
-     assert image.entropy()>3,'Output lacks image detail'
-     if 'Image_Edit' in path.name:
-      from PIL import ImageChops
-      source=Image.open(io.BytesIO(source_images[mode])).convert('RGB')
-      difference=ImageStat.Stat(ImageChops.difference(source,image))
-      assert max(difference.mean)>0.5,'Editing returned the unchanged source image'
-     else:source_images[mode]=raw
+     image,metrics=judge(raw,edit,source)
+     if not edit:generated[mode]=raw
      results[path.stem]={'seconds':round(time.monotonic()-begin,2),'size':list(image.size),'stddev':metrics.stddev,'entropy':image.entropy(),'status':'passed'}
      print('PASS GPU generation:',path.name,results[path.stem],flush=True);break
     time.sleep(10)

@@ -16,11 +16,11 @@ One repository, one image build, three containers — the tag selects which gene
 
 `MODEL_MODE` picks the variant, so a `:2` Pod downloads only what it needs: `dev` for the full model, `turbo` for Klein 4B, `both` for roughly 80 GB of weights.
 
-**FLUX.2 `dev` needs an 80 GB card.** Its resident set is about 56.6 GB — a 35.5 GB transformer, an 18 GB Mistral text encoder, the VAE and the Turbo LoRA — which does not fit 48 GB. Deploy dev on an H100 or A100 80 GB, or set `MODEL_MODE=turbo` and run Klein 4B on a 48 GB card.
+**FLUX.2 `dev` needs an 80 GB card** (tested on an A100 80 GB). Its resident set is about 56.6 GB — a 35.5 GB transformer, an 18 GB Mistral text encoder, the VAE and the Turbo LoRA — which does not fit 48 GB. Deploy dev on an H100 or A100 80 GB, or set `MODEL_MODE=turbo` and run Klein 4B on a 48 GB card.
 
 There is no open-weight **FLUX.2 Ultra** or **pro**: those are Black Forest Labs' hosted API tiers. The published FLUX.2 line is `dev` plus the Klein family, and `dev` is the strongest of them.
 
-Each tag is the same image with a different baked `STUDIO_VERSION`; nothing model-specific is in the layers. **FLUX 3 is the only GPU-tested generation.** Generations 1 and 2 ship pinned weights, checksums and upstream workflow templates and pass source and reference checks, but no GPU validation has been run against them; `docs/VALIDATION.md` records what has actually been exercised.
+Each tag is the same image with a different baked `STUDIO_VERSION`; nothing model-specific is in the layers. **FLUX.2 (`:2`) and FLUX 3 (`:3`) have been run on a GPU; FLUX.1 (`:1`) has not.** FLUX.1 ships pinned weights, checksums and an upstream-derived workflow and passes the source and reference checks, but nothing has rendered an image from it. `docs/VALIDATION.md` records exactly what ran on which card, and what it does and does not show.
 
 Not included, and why: FLUX.1 Kontext, Fill, Depth, Canny and Redux need text encoders no longer published in a ComfyUI-packaged repository; FLUX.2 Klein 9B has no diffusion weights in its ComfyUI repository.
 
