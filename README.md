@@ -1,8 +1,8 @@
-# Flux 3 Image ComfyUI Klein One-Click
+# Flux 2 Image ComfyUI One-Click
 
 [![Runpod](https://api.runpod.io/badge/acdevmedia/comfyui-flux)](https://console.runpod.io/hub/listing/acdevmedia/comfyui-flux)
 
-FLUX 3 Image Klein: native ComfyUI base and distilled text-to-image generation, with optional prompt expansion and advanced image-editing graphs.
+FLUX.2 on ComfyUI: text-to-image and image-to-image with `dev` (the default) or the fast Klein 4B "turbo" variant. FLUX.1 and the gated FLUX 3 Klein are available as other container tags.
 
 ## Model generations
 
@@ -24,7 +24,7 @@ Each tag is the same image with a different baked `STUDIO_VERSION`; nothing mode
 
 Not included, and why: FLUX.1 Kontext, Fill, Depth, Canny and Redux need text encoders no longer published in a ComfyUI-packaged repository; FLUX.2 Klein 9B has no diffusion weights in its ComfyUI repository.
 
-Container: **`ghcr.io/acdevmedia/flux-comfyui:3`**. Image releases also receive a version tag (`3.0.0`) and an immutable `sha-<commit>` tag. Source pins, model revisions and checksums live under `versions/3/`. New model generations get their own profile and container major tag; rebuilds retain the model family tag and always get a new commit tag.
+Container: **`ghcr.io/acdevmedia/flux-comfyui:2`** (the Pod template default; use `:1` or `:3` for the other generations). Image releases also receive a version tag (`2.0.0`) and an immutable `sha-<commit>` tag. Source pins, model revisions and checksums live under `versions/3/`. New model generations get their own profile and container major tag; rebuilds retain the model family tag and always get a new commit tag.
 
 ## Start on Runpod
 
@@ -46,6 +46,16 @@ Container: **`ghcr.io/acdevmedia/flux-comfyui:3`**. Image releases also receive 
 Storage is temporary. The template attaches no network volume. First-boot downloads resume, your workflow edits persist across restarts, and no model weights or credentials are baked into the image.
 
 ## Simple workflows
+
+**FLUX.2 (`:2`, the default):**
+
+- **01 Dev Text to Image** and **02 Dev Image to Image:** FLUX.2 dev, 1280 × 720.
+- **11–13 Turbo (Klein 4B):** text-to-image and image-to-image on the smaller model, for 48 GB cards. Installed alongside dev when `MODEL_MODE=both`.
+- Image-to-image: upload a picture and describe the change.
+
+The sections below describe the FLUX 3 Klein (`:3`) workflows and node.
+
+**FLUX 3 (`:3`):**
 
 - **01 Distilled Text to Image:** 15 steps, cfg 1.0, er_sde/simple, 1280 × 720.
 - **02 Base Text to Image:** the undistilled checkpoint on the same reference settings — 15 steps, cfg 1.0, er_sde/simple, 1280 × 720.
