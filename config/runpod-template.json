@@ -1,5 +1,5 @@
 {
-  "name": "Flux 2 Klein Image ComfyUI One-Click",
+  "name": "Flux 2 Image ComfyUI One-Click",
   "imageName": "ghcr.io/acdevmedia/flux-comfyui:2",
   "category": "NVIDIA",
   "containerDiskInGb": 200,

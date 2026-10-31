@@ -1,6 +1,6 @@
 # Runpod template environment
 
-Synced to account template **Flux 2 Klein Image ComfyUI One-Click** (`3l6xecpzep`) on 2026-10-30.
+Synced to account template **Flux 2 Image ComfyUI One-Click** (`3l6xecpzep`) on 2026-10-30.
 
 [Open template](https://console.runpod.io/deploy?template=3l6xecpzep)
 

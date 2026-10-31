@@ -1,5 +1,5 @@
 {
-  "title": "Flux 2 Klein Image ComfyUI One-Click",
+  "title": "Flux 2 Image ComfyUI One-Click",
   "description": "Local flux base and distilled image generation with simple, editable ComfyUI workflows.",
   "type": "serverless",
   "category": "image",
