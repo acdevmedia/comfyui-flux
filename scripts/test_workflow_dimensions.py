@@ -6,7 +6,7 @@ import math
 import sys
 import types
 from pathlib import Path
-from workflow_dimensions import FITTED, LATENTS, RESIZE, apply_dimensions, fit_expression, fit_references, link_parts
+from workflow_dimensions import EXACT, FITTED, LATENTS, RESIZE, apply_dimensions, fit_expression, fit_references, link_parts
 ROOT=Path(__file__).resolve().parents[1]
 
 def inspect(data):
@@ -121,7 +121,9 @@ def check_fitted(data,name):
     nodes=[(g,n) for g in graphs for n in g['nodes']]
     scales=[n for _,n in nodes if n['type']=='ImageScale']
     for n in scales:
-        assert n.get('title')==FITTED and n['widgets_values'][3]=='disabled',(name,n['id'],'a fitted frame must not crop')
+        assert n.get('title')==FITTED and n['widgets_values'][3] in ('disabled','center'),(name,n['id'],'a fitted frame must not stretch')
+    switches=[n for n in data['nodes'] if n.get('title')==EXACT]
+    assert len(switches)<=1 and not any(n['widgets_values'][0] for n in switches),(name,'Exact Frame must be off by default')
     for g,n in nodes:
         if n['type'] in LATENTS and any(x['type']=='LoadImage' for x in data['nodes']):
             fits=[]
@@ -135,7 +137,7 @@ def check_fitted(data,name):
 def check_api(api,name):
     assert not [n for n in api.values() if n['class_type']=='ImageScaleToTotalPixels'],(name,'stale automatic sizing')
     scales=[n for n in api.values() if n['class_type']=='ImageScale']
-    assert scales and all(n['inputs']['crop']=='disabled' for n in scales),(name,'a fitted frame must not crop')
+    assert scales and all(n['inputs']['crop'] in ('disabled','center') for n in scales),(name,'a fitted frame must not stretch')
     for n in api.values():
         for value in n['inputs'].values():
             if isinstance(value,list) and len(value)==2 and isinstance(value[0],str):assert value[0] in api,(name,value)
@@ -162,10 +164,12 @@ def check_studio():
     assert 'ImageScale' not in kinds
     kinds,built=expand(reference_image=['10',0])
     fits=[n for n in built if n.kind=='ComfyMathExpression']
-    assert [n.inputs['expression'] for n in fits]==[fit_expression('c','d',16),fit_expression('d','c',16)]
+    assert [n.inputs['expression'] for n in fits]==['a if e else '+fit_expression('c','d',16),'b if e else '+fit_expression('d','c',16)]
     assert all(n.inputs['values.a']==1280 and n.inputs['values.b']==720 for n in fits)
     scale,latent=kinds['ImageScale'].inputs,kinds['EmptyFlux2LatentImage'].inputs
-    assert scale['crop']=='disabled' and scale['image']==['10',0]
+    assert scale['crop']=='center' and scale['image']==['10',0]
+    assert all(n.inputs['values.e'] is False for n in fits)
+    assert all(n.inputs['values.e'] is True for n in expand(reference_image=['10',0],exact_frame=True)[1] if n.kind=='ComfyMathExpression')
     assert kinds['VAEEncode'].inputs['pixels']==(kinds['ImageScale'],0)
     for inputs in (scale,latent):assert (inputs['width'],inputs['height'])==((fits[0],1),(fits[1],1))
 
@@ -188,4 +192,4 @@ for path in sorted(ROOT.glob('versions/*/workflows/*.json')):
     assert found or 'Audio' in path.name and not any(n['type']=='SaveVideo' for n in d['nodes']),(path.name,'no editable render dimensions')
     count+=1
 assert fits==8,fits
-print('PASS: editable width/height reach render inputs; no fitted resize crops; packaging is idempotent (%d workflows).'%count)
+print('PASS: editable width/height reach render inputs; fitted frames never stretch; packaging is idempotent (%d workflows).'%count)

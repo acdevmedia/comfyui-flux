@@ -249,7 +249,7 @@
         "75:135",
         1
       ],
-      "crop": "disabled"
+      "crop": "center"
     }
   },
   "75:100": {
@@ -344,7 +344,7 @@
   "75:134": {
     "class_type": "ComfyMathExpression",
     "inputs": {
-      "expression": "max(64,round(sqrt(a*b*c/d)/16)*16)",
+      "expression": "a if e else max(64,round(sqrt(a*b*c/d)/16)*16)",
       "values.a": [
         "131",
         0
@@ -360,13 +360,17 @@
       "values.d": [
         "75:133",
         1
+      ],
+      "values.e": [
+        "142",
+        0
       ]
     }
   },
   "75:135": {
     "class_type": "ComfyMathExpression",
     "inputs": {
-      "expression": "max(64,round(sqrt(a*b*d/c)/16)*16)",
+      "expression": "b if e else max(64,round(sqrt(a*b*d/c)/16)*16)",
       "values.a": [
         "131",
         0
@@ -382,7 +386,17 @@
       "values.d": [
         "75:133",
         1
+      ],
+      "values.e": [
+        "142",
+        0
       ]
+    }
+  },
+  "142": {
+    "class_type": "PrimitiveBoolean",
+    "inputs": {
+      "value": false
     }
   }
 }

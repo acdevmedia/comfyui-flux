@@ -27,10 +27,11 @@ class FluxStudio:
             'scheduler': (['simple', 'normal', 'beta'],),
             'upsample_prompt': ('BOOLEAN', {'default': False}),
             'max_prompt_tokens': ('INT', {'default': 1024, 'min': 128, 'max': 4096}),
-        }, 'optional': {'reference_image': ('IMAGE', {'rawLink': True})}}
+        }, 'optional': {'reference_image': ('IMAGE', {'rawLink': True}),
+                      'exact_frame': ('BOOLEAN', {'default': False, 'tooltip': 'Use the exact width and height, centre-cropping the image.'})}}
 
     def generate(self, prompt, negative_prompt, mode, width, height, seed, steps, guidance, sampler, scheduler,
-                 upsample_prompt, max_prompt_tokens, reference_image=None):
+                 upsample_prompt, max_prompt_tokens, reference_image=None, exact_frame=False):
         graph = GraphBuilder()
         expanded = prompt
         if upsample_prompt:
@@ -54,12 +55,15 @@ class FluxStudio:
         vae = graph.node('VAELoader', vae_name='flux2-vae.safetensors')
         if reference_image is not None:
             # Width and height set the frame's area and the upload sets its shape, so none of it is lost.
+            # Exact Frame keeps the typed size instead, and the crop below takes what no longer fits.
             size = graph.node('GetImageSize', image=reference_image)
             def fit(mine, other):
-                return graph.node('ComfyMathExpression', expression=f'max(64,round(sqrt(a*b*{mine}/{other})/16)*16)',
-                                  **{'values.a': width, 'values.b': height, 'values.c': size.out(0), 'values.d': size.out(1)}).out(1)
+                typed = 'a' if mine == 'c' else 'b'
+                return graph.node('ComfyMathExpression', expression=f'{typed} if e else max(64,round(sqrt(a*b*{mine}/{other})/16)*16)',
+                                  **{'values.a': width, 'values.b': height, 'values.c': size.out(0), 'values.d': size.out(1),
+                                     'values.e': exact_frame}).out(1)
             width, height = fit('c', 'd'), fit('d', 'c')
-            scaled = graph.node('ImageScale', image=reference_image, upscale_method='lanczos', width=width, height=height, crop='disabled')
+            scaled = graph.node('ImageScale', image=reference_image, upscale_method='lanczos', width=width, height=height, crop='center')
             reference = graph.node('VAEEncode', pixels=scaled.out(0), vae=vae.out(0))
             positive = graph.node('ReferenceLatent', conditioning=positive.out(0), latent=reference.out(0))
             negative = graph.node('ReferenceLatent', conditioning=negative.out(0), latent=reference.out(0))

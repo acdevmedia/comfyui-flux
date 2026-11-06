@@ -6,6 +6,7 @@ from pathlib import Path
 LATENTS = {'EmptySD3LatentImage', 'EmptyFlux2LatentImage', 'EmptyLatentImage', 'EmptyLTXVLatentVideo'}
 RESIZE = 'Resize reference to render width and height'
 FITTED = 'Resize image to the fitted frame'
+EXACT = 'Exact Frame: use Render Width and Height, cropping the image'
 SIZE_NOTES = {
     'the reference is scaled to ~1 MP here and the output latent takes its size.':
         'the reference is scaled to ~1 MP here and kept whole. Render Width and Height set the output\'s area and the first reference sets its shape, in multiples of 16.',
@@ -290,9 +291,79 @@ def fit_references(data):
             for old, new in SIZE_NOTES.items():
                 node['widgets_values'][0] = node['widgets_values'][0].replace(old, new)
 
+def add_exact_frame(data):
+    """Add one Exact Frame switch, off by default, to whichever fits shape the output; idempotent.
+
+    On, the typed Render size stands and the image that shapes the output is centre-cropped to it.
+    Further references keep fitting their own shape, so they stay whole either way.
+    """
+    groups = [data] + data.get('definitions', {}).get('subgraphs', [])
+    if any(n.get('title') == EXACT for n in data['nodes']):
+        return False
+    def shaping(graph):
+        nodes = {n['id']: n for n in graph['nodes']}
+        fits = [n for n in graph['nodes'] if (n.get('title') or '').startswith('Fit Frame')]
+        targets = {n['id']: {link_parts(l)[3] for l in graph['links'] if link_parts(l)[1] == n['id']} for n in fits}
+        chosen = [n for n in fits if any(nodes[t]['type'] in LATENTS for t in targets[n['id']] if t in nodes)]
+        return chosen, [nodes[t] for n in chosen for t in targets[n['id']] if t in nodes and nodes[t]['type'] == 'ImageScale']
+    plan = [(g, *shaping(g)) for g in groups]
+    plan = [item for item in plan if item[1]]
+    if not plan:
+        return False
+    next_node = max([n['id'] for g in groups for n in g['nodes']] + [data.get('last_node_id') or 0]) + 1
+    next_link = max([link_parts(l)[0] for g in groups for l in g.get('links', [])] + [data.get('last_link_id') or 0])
+    switch = {'id': next_node, 'type': 'PrimitiveBoolean', 'title': EXACT, 'pos': [-400, 330], 'size': [300, 100], 'flags': {}, 'order': 0, 'mode': 0,
+              'inputs': [], 'outputs': [{'name': 'BOOLEAN', 'type': 'BOOLEAN', 'links': []}],
+              'properties': {'Node name for S&R': 'PrimitiveBoolean'}, 'widgets_values': [False]}
+    data['nodes'].append(switch)
+    flat = not data['links'] or not isinstance(data['links'][0], dict)
+    def link(graph, source, source_slot, target, target_slot):
+        nonlocal next_link
+        next_link += 1
+        values = [next_link, source, source_slot, target['id'], target_slot, 'BOOLEAN']
+        as_list = graph is data and flat or (graph['links'] and not isinstance(graph['links'][0], dict))
+        graph['links'].append(values if as_list else dict(zip(('id', 'origin_id', 'origin_slot', 'target_id', 'target_slot', 'type'), values)))
+        target['inputs'][target_slot]['link'] = next_link
+        return next_link
+    for graph, fits, scales in plan:
+        if graph is data:
+            origin_id, origin_slot = switch['id'], 0
+        else:
+            origin_id, origin_slot = -10, len(graph['inputs'])
+            graph['inputs'].append({'id': str(uuid.uuid5(uuid.NAMESPACE_URL, graph['id'] + '/exact_frame')), 'name': 'exact_frame', 'label': 'Exact Frame',
+                                    'type': 'BOOLEAN', 'linkIds': [], 'pos': [0, 0]})
+            for instance in (n for n in data['nodes'] if n['type'] == graph['id']):
+                instance['inputs'].append({'name': 'exact_frame', 'label': 'Exact Frame', 'type': 'BOOLEAN', 'link': None})
+                switch['outputs'][0]['links'].append(link(data, switch['id'], 0, instance, len(instance['inputs']) - 1))
+        for node in fits:
+            typed = 'a' if node['title'].endswith('Width') else 'b'
+            node['widgets_values'][0] = '%s if e else %s' % (typed, node['widgets_values'][0])
+            node['inputs'].append({'name': 'values.e', 'type': 'FLOAT,INT,BOOLEAN', 'link': None})
+            made = link(graph, origin_id, origin_slot, node, len(node['inputs']) - 1)
+            if origin_id == -10:
+                graph['inputs'][origin_slot]['linkIds'].append(made)
+            else:
+                switch['outputs'][0]['links'].append(made)
+        for scale in scales:
+            scale['widgets_values'][3] = 'center'
+    data['last_node_id'], data['last_link_id'] = next_node, next_link
+    for graph in [data] + [item[0] for item in plan]:
+        graph.setdefault('state', {}).update(lastNodeId=next_node, lastLinkId=next_link)
+    return True
+
 def sync_fitted_api(api, ui):
     """Flatten fitted subgraphs into the API fixtures under ComfyUI's instance:node ids."""
     definitions = {g['id']: g for g in ui.get('definitions', {}).get('subgraphs', [])}
+    for node in ui['nodes']:
+        key = str(node['id'])
+        title = node.get('title') or ''
+        if title == EXACT:
+            api[key] = {'class_type': 'PrimitiveBoolean', 'inputs': {'value': node['widgets_values'][0]}}
+        elif title.startswith('Fit Frame') and key in api and len([i for i in node['inputs'] if i['name'].startswith('values.')]) == 5:
+            link = next(link_parts(l) for l in ui['links'] if link_parts(l)[0] == next(i['link'] for i in node['inputs'] if i['name'] == 'values.e'))
+            api[key]['inputs'].update({'expression': node['widgets_values'][0], 'values.e': [str(link[1]), link[2]]})
+        elif node['type'] == 'ImageScale' and title == FITTED and key in api:
+            api[key]['inputs']['crop'] = node['widgets_values'][3]
     for instance in ui['nodes']:
         graph = definitions.get(instance['type'])
         if graph is None or instance.get('mode') == 4:
@@ -313,7 +384,7 @@ def sync_fitted_api(api, ui):
                 api[key] = {'class_type': 'GetImageSize', 'inputs': {'image': ref(node, 'image')}}
             elif title.startswith('Fit Frame'):
                 api[key] = {'class_type': 'ComfyMathExpression', 'inputs': {'expression': node['widgets_values'][0],
-                            **{'values.' + letter: ref(node, 'values.' + letter) for letter in 'abcd'}}}
+                            **{inp['name']: ref(node, inp['name']) for inp in node['inputs'] if inp['name'].startswith('values.')}}}
             elif node['type'] in LATENTS and is_fitted(graph, node) and key in api:
                 api[key]['inputs'].update(width=ref(node, 'width'), height=ref(node, 'height'))
 
@@ -325,6 +396,7 @@ def main():
         defaults=(768,448) if 'Ingredients' in path.name else None
         apply_dimensions(data,defaults)
         fit_references(data)
+        add_exact_frame(data)
         text=json.dumps(data,indent=2,ensure_ascii=False)+'\n'
         if json.loads(path.read_text())!=data:path.write_text(text)
         api_path=path.parent.parent/'api'/path.name

@@ -1,8 +1,8 @@
 {
   "id": "0ae2b50b-b07a-4465-bb7c-d8fe58e8e0ac",
   "revision": 0,
-  "last_node_id": 64,
-  "last_link_id": 96,
+  "last_node_id": 65,
+  "last_link_id": 98,
   "nodes": [
     {
       "id": 2,
@@ -1286,7 +1286,7 @@
         180
       ],
       "widgets_values": [
-        "max(64,round(sqrt(a*b*c/d)/16)*16)"
+        "a if e else max(64,round(sqrt(a*b*c/d)/16)*16)"
       ],
       "inputs": [
         {
@@ -1316,6 +1316,11 @@
           "name": "values.d",
           "type": "FLOAT,INT,BOOLEAN",
           "link": 90
+        },
+        {
+          "name": "values.e",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 97
         }
       ],
       "outputs": [
@@ -1357,7 +1362,7 @@
         180
       ],
       "widgets_values": [
-        "max(64,round(sqrt(a*b*d/c)/16)*16)"
+        "b if e else max(64,round(sqrt(a*b*d/c)/16)*16)"
       ],
       "inputs": [
         {
@@ -1387,6 +1392,11 @@
           "name": "values.d",
           "type": "FLOAT,INT,BOOLEAN",
           "link": 94
+        },
+        {
+          "name": "values.e",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 98
         }
       ],
       "outputs": [
@@ -1415,6 +1425,39 @@
       "properties": {
         "Node name for S&R": "ComfyMathExpression"
       }
+    },
+    {
+      "id": 65,
+      "type": "PrimitiveBoolean",
+      "title": "Exact Frame: use Render Width and Height, cropping the image",
+      "pos": [
+        -400,
+        330
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "BOOLEAN",
+          "type": "BOOLEAN",
+          "links": [
+            97,
+            98
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveBoolean"
+      },
+      "widgets_values": [
+        false
+      ]
     }
   ],
   "links": [
@@ -1721,6 +1764,22 @@
       44,
       1,
       "INT"
+    ],
+    [
+      97,
+      65,
+      0,
+      63,
+      5,
+      "BOOLEAN"
+    ],
+    [
+      98,
+      65,
+      0,
+      64,
+      5,
+      "BOOLEAN"
     ]
   ],
   "groups": [
@@ -1834,7 +1893,7 @@
   },
   "version": 0.4,
   "state": {
-    "lastLinkId": 96,
-    "lastNodeId": 64
+    "lastLinkId": 98,
+    "lastNodeId": 65
   }
 }

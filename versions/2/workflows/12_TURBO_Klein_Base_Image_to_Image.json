@@ -1,8 +1,8 @@
 {
   "id": "92112d97-bb64-4b44-86f2-ea5691ef8f6e",
   "revision": 0,
-  "last_node_id": 141,
-  "last_link_id": 267,
+  "last_node_id": 142,
+  "last_link_id": 273,
   "nodes": [
     {
       "id": 9,
@@ -274,6 +274,12 @@
           "label": "Render Height",
           "type": "INT",
           "link": 220
+        },
+        {
+          "name": "exact_frame",
+          "label": "Exact Frame",
+          "type": "BOOLEAN",
+          "link": 268
         }
       ],
       "outputs": [
@@ -369,6 +375,12 @@
           "label": "Render Height",
           "type": "INT",
           "link": 226
+        },
+        {
+          "name": "exact_frame",
+          "label": "Exact Frame",
+          "type": "BOOLEAN",
+          "link": 271
         }
       ],
       "outputs": [
@@ -485,6 +497,39 @@
         1024,
         "fixed"
       ]
+    },
+    {
+      "id": 142,
+      "type": "PrimitiveBoolean",
+      "title": "Exact Frame: use Render Width and Height, cropping the image",
+      "pos": [
+        -400,
+        330
+      ],
+      "size": [
+        300,
+        100
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "BOOLEAN",
+          "type": "BOOLEAN",
+          "links": [
+            268,
+            271
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveBoolean"
+      },
+      "widgets_values": [
+        false
+      ]
     }
   ],
   "links": [
@@ -559,6 +604,22 @@
       92,
       4,
       "INT"
+    ],
+    [
+      268,
+      142,
+      0,
+      75,
+      4,
+      "BOOLEAN"
+    ],
+    [
+      271,
+      142,
+      0,
+      92,
+      5,
+      "BOOLEAN"
     ]
   ],
   "groups": [
@@ -582,8 +643,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 7,
-          "lastNodeId": 135,
-          "lastLinkId": 243,
+          "lastNodeId": 142,
+          "lastLinkId": 273,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -708,6 +769,20 @@
             "pos": [
               0,
               140
+            ]
+          },
+          {
+            "id": "d80016d4-b27c-55bc-81b8-37c74b172a9d",
+            "name": "exact_frame",
+            "label": "Exact Frame",
+            "type": "BOOLEAN",
+            "linkIds": [
+              269,
+              270
+            ],
+            "pos": [
+              0,
+              0
             ]
           }
         ],
@@ -1556,7 +1631,7 @@
               "lanczos",
               1280,
               720,
-              "disabled"
+              "center"
             ],
             "title": "Resize image to the fitted frame"
           },
@@ -1867,7 +1942,7 @@
               180
             ],
             "widgets_values": [
-              "max(64,round(sqrt(a*b*c/d)/16)*16)"
+              "a if e else max(64,round(sqrt(a*b*c/d)/16)*16)"
             ],
             "inputs": [
               {
@@ -1897,6 +1972,11 @@
                 "name": "values.d",
                 "type": "FLOAT,INT,BOOLEAN",
                 "link": 235
+              },
+              {
+                "name": "values.e",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 269
               }
             ],
             "outputs": [
@@ -1939,7 +2019,7 @@
               180
             ],
             "widgets_values": [
-              "max(64,round(sqrt(a*b*d/c)/16)*16)"
+              "b if e else max(64,round(sqrt(a*b*d/c)/16)*16)"
             ],
             "inputs": [
               {
@@ -1969,6 +2049,11 @@
                 "name": "values.d",
                 "type": "FLOAT,INT,BOOLEAN",
                 "link": 239
+              },
+              {
+                "name": "values.e",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 270
               }
             ],
             "outputs": [
@@ -2378,6 +2463,22 @@
             "target_id": 66,
             "target_slot": 1,
             "type": "INT"
+          },
+          {
+            "id": 269,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 134,
+            "target_slot": 5,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 270,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 135,
+            "target_slot": 5,
+            "type": "BOOLEAN"
           }
         ],
         "extra": {
@@ -2390,8 +2491,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 7,
-          "lastNodeId": 141,
-          "lastLinkId": 267,
+          "lastNodeId": 142,
+          "lastLinkId": 273,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -2535,6 +2636,20 @@
             "pos": [
               0,
               160
+            ]
+          },
+          {
+            "id": "00d34f9a-3eb4-5814-a2f1-6bb4021f58cc",
+            "name": "exact_frame",
+            "label": "Exact Frame",
+            "type": "BOOLEAN",
+            "linkIds": [
+              272,
+              273
+            ],
+            "pos": [
+              0,
+              0
             ]
           }
         ],
@@ -3128,7 +3243,7 @@
               "lanczos",
               1280,
               720,
-              "disabled"
+              "center"
             ],
             "title": "Resize image to the fitted frame"
           },
@@ -3947,7 +4062,7 @@
               180
             ],
             "widgets_values": [
-              "max(64,round(sqrt(a*b*c/d)/16)*16)"
+              "a if e else max(64,round(sqrt(a*b*c/d)/16)*16)"
             ],
             "inputs": [
               {
@@ -3977,6 +4092,11 @@
                 "name": "values.d",
                 "type": "FLOAT,INT,BOOLEAN",
                 "link": 248
+              },
+              {
+                "name": "values.e",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 272
               }
             ],
             "outputs": [
@@ -4019,7 +4139,7 @@
               180
             ],
             "widgets_values": [
-              "max(64,round(sqrt(a*b*d/c)/16)*16)"
+              "b if e else max(64,round(sqrt(a*b*d/c)/16)*16)"
             ],
             "inputs": [
               {
@@ -4049,6 +4169,11 @@
                 "name": "values.d",
                 "type": "FLOAT,INT,BOOLEAN",
                 "link": 252
+              },
+              {
+                "name": "values.e",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 273
               }
             ],
             "outputs": [
@@ -4806,6 +4931,22 @@
             "target_id": 85,
             "target_slot": 2,
             "type": "INT"
+          },
+          {
+            "id": 272,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 137,
+            "target_slot": 5,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 273,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 138,
+            "target_slot": 5,
+            "type": "BOOLEAN"
           }
         ],
         "extra": {
@@ -4834,7 +4975,7 @@
   },
   "version": 0.4,
   "state": {
-    "lastLinkId": 267,
-    "lastNodeId": 141
+    "lastLinkId": 273,
+    "lastNodeId": 142
   }
 }

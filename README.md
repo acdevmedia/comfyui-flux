@@ -90,6 +90,10 @@ Click any thumbnail to open the viewer. **Left and right arrow keys** move throu
 
 Picks live for the session and are never uploaded. The ribbon reads the recent `/history` entries through ComfyUI's own `/view` endpoint, skips transient previews, and never scans the output directory.
 
+## Exact Frame
+
+Edit workflows take their shape from the first image, at the area set by Render Width and Height. Turn on the **Exact Frame** node, or the `exact_frame` option on the studio node, to use your typed size exactly; the image that shapes the output is then centre-cropped to it. Further references stay whole.
+
 ## Optional LoRAs
 
 **01 Dev Text to Image** in generation 1 has the [XLabs Realism LoRA](https://huggingface.co/XLabs-AI/flux-RealismLora) at strength 0. Try 0.7 to 1. Its licence is the FLUX.1 [dev] non-commercial licence.
