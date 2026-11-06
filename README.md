@@ -90,6 +90,16 @@ Click any thumbnail to open the viewer. **Left and right arrow keys** move throu
 
 Picks live for the session and are never uploaded. The ribbon reads the recent `/history` entries through ComfyUI's own `/view` endpoint, skips transient previews, and never scans the output directory.
 
+## Optional LoRAs
+
+**01 Dev Text to Image** in generation 1 has the [XLabs Realism LoRA](https://huggingface.co/XLabs-AI/flux-RealismLora) at strength 0. Try 0.7 to 1. Its licence is the FLUX.1 [dev] non-commercial licence.
+
+These are pinned and downloaded at first boot, never baked into the image. At strength 0 ComfyUI skips a LoRA entirely, so it costs nothing while it is off.
+
+## Speed
+
+ComfyUI starts with SageAttention and `--highvram`, so models stay on the 48 GB GPU between runs. Each boot tests Sage on the assigned GPU and falls back to PyTorch attention if the check fails; set `COMFYUI_ATTENTION=pytorch` to force that. Attention that needs a mask runs on PyTorch either way. First-boot downloads use Hugging Face's high-performance Xet mode.
+
 ## Browse and download outputs
 
 **Connect → HTTP 3923 / Copyparty** opens a gallery of everything in `/workspace/ComfyUI/output`, newest first. Sign in with the values of Runpod Secrets `COPYPARTY_USERNAME` and `COPYPARTY_SECRET`. Select files to download them, or a whole folder as a ZIP. It is read-only: nothing can be uploaded, changed or deleted, and if either secret is missing it stays off without affecting ComfyUI. The log is `/workspace/logs/copyparty.log`.

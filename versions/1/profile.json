@@ -22,6 +22,15 @@
       "sha256": "ead426278b49030e9da5df862994f25ce94ab2ee4df38b556ddddb3db093bf72",
       "size": 17236328572,
       "variant": "schnell"
+    },
+    {
+      "repo": "XLabs-AI/flux-RealismLora",
+      "revision": "1965e17d2e745fcbf8f4004bdbdf603421ef37a8",
+      "file": "lora.safetensors",
+      "destination": "loras/xlabs_flux_realism_lora.safetensors",
+      "sha256": "0a83a924b822b70b5e458d27935ebfa7713edaee04ff9f194209525354031eca",
+      "size": 22431400,
+      "variant": "dev"
     }
   ]
 }

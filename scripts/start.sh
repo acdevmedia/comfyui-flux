@@ -26,5 +26,14 @@ for workflow in (Path('/opt/acdev/versions')/p['version']/'workflows').glob('*.j
 PY
 source /opt/acdev/scripts/copyparty.sh
 start_copyparty /workspace/ComfyUI/output 'Flux outputs'
+# Check the kernels on this GPU first; anything but a clean pass falls back to PyTorch attention.
+attention=--use-sage-attention
+if [[ "${COMFYUI_ATTENTION:-sage}" == pytorch ]]; then
+  attention=--use-pytorch-cross-attention
+elif ! timeout 300 python3 -c 'import torch; from sageattention import sageattn; q=torch.randn(1,8,256,128,device="cuda",dtype=torch.float16); torch.cuda.synchronize(); assert sageattn(q,q,q,tensor_layout="HND",is_causal=False).isfinite().all()'; then
+  attention=--use-pytorch-cross-attention
+  echo '[attention] WARNING: SageAttention failed its GPU check; using PyTorch attention instead.'
+fi
+echo "[attention] ComfyUI starts with $attention."
 cd /opt/acdev/ComfyUI
-exec python3 main.py --listen 0.0.0.0 --port 8188 --base-directory /workspace/ComfyUI --disable-auto-launch --use-pytorch-cross-attention
+exec python3 main.py --listen 0.0.0.0 --port 8188 --base-directory /workspace/ComfyUI --disable-auto-launch "$attention" --highvram

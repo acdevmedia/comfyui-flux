@@ -1,6 +1,6 @@
 {
-  "last_node_id": 36,
-  "last_link_id": 61,
+  "last_node_id": 37,
+  "last_link_id": 62,
   "nodes": [
     {
       "id": 33,
@@ -186,7 +186,7 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 47
+          "link": 62
         },
         {
           "name": "positive",
@@ -430,6 +430,46 @@
         1024,
         "fixed"
       ]
+    },
+    {
+      "id": 37,
+      "type": "LoraLoaderModelOnly",
+      "title": "Realism LoRA: try strength 0.7 to 1 (non-commercial licence)",
+      "pos": [
+        476,
+        22
+      ],
+      "size": [
+        320,
+        120
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 47
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            62
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "xlabs_flux_realism_lora.safetensors",
+        0.0
+      ]
     }
   ],
   "links": [
@@ -461,7 +501,7 @@
       47,
       30,
       0,
-      31,
+      37,
       0,
       "MODEL"
     ],
@@ -528,6 +568,14 @@
       27,
       1,
       "INT"
+    ],
+    [
+      62,
+      37,
+      0,
+      31,
+      0,
+      "MODEL"
     ]
   ],
   "groups": [],
@@ -543,7 +591,7 @@
   },
   "version": 0.4,
   "state": {
-    "lastLinkId": 61,
-    "lastNodeId": 36
+    "lastLinkId": 62,
+    "lastNodeId": 37
   }
 }
