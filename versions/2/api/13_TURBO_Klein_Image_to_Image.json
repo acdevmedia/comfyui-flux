@@ -316,5 +316,17 @@
       "cnr_id": "comfy-core",
       "ver": "0.8.2"
     }
+  },
+  "124": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 1024
+    }
+  },
+  "125": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 1024
+    }
   }
 }

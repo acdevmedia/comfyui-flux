@@ -38,3 +38,5 @@ print('PASS: source syntax, pinned model metadata, graphs and Dockerfile parity'
 
 # Exercise quota-aware thread sizing without importing torch or requiring a GPU.
 subprocess.run(["bash",str(root/"scripts/test-cpu-threads.sh")],check=True)
+
+subprocess.run(["python3",str(root/"scripts/test_workflow_dimensions.py")],check=True)

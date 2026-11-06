@@ -81,7 +81,7 @@
           "widget": {
             "name": "width"
           },
-          "link": 40
+          "link": null
         },
         {
           "name": "height",
@@ -89,7 +89,7 @@
           "widget": {
             "name": "height"
           },
-          "link": 41
+          "link": null
         },
         {
           "label": "unet_model",
@@ -167,51 +167,6 @@
         "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
         "vae_name": "flux2-vae.safetensors",
         "clip_name_1": "qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors"
-      }
-    },
-    {
-      "id": 19,
-      "type": "ResolutionSelector",
-      "pos": [
-        -70,
-        190
-      ],
-      "size": [
-        270,
-        150
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "width",
-          "type": "INT",
-          "links": [
-            40
-          ]
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "links": [
-            41
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ResolutionSelector"
-      },
-      "widgets_values": [
-        "1:1 (Square)",
-        1,
-        8
-      ],
-      "widgets_values_named": {
-        "aspect_ratio": "1:1 (Square)",
-        "megapixels": 1,
-        "multiple": 8
       }
     },
     {
@@ -412,22 +367,6 @@
       9,
       0,
       "IMAGE"
-    ],
-    [
-      40,
-      19,
-      0,
-      18,
-      2,
-      "INT"
-    ],
-    [
-      41,
-      19,
-      1,
-      18,
-      3,
-      "INT"
     ],
     [
       44,

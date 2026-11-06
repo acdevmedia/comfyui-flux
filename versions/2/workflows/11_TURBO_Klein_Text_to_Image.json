@@ -1,8 +1,8 @@
 {
   "id": "92112d97-bb64-4b44-86f2-ea5691ef8f6e",
   "revision": 0,
-  "last_node_id": 79,
-  "last_link_id": 157,
+  "last_node_id": 81,
+  "last_link_id": 172,
   "nodes": [
     {
       "id": 9,
@@ -98,7 +98,7 @@
       "outputs": [],
       "properties": {},
       "widgets_values": [
-        "Guide: [Subgraph](https://docs.comfy.org/interface/features/subgraph)\n\n## Model links (for local users)\n\n- [Hugging Face:Comfy-Org/flux2-dev](https://huggingface.co/Comfy-Org/flux2-dev)\n- [ModelScope:Comfy-Org/flux2-dev](https://modelscope.cn/models/Comfy-Org/flux2-dev)\n\n**text_encoders**\n\n- [qwen_3_4b.safetensors](https://huggingface.co/Comfy-Org/flux2-klein/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors) (7.49 GB)\n\n**diffusion_models**\n\n- [flux-2-klein-base-4b.safetensors](https://huggingface.co/Comfy-Org/flux2-klein/resolve/main/split_files/diffusion_models/flux-2-klein-base-4b.safetensors) (7.22 GB)\n- [flux-2-klein-4b.safetensors](https://huggingface.co/Comfy-Org/flux2-klein/resolve/main/split_files/diffusion_models/flux-2-klein-4b.safetensors) (7.22 GB)\n\n**vae**\n\n- [flux2-vae.safetensors](https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors) (320.6 MB)\n\n\nModel Storage Location\n\n```\n\ud83d\udcc2 ComfyUI/\n\u251c\u2500\u2500 \ud83d\udcc2 models/\n\u2502   \u251c\u2500\u2500 \ud83d\udcc2 text_encoders/\n\u2502   \u2502      \u2514\u2500\u2500 qwen_3_4b.safetensors\n\u2502   \u251c\u2500\u2500 \ud83d\udcc2 diffusion_models/\n\u2502   \u2502      \u251c\u2500\u2500 flux-2-klein-base-4b.safetensors\n\u2502   \u2502      \u2514\u2500\u2500 flux-2-klein-4b.safetensors\n\u2502   \u2514\u2500\u2500 \ud83d\udcc2 vae/\n\u2502          \u2514\u2500\u2500 flux2-vae.safetensors\n```\n\n## Report issue\n\nNote: please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare the required models. Desktop/Cloud will be updated after the stable release; nightly-supported models may not be included yet, please wait for the next stable release.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/Comfy-Org/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n\n"
+        "Guide: [Subgraph](https://docs.comfy.org/interface/features/subgraph)\n\n## Model links (for local users)\n\n- [Hugging Face:Comfy-Org/flux2-dev](https://huggingface.co/Comfy-Org/flux2-dev)\n- [ModelScope:Comfy-Org/flux2-dev](https://modelscope.cn/models/Comfy-Org/flux2-dev)\n\n**text_encoders**\n\n- [qwen_3_4b.safetensors](https://huggingface.co/Comfy-Org/flux2-klein/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors) (7.49 GB)\n\n**diffusion_models**\n\n- [flux-2-klein-base-4b.safetensors](https://huggingface.co/Comfy-Org/flux2-klein/resolve/main/split_files/diffusion_models/flux-2-klein-base-4b.safetensors) (7.22 GB)\n- [flux-2-klein-4b.safetensors](https://huggingface.co/Comfy-Org/flux2-klein/resolve/main/split_files/diffusion_models/flux-2-klein-4b.safetensors) (7.22 GB)\n\n**vae**\n\n- [flux2-vae.safetensors](https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors) (320.6 MB)\n\n\nModel Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 text_encoders/\n│   │      └── qwen_3_4b.safetensors\n│   ├── 📂 diffusion_models/\n│   │      ├── flux-2-klein-base-4b.safetensors\n│   │      └── flux-2-klein-4b.safetensors\n│   └── 📂 vae/\n│          └── flux2-vae.safetensors\n```\n\n## Report issue\n\nNote: please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare the required models. Desktop/Cloud will be updated after the stable release; nightly-supported models may not be included yet, please wait for the next stable release.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/Comfy-Org/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n\n"
       ],
       "color": "#222",
       "bgcolor": "#000"
@@ -168,6 +168,18 @@
             "name": "text"
           },
           "link": 155
+        },
+        {
+          "name": "render_width",
+          "label": "Render Width",
+          "type": "INT",
+          "link": 166
+        },
+        {
+          "name": "render_height",
+          "label": "Render Height",
+          "type": "INT",
+          "link": 168
         }
       ],
       "outputs": [
@@ -249,6 +261,18 @@
             "name": "text"
           },
           "link": 157
+        },
+        {
+          "name": "render_width",
+          "label": "Render Width",
+          "type": "INT",
+          "link": 170
+        },
+        {
+          "name": "render_height",
+          "label": "Render Height",
+          "type": "INT",
+          "link": 172
         }
       ],
       "outputs": [
@@ -306,6 +330,74 @@
         "secondTabWidth": 65
       },
       "widgets_values": []
+    },
+    {
+      "id": 80,
+      "type": "PrimitiveInt",
+      "title": "Render Width",
+      "pos": [
+        -400,
+        0
+      ],
+      "size": [
+        300,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            166,
+            170
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveInt"
+      },
+      "widgets_values": [
+        1280,
+        "fixed"
+      ]
+    },
+    {
+      "id": 81,
+      "type": "PrimitiveInt",
+      "title": "Render Height",
+      "pos": [
+        -400,
+        150
+      ],
+      "size": [
+        300,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            168,
+            172
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveInt"
+      },
+      "widgets_values": [
+        720,
+        "fixed"
+      ]
     }
   ],
   "links": [
@@ -340,6 +432,38 @@
       77,
       0,
       "STRING"
+    ],
+    [
+      166,
+      80,
+      0,
+      75,
+      1,
+      "INT"
+    ],
+    [
+      168,
+      81,
+      0,
+      75,
+      2,
+      "INT"
+    ],
+    [
+      170,
+      80,
+      0,
+      77,
+      1,
+      "INT"
+    ],
+    [
+      172,
+      81,
+      0,
+      77,
+      2,
+      "INT"
     ]
   ],
   "groups": [],
@@ -351,7 +475,7 @@
         "state": {
           "lastGroupId": 4,
           "lastNodeId": 75,
-          "lastLinkId": 162,
+          "lastLinkId": 167,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -447,6 +571,32 @@
             "pos": [
               -554.6666797319973,
               703.833333604156
+            ]
+          },
+          {
+            "id": "8fdc740a-c7b1-5dc1-a98f-8eb1e8e314ea",
+            "name": "render_width",
+            "label": "Render Width",
+            "type": "INT",
+            "linkIds": [
+              165
+            ],
+            "pos": [
+              0,
+              120
+            ]
+          },
+          {
+            "id": "08eaa799-7931-500b-b179-f3c7015c7d9a",
+            "name": "render_height",
+            "label": "Render Height",
+            "type": "INT",
+            "linkIds": [
+              167
+            ],
+            "pos": [
+              0,
+              140
             ]
           }
         ],
@@ -781,7 +931,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 149
+                "link": 165
               },
               {
                 "localized_name": "height",
@@ -790,7 +940,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 150
+                "link": 167
               }
             ],
             "outputs": [
@@ -904,8 +1054,7 @@
                 "name": "INT",
                 "type": "INT",
                 "links": [
-                  137,
-                  149
+                  137
                 ]
               }
             ],
@@ -958,8 +1107,7 @@
                 "name": "INT",
                 "type": "INT",
                 "links": [
-                  138,
-                  150
+                  138
                 ]
               }
             ],
@@ -1415,22 +1563,6 @@
             "type": "VAE"
           },
           {
-            "id": 149,
-            "origin_id": 68,
-            "origin_slot": 0,
-            "target_id": 66,
-            "target_slot": 0,
-            "type": "INT"
-          },
-          {
-            "id": 150,
-            "origin_id": 69,
-            "origin_slot": 0,
-            "target_id": 66,
-            "target_slot": 1,
-            "type": "INT"
-          },
-          {
             "id": 152,
             "origin_id": 71,
             "origin_slot": 0,
@@ -1501,6 +1633,22 @@
             "target_id": 74,
             "target_slot": 1,
             "type": "STRING"
+          },
+          {
+            "id": 165,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 66,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 167,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 66,
+            "target_slot": 1,
+            "type": "INT"
           }
         ],
         "extra": {
@@ -1513,7 +1661,7 @@
         "state": {
           "lastGroupId": 4,
           "lastNodeId": 76,
-          "lastLinkId": 164,
+          "lastLinkId": 171,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -1609,6 +1757,32 @@
             "pos": [
               -554.6666797319973,
               703.833333604156
+            ]
+          },
+          {
+            "id": "68758de3-38dd-5483-b6b9-db1f77c188ac",
+            "name": "render_width",
+            "label": "Render Width",
+            "type": "INT",
+            "linkIds": [
+              169
+            ],
+            "pos": [
+              0,
+              120
+            ]
+          },
+          {
+            "id": "eea270cb-86f5-5ad5-814b-59eec8e62699",
+            "name": "render_height",
+            "label": "Render Height",
+            "type": "INT",
+            "linkIds": [
+              171
+            ],
+            "pos": [
+              0,
+              140
             ]
           }
         ],
@@ -1821,7 +1995,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 149
+                "link": 169
               },
               {
                 "localized_name": "height",
@@ -1830,7 +2004,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 150
+                "link": 171
               }
             ],
             "outputs": [
@@ -1892,8 +2066,7 @@
                 "name": "INT",
                 "type": "INT",
                 "links": [
-                  137,
-                  149
+                  137
                 ]
               }
             ],
@@ -1946,8 +2119,7 @@
                 "name": "INT",
                 "type": "INT",
                 "links": [
-                  138,
-                  150
+                  138
                 ]
               }
             ],
@@ -2563,22 +2735,6 @@
             "type": "VAE"
           },
           {
-            "id": 149,
-            "origin_id": 68,
-            "origin_slot": 0,
-            "target_id": 66,
-            "target_slot": 0,
-            "type": "INT"
-          },
-          {
-            "id": 150,
-            "origin_id": 69,
-            "origin_slot": 0,
-            "target_id": 66,
-            "target_slot": 1,
-            "type": "INT"
-          },
-          {
             "id": 151,
             "origin_id": 71,
             "origin_slot": 0,
@@ -2657,6 +2813,22 @@
             "target_id": 63,
             "target_slot": 2,
             "type": "CONDITIONING"
+          },
+          {
+            "id": 169,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 66,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 171,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 66,
+            "target_slot": 1,
+            "type": "INT"
           }
         ],
         "extra": {
@@ -2681,5 +2853,9 @@
     "VHS_MetadataImage": true,
     "VHS_KeepIntermediate": true
   },
-  "version": 0.4
+  "version": 0.4,
+  "state": {
+    "lastLinkId": 172,
+    "lastNodeId": 81
+  }
 }

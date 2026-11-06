@@ -433,5 +433,17 @@
     "_meta": {
       "title": "Enable 8steps LoRA"
     }
+  },
+  "96": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 1024
+    }
+  },
+  "97": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 1024
+    }
   }
 }

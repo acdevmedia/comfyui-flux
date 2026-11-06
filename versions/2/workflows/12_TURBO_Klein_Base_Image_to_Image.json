@@ -1,8 +1,8 @@
 {
   "id": "92112d97-bb64-4b44-86f2-ea5691ef8f6e",
   "revision": 0,
-  "last_node_id": 130,
-  "last_link_id": 216,
+  "last_node_id": 132,
+  "last_link_id": 230,
   "nodes": [
     {
       "id": 9,
@@ -262,6 +262,18 @@
           "name": "image",
           "type": "IMAGE",
           "link": 155
+        },
+        {
+          "name": "render_width",
+          "label": "Render Width",
+          "type": "INT",
+          "link": 218
+        },
+        {
+          "name": "render_height",
+          "label": "Render Height",
+          "type": "INT",
+          "link": 220
         }
       ],
       "outputs": [
@@ -345,6 +357,18 @@
           "name": "image_1",
           "type": "IMAGE",
           "link": 172
+        },
+        {
+          "name": "render_width",
+          "label": "Render Width",
+          "type": "INT",
+          "link": 224
+        },
+        {
+          "name": "render_height",
+          "label": "Render Height",
+          "type": "INT",
+          "link": 226
         }
       ],
       "outputs": [
@@ -393,6 +417,74 @@
         "A stylish young woman with dark skin wearing a plush deep emerald green bathrobe, light pink towel turban, and red heart-shaped sunglasses, seated on a light-colored rattan chair with soft pink cushions, positioned in front of a textured dusty rose pink wall with an arched alcove, large tropical plants with broad dark green leaves framing both sides, woven straw baskets on the floor, remove any existing shoes from the background, only the woman's beige woven sandals visible in the foreground, soft natural lighting casting gentle shadows, warm bohemian chic aesthetic, professional fashion photography",
         133932424540642
       ]
+    },
+    {
+      "id": 131,
+      "type": "PrimitiveInt",
+      "title": "Render Width",
+      "pos": [
+        -400,
+        0
+      ],
+      "size": [
+        300,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            218,
+            224
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveInt"
+      },
+      "widgets_values": [
+        1024,
+        "fixed"
+      ]
+    },
+    {
+      "id": 132,
+      "type": "PrimitiveInt",
+      "title": "Render Height",
+      "pos": [
+        -400,
+        150
+      ],
+      "size": [
+        300,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            220,
+            226
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveInt"
+      },
+      "widgets_values": [
+        1024,
+        "fixed"
+      ]
     }
   ],
   "links": [
@@ -435,6 +527,38 @@
       92,
       2,
       "IMAGE"
+    ],
+    [
+      218,
+      131,
+      0,
+      75,
+      2,
+      "INT"
+    ],
+    [
+      220,
+      132,
+      0,
+      75,
+      3,
+      "INT"
+    ],
+    [
+      224,
+      131,
+      0,
+      92,
+      3,
+      "INT"
+    ],
+    [
+      226,
+      132,
+      0,
+      92,
+      4,
+      "INT"
     ]
   ],
   "groups": [
@@ -459,7 +583,7 @@
         "state": {
           "lastGroupId": 7,
           "lastNodeId": 130,
-          "lastLinkId": 216,
+          "lastLinkId": 222,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -555,6 +679,34 @@
             "pos": [
               0,
               0
+            ]
+          },
+          {
+            "id": "8fdc740a-c7b1-5dc1-a98f-8eb1e8e314ea",
+            "name": "render_width",
+            "label": "Render Width",
+            "type": "INT",
+            "linkIds": [
+              217,
+              221
+            ],
+            "pos": [
+              0,
+              120
+            ]
+          },
+          {
+            "id": "08eaa799-7931-500b-b179-f3c7015c7d9a",
+            "name": "render_height",
+            "label": "Render Height",
+            "type": "INT",
+            "linkIds": [
+              219,
+              222
+            ],
+            "pos": [
+              0,
+              140
             ]
           }
         ],
@@ -1288,7 +1440,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 172
+                "link": 217
               },
               {
                 "localized_name": "height",
@@ -1297,7 +1449,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 174
+                "link": 219
               }
             ],
             "outputs": [
@@ -1335,7 +1487,7 @@
           },
           {
             "id": 80,
-            "type": "ImageScaleToTotalPixels",
+            "type": "ImageScale",
             "pos": [
               -400,
               1050
@@ -1353,6 +1505,22 @@
                 "name": "image",
                 "type": "IMAGE",
                 "link": 175
+              },
+              {
+                "name": "width",
+                "type": "INT",
+                "widget": {
+                  "name": "width"
+                },
+                "link": 221
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "widget": {
+                  "name": "height"
+                },
+                "link": 222
               }
             ],
             "outputs": [
@@ -1367,7 +1535,7 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "ImageScaleToTotalPixels",
+              "Node name for S&R": "ImageScale",
               "cnr_id": "comfy-core",
               "ver": "0.8.2",
               "enableTabs": false,
@@ -1384,10 +1552,12 @@
               }
             },
             "widgets_values": [
-              "nearest-exact",
-              1,
-              1
-            ]
+              "lanczos",
+              1280,
+              720,
+              "center"
+            ],
+            "title": "Resize reference to render width and height"
           },
           {
             "id": 100,
@@ -1417,8 +1587,7 @@
                 "name": "width",
                 "type": "INT",
                 "links": [
-                  171,
-                  172
+                  171
                 ]
               },
               {
@@ -1426,8 +1595,7 @@
                 "name": "height",
                 "type": "INT",
                 "links": [
-                  173,
-                  174
+                  173
                 ]
               },
               {
@@ -1825,26 +1993,10 @@
             "type": "INT"
           },
           {
-            "id": 172,
-            "origin_id": 100,
-            "origin_slot": 0,
-            "target_id": 66,
-            "target_slot": 0,
-            "type": "INT"
-          },
-          {
             "id": 173,
             "origin_id": 100,
             "origin_slot": 1,
             "target_id": 62,
-            "target_slot": 1,
-            "type": "INT"
-          },
-          {
-            "id": 174,
-            "origin_id": 100,
-            "origin_slot": 1,
-            "target_id": 66,
             "target_slot": 1,
             "type": "INT"
           },
@@ -1927,6 +2079,38 @@
             "target_id": 73,
             "target_slot": 0,
             "type": "INT"
+          },
+          {
+            "id": 217,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 66,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 219,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 66,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 221,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 80,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 222,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 80,
+            "target_slot": 2,
+            "type": "INT"
           }
         ],
         "extra": {
@@ -1940,7 +2124,7 @@
         "state": {
           "lastGroupId": 7,
           "lastNodeId": 130,
-          "lastLinkId": 216,
+          "lastLinkId": 230,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -2050,6 +2234,36 @@
             "pos": [
               0,
               0
+            ]
+          },
+          {
+            "id": "53981a92-c2f0-5478-b77d-3a81f6d5afc9",
+            "name": "render_width",
+            "label": "Render Width",
+            "type": "INT",
+            "linkIds": [
+              223,
+              227,
+              229
+            ],
+            "pos": [
+              0,
+              140
+            ]
+          },
+          {
+            "id": "5699157f-77a8-588b-9a9d-7ad83d8f38a3",
+            "name": "render_height",
+            "label": "Render Height",
+            "type": "INT",
+            "linkIds": [
+              225,
+              228,
+              230
+            ],
+            "pos": [
+              0,
+              160
             ]
           }
         ],
@@ -2469,8 +2683,7 @@
                 "name": "width",
                 "type": "INT",
                 "links": [
-                  171,
-                  172
+                  171
                 ]
               },
               {
@@ -2478,8 +2691,7 @@
                 "name": "height",
                 "type": "INT",
                 "links": [
-                  173,
-                  174
+                  173
                 ]
               },
               {
@@ -2530,7 +2742,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 172
+                "link": 223
               },
               {
                 "localized_name": "height",
@@ -2539,7 +2751,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 174
+                "link": 225
               }
             ],
             "outputs": [
@@ -2577,7 +2789,7 @@
           },
           {
             "id": 110,
-            "type": "ImageScaleToTotalPixels",
+            "type": "ImageScale",
             "pos": [
               -460,
               1100
@@ -2595,6 +2807,22 @@
                 "name": "image",
                 "type": "IMAGE",
                 "link": 175
+              },
+              {
+                "name": "width",
+                "type": "INT",
+                "widget": {
+                  "name": "width"
+                },
+                "link": 227
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "widget": {
+                  "name": "height"
+                },
+                "link": 228
               }
             ],
             "outputs": [
@@ -2609,7 +2837,7 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "ImageScaleToTotalPixels",
+              "Node name for S&R": "ImageScale",
               "cnr_id": "comfy-core",
               "ver": "0.8.2",
               "enableTabs": false,
@@ -2626,14 +2854,16 @@
               }
             },
             "widgets_values": [
-              "nearest-exact",
-              1,
-              1
-            ]
+              "lanczos",
+              1280,
+              720,
+              "center"
+            ],
+            "title": "Resize reference to render width and height"
           },
           {
             "id": 85,
-            "type": "ImageScaleToTotalPixels",
+            "type": "ImageScale",
             "pos": [
               -460,
               1450
@@ -2651,6 +2881,22 @@
                 "name": "image",
                 "type": "IMAGE",
                 "link": 186
+              },
+              {
+                "name": "width",
+                "type": "INT",
+                "widget": {
+                  "name": "width"
+                },
+                "link": 229
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "widget": {
+                  "name": "height"
+                },
+                "link": 230
               }
             ],
             "outputs": [
@@ -2664,7 +2910,7 @@
               }
             ],
             "properties": {
-              "Node name for S&R": "ImageScaleToTotalPixels",
+              "Node name for S&R": "ImageScale",
               "cnr_id": "comfy-core",
               "ver": "0.8.2",
               "enableTabs": false,
@@ -2681,10 +2927,12 @@
               }
             },
             "widgets_values": [
-              "nearest-exact",
-              1,
-              1
-            ]
+              "lanczos",
+              1280,
+              720,
+              "center"
+            ],
+            "title": "Resize reference to render width and height"
           },
           {
             "id": 111,
@@ -3559,26 +3807,10 @@
             "type": "INT"
           },
           {
-            "id": 172,
-            "origin_id": 108,
-            "origin_slot": 0,
-            "target_id": 109,
-            "target_slot": 0,
-            "type": "INT"
-          },
-          {
             "id": 173,
             "origin_id": 108,
             "origin_slot": 1,
             "target_id": 115,
-            "target_slot": 1,
-            "type": "INT"
-          },
-          {
-            "id": 174,
-            "origin_id": 108,
-            "origin_slot": 1,
-            "target_id": 109,
             "target_slot": 1,
             "type": "INT"
           },
@@ -3725,6 +3957,54 @@
             "target_id": 105,
             "target_slot": 0,
             "type": "INT"
+          },
+          {
+            "id": 223,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 109,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 225,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 109,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 227,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 110,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 228,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 110,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 229,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 85,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 230,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 85,
+            "target_slot": 2,
+            "type": "INT"
           }
         ],
         "extra": {
@@ -3751,5 +4031,9 @@
     "VHS_KeepIntermediate": true,
     "ue_links": []
   },
-  "version": 0.4
+  "version": 0.4,
+  "state": {
+    "lastLinkId": 226,
+    "lastNodeId": 132
+  }
 }

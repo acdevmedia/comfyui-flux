@@ -2,7 +2,7 @@
   "id": "0ae2b50b-b07a-4465-bb7c-d8fe58e8e0ac",
   "revision": 0,
   "last_node_id": 61,
-  "last_link_id": 84,
+  "last_link_id": 85,
   "nodes": [
     {
       "id": 2,
@@ -543,7 +543,24 @@
       "flags": {},
       "order": 5,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 84
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 85
+        }
+      ],
       "outputs": [
         {
           "name": "LATENT",
@@ -1137,6 +1154,72 @@
         "unet_name": "flux3-image-klein-base-int8-convrot.safetensors",
         "weight_dtype": "default"
       }
+    },
+    {
+      "id": 60,
+      "type": "PrimitiveInt",
+      "title": "Render Width",
+      "pos": [
+        -400,
+        0
+      ],
+      "size": [
+        300,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            84
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveInt"
+      },
+      "widgets_values": [
+        1024,
+        "fixed"
+      ]
+    },
+    {
+      "id": 61,
+      "type": "PrimitiveInt",
+      "title": "Render Height",
+      "pos": [
+        -400,
+        150
+      ],
+      "size": [
+        300,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            85
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveInt"
+      },
+      "widgets_values": [
+        1024,
+        "fixed"
+      ]
     }
   ],
   "links": [
@@ -1355,6 +1438,22 @@
       50,
       0,
       "IMAGE"
+    ],
+    [
+      84,
+      60,
+      0,
+      44,
+      0,
+      "INT"
+    ],
+    [
+      85,
+      61,
+      0,
+      44,
+      1,
+      "INT"
     ]
   ],
   "groups": [
@@ -1466,5 +1565,9 @@
     },
     "frontendVersion": "1.55.17"
   },
-  "version": 0.4
+  "version": 0.4,
+  "state": {
+    "lastLinkId": 85,
+    "lastNodeId": 61
+  }
 }
