@@ -124,20 +124,22 @@
     }
   },
   "62:41": {
+    "class_type": "ImageScale",
     "inputs": {
-      "upscale_method": "area",
-      "megapixels": 1,
-      "resolution_steps": 1,
       "image": [
         "46",
         0
-      ]
-    },
-    "class_type": "ImageScaleToTotalPixels",
-    "_meta": {
-      "title": "Scale Image to Total Pixels",
-      "cnr_id": "comfy-core",
-      "ver": "0.3.71"
+      ],
+      "upscale_method": "lanczos",
+      "width": [
+        "62:99",
+        1
+      ],
+      "height": [
+        "62:100",
+        1
+      ],
+      "crop": "disabled"
     }
   },
   "62:26": {
@@ -289,20 +291,22 @@
     }
   },
   "62:45": {
+    "class_type": "ImageScale",
     "inputs": {
-      "upscale_method": "area",
-      "megapixels": 1,
-      "resolution_steps": 1,
       "image": [
         "42",
         0
-      ]
-    },
-    "class_type": "ImageScaleToTotalPixels",
-    "_meta": {
-      "title": "Scale Image to Total Pixels",
-      "cnr_id": "comfy-core",
-      "ver": "0.3.71"
+      ],
+      "upscale_method": "lanczos",
+      "width": [
+        "62:102",
+        1
+      ],
+      "height": [
+        "62:103",
+        1
+      ],
+      "crop": "disabled"
     }
   },
   "62:66": {
@@ -322,11 +326,11 @@
   "62:47": {
     "inputs": {
       "width": [
-        "62:66",
-        0
+        "62:102",
+        1
       ],
       "height": [
-        "62:66",
+        "62:103",
         1
       ],
       "batch_size": 1
@@ -444,6 +448,112 @@
     "class_type": "PrimitiveInt",
     "inputs": {
       "value": 1024
+    }
+  },
+  "62:98": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "46",
+        0
+      ]
+    }
+  },
+  "62:99": {
+    "class_type": "ComfyMathExpression",
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*c/d)/16)*16)",
+      "values.a": [
+        "96",
+        0
+      ],
+      "values.b": [
+        "97",
+        0
+      ],
+      "values.c": [
+        "62:98",
+        0
+      ],
+      "values.d": [
+        "62:98",
+        1
+      ]
+    }
+  },
+  "62:100": {
+    "class_type": "ComfyMathExpression",
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*d/c)/16)*16)",
+      "values.a": [
+        "96",
+        0
+      ],
+      "values.b": [
+        "97",
+        0
+      ],
+      "values.c": [
+        "62:98",
+        0
+      ],
+      "values.d": [
+        "62:98",
+        1
+      ]
+    }
+  },
+  "62:101": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "42",
+        0
+      ]
+    }
+  },
+  "62:102": {
+    "class_type": "ComfyMathExpression",
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*c/d)/16)*16)",
+      "values.a": [
+        "96",
+        0
+      ],
+      "values.b": [
+        "97",
+        0
+      ],
+      "values.c": [
+        "62:101",
+        0
+      ],
+      "values.d": [
+        "62:101",
+        1
+      ]
+    }
+  },
+  "62:103": {
+    "class_type": "ComfyMathExpression",
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*d/c)/16)*16)",
+      "values.a": [
+        "96",
+        0
+      ],
+      "values.b": [
+        "97",
+        0
+      ],
+      "values.c": [
+        "62:101",
+        0
+      ],
+      "values.d": [
+        "62:101",
+        1
+      ]
     }
   }
 }

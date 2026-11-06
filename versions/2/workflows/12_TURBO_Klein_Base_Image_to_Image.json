@@ -1,8 +1,8 @@
 {
   "id": "92112d97-bb64-4b44-86f2-ea5691ef8f6e",
   "revision": 0,
-  "last_node_id": 132,
-  "last_link_id": 230,
+  "last_node_id": 141,
+  "last_link_id": 267,
   "nodes": [
     {
       "id": 9,
@@ -582,8 +582,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 7,
-          "lastNodeId": 130,
-          "lastLinkId": 222,
+          "lastNodeId": 135,
+          "lastLinkId": 243,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -662,7 +662,8 @@
             "name": "image",
             "type": "IMAGE",
             "linkIds": [
-              175
+              175,
+              231
             ],
             "pos": [
               -600,
@@ -687,8 +688,8 @@
             "label": "Render Width",
             "type": "INT",
             "linkIds": [
-              217,
-              221
+              232,
+              236
             ],
             "pos": [
               0,
@@ -701,8 +702,8 @@
             "label": "Render Height",
             "type": "INT",
             "linkIds": [
-              219,
-              222
+              233,
+              237
             ],
             "pos": [
               0,
@@ -1440,7 +1441,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 217
+                "link": 242
               },
               {
                 "localized_name": "height",
@@ -1449,7 +1450,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 219
+                "link": 243
               }
             ],
             "outputs": [
@@ -1512,7 +1513,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 221
+                "link": 240
               },
               {
                 "name": "height",
@@ -1520,7 +1521,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 222
+                "link": 241
               }
             ],
             "outputs": [
@@ -1555,9 +1556,9 @@
               "lanczos",
               1280,
               720,
-              "center"
+              "disabled"
             ],
-            "title": "Resize reference to render width and height"
+            "title": "Resize image to the fitted frame"
           },
           {
             "id": 100,
@@ -1803,6 +1804,200 @@
               }
             },
             "widgets_values": []
+          },
+          {
+            "type": "GetImageSize",
+            "title": "Size of your image",
+            "pos": [
+              -740,
+              1380
+            ],
+            "size": [
+              320,
+              120
+            ],
+            "widgets_values": [],
+            "inputs": [
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 231
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  234,
+                  238
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  235,
+                  239
+                ]
+              },
+              {
+                "name": "batch_size",
+                "type": "INT",
+                "links": []
+              }
+            ],
+            "id": 133,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "GetImageSize"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Width",
+            "pos": [
+              -400,
+              1380
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*c/d)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 232
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 233
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 234
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 235
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  240,
+                  242
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 134,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Height",
+            "pos": [
+              -400,
+              1580
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*d/c)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 236
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 237
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 238
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 239
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  241,
+                  243
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 135,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
           }
         ],
         "groups": [
@@ -2081,35 +2276,107 @@
             "type": "INT"
           },
           {
-            "id": 217,
+            "id": 231,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 133,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 232,
             "origin_id": -10,
             "origin_slot": 6,
+            "target_id": 134,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 233,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 134,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 234,
+            "origin_id": 133,
+            "origin_slot": 0,
+            "target_id": 134,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 235,
+            "origin_id": 133,
+            "origin_slot": 1,
+            "target_id": 134,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 236,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 135,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 237,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 135,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 238,
+            "origin_id": 133,
+            "origin_slot": 0,
+            "target_id": 135,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 239,
+            "origin_id": 133,
+            "origin_slot": 1,
+            "target_id": 135,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 240,
+            "origin_id": 134,
+            "origin_slot": 1,
+            "target_id": 80,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 241,
+            "origin_id": 135,
+            "origin_slot": 1,
+            "target_id": 80,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 242,
+            "origin_id": 134,
+            "origin_slot": 1,
             "target_id": 66,
             "target_slot": 0,
             "type": "INT"
           },
           {
-            "id": 219,
-            "origin_id": -10,
-            "origin_slot": 7,
+            "id": 243,
+            "origin_id": 135,
+            "origin_slot": 1,
             "target_id": 66,
             "target_slot": 1,
-            "type": "INT"
-          },
-          {
-            "id": 221,
-            "origin_id": -10,
-            "origin_slot": 6,
-            "target_id": 80,
-            "target_slot": 1,
-            "type": "INT"
-          },
-          {
-            "id": 222,
-            "origin_id": -10,
-            "origin_slot": 7,
-            "target_id": 80,
-            "target_slot": 2,
             "type": "INT"
           }
         ],
@@ -2123,8 +2390,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 7,
-          "lastNodeId": 130,
-          "lastLinkId": 230,
+          "lastNodeId": 141,
+          "lastLinkId": 267,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -2203,7 +2470,8 @@
             "name": "image",
             "type": "IMAGE",
             "linkIds": [
-              175
+              175,
+              244
             ],
             "label": "reference_image1",
             "pos": [
@@ -2216,7 +2484,8 @@
             "name": "image_1",
             "type": "IMAGE",
             "linkIds": [
-              186
+              186,
+              257
             ],
             "label": "reference_image2",
             "pos": [
@@ -2242,9 +2511,10 @@
             "label": "Render Width",
             "type": "INT",
             "linkIds": [
-              223,
-              227,
-              229
+              245,
+              249,
+              258,
+              262
             ],
             "pos": [
               0,
@@ -2257,9 +2527,10 @@
             "label": "Render Height",
             "type": "INT",
             "linkIds": [
-              225,
-              228,
-              230
+              246,
+              250,
+              259,
+              263
             ],
             "pos": [
               0,
@@ -2742,7 +3013,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 223
+                "link": 255
               },
               {
                 "localized_name": "height",
@@ -2751,7 +3022,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 225
+                "link": 256
               }
             ],
             "outputs": [
@@ -2814,7 +3085,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 227
+                "link": 253
               },
               {
                 "name": "height",
@@ -2822,7 +3093,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 228
+                "link": 254
               }
             ],
             "outputs": [
@@ -2857,9 +3128,9 @@
               "lanczos",
               1280,
               720,
-              "center"
+              "disabled"
             ],
-            "title": "Resize reference to render width and height"
+            "title": "Resize image to the fitted frame"
           },
           {
             "id": 85,
@@ -2888,7 +3159,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 229
+                "link": 266
               },
               {
                 "name": "height",
@@ -2896,7 +3167,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 230
+                "link": 267
               }
             ],
             "outputs": [
@@ -2930,9 +3201,9 @@
               "lanczos",
               1280,
               720,
-              "center"
+              "disabled"
             ],
-            "title": "Resize reference to render width and height"
+            "title": "Resize image to the fitted frame"
           },
           {
             "id": 111,
@@ -3613,6 +3884,392 @@
               }
             },
             "widgets_values": []
+          },
+          {
+            "type": "GetImageSize",
+            "title": "Size of your image",
+            "pos": [
+              -800,
+              1430
+            ],
+            "size": [
+              320,
+              120
+            ],
+            "widgets_values": [],
+            "inputs": [
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 244
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  247,
+                  251
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  248,
+                  252
+                ]
+              },
+              {
+                "name": "batch_size",
+                "type": "INT",
+                "links": []
+              }
+            ],
+            "id": 136,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "GetImageSize"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Width",
+            "pos": [
+              -460,
+              1430
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*c/d)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 245
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 246
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 247
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 248
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  253,
+                  255
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 137,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Height",
+            "pos": [
+              -460,
+              1630
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*d/c)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 249
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 250
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 251
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 252
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  254,
+                  256
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 138,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          },
+          {
+            "type": "GetImageSize",
+            "title": "Size of your image",
+            "pos": [
+              -800,
+              1780
+            ],
+            "size": [
+              320,
+              120
+            ],
+            "widgets_values": [],
+            "inputs": [
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 257
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  260,
+                  264
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  261,
+                  265
+                ]
+              },
+              {
+                "name": "batch_size",
+                "type": "INT",
+                "links": []
+              }
+            ],
+            "id": 139,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "GetImageSize"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Width",
+            "pos": [
+              -460,
+              1780
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*c/d)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 258
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 259
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 260
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 261
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  266
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 140,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Height",
+            "pos": [
+              -460,
+              1980
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*d/c)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 262
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 263
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 264
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 265
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  267
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 141,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
           }
         ],
         "groups": [
@@ -3959,49 +4616,193 @@
             "type": "INT"
           },
           {
-            "id": 223,
+            "id": 244,
             "origin_id": -10,
-            "origin_slot": 7,
-            "target_id": 109,
+            "origin_slot": 4,
+            "target_id": 136,
             "target_slot": 0,
-            "type": "INT"
+            "type": "IMAGE"
           },
           {
-            "id": 225,
+            "id": 245,
             "origin_id": -10,
-            "origin_slot": 8,
-            "target_id": 109,
+            "origin_slot": 7,
+            "target_id": 137,
             "target_slot": 1,
             "type": "INT"
           },
           {
-            "id": 227,
+            "id": 246,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 137,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 247,
+            "origin_id": 136,
+            "origin_slot": 0,
+            "target_id": 137,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 248,
+            "origin_id": 136,
+            "origin_slot": 1,
+            "target_id": 137,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 249,
             "origin_id": -10,
             "origin_slot": 7,
+            "target_id": 138,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 250,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 138,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 251,
+            "origin_id": 136,
+            "origin_slot": 0,
+            "target_id": 138,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 252,
+            "origin_id": 136,
+            "origin_slot": 1,
+            "target_id": 138,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 253,
+            "origin_id": 137,
+            "origin_slot": 1,
             "target_id": 110,
             "target_slot": 1,
             "type": "INT"
           },
           {
-            "id": 228,
-            "origin_id": -10,
-            "origin_slot": 8,
+            "id": 254,
+            "origin_id": 138,
+            "origin_slot": 1,
             "target_id": 110,
             "target_slot": 2,
             "type": "INT"
           },
           {
-            "id": 229,
+            "id": 255,
+            "origin_id": 137,
+            "origin_slot": 1,
+            "target_id": 109,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 256,
+            "origin_id": 138,
+            "origin_slot": 1,
+            "target_id": 109,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 257,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 139,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 258,
             "origin_id": -10,
             "origin_slot": 7,
+            "target_id": 140,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 259,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 140,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 260,
+            "origin_id": 139,
+            "origin_slot": 0,
+            "target_id": 140,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 261,
+            "origin_id": 139,
+            "origin_slot": 1,
+            "target_id": 140,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 262,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 141,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 263,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 141,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 264,
+            "origin_id": 139,
+            "origin_slot": 0,
+            "target_id": 141,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 265,
+            "origin_id": 139,
+            "origin_slot": 1,
+            "target_id": 141,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 266,
+            "origin_id": 140,
+            "origin_slot": 1,
             "target_id": 85,
             "target_slot": 1,
             "type": "INT"
           },
           {
-            "id": 230,
-            "origin_id": -10,
-            "origin_slot": 8,
+            "id": 267,
+            "origin_id": 141,
+            "origin_slot": 1,
             "target_id": 85,
             "target_slot": 2,
             "type": "INT"
@@ -4033,7 +4834,7 @@
   },
   "version": 0.4,
   "state": {
-    "lastLinkId": 226,
-    "lastNodeId": 132
+    "lastLinkId": 267,
+    "lastNodeId": 141
   }
 }

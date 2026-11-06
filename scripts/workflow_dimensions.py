@@ -4,6 +4,14 @@ import uuid
 from pathlib import Path
 
 LATENTS = {'EmptySD3LatentImage', 'EmptyFlux2LatentImage', 'EmptyLatentImage', 'EmptyLTXVLatentVideo'}
+RESIZE = 'Resize reference to render width and height'
+FITTED = 'Resize image to the fitted frame'
+SIZE_NOTES = {
+    'the reference is scaled to ~1 MP here and the output latent takes its size.':
+        'the reference is scaled to ~1 MP here and kept whole. Render Width and Height set the output\'s area and the first reference sets its shape, in multiples of 16.',
+    'Use `Empty Flux 2 Latent` node to customize image size':
+        'Use Render Width and Render Height to set the output\'s area; the first reference sets its shape',
+}
 
 def link_parts(link):
     if isinstance(link, dict):
@@ -24,6 +32,11 @@ def remove_input_link(graph, node, slot):
         if field.get('linkIds'):
             field['linkIds'] = [x for x in field['linkIds'] if x != lid]
     inp['link'] = None
+
+def is_fitted(graph, node):
+    fits = {n['id'] for n in graph['nodes'] if (n.get('title') or '').startswith('Fit Frame')}
+    origins = {link_parts(l)[0]: link_parts(l)[1] for l in graph.get('links', [])}
+    return any(origins.get(inp.get('link')) in fits for inp in node.get('inputs', []))
 
 def apply_dimensions(data, default=None):
     """Return whether this workflow supports visual sizing; operate idempotently."""
@@ -61,6 +74,9 @@ def apply_dimensions(data, default=None):
     for graph, parents in contexts:
         for node in graph['nodes']:
             if node['type'] in LATENTS:
+                # Fit Frame nodes already read the Render controls on this frame's behalf.
+                if is_fitted(graph, node):
+                    continue
                 for index, dim in enumerate(('width','height')):
                     inputs = node.setdefault('inputs', [])
                     slot = next((i for i,x in enumerate(inputs) if x['name'] == dim), None)
@@ -71,7 +87,7 @@ def apply_dimensions(data, default=None):
                 # Explicit dimensions replace automatic megapixel sizing for image edits.
                 node['type'] = 'ImageScale'
                 node.setdefault('properties',{})['Node name for S&R'] = 'ImageScale'
-                node['title'] = 'Resize reference to render width and height'
+                node['title'] = RESIZE
                 node['inputs'] = [x for x in node.get('inputs',[]) if x['name'] in ('image','input')]
                 node['inputs'][0]['name']='image'
                 method = 'lanczos'
@@ -81,7 +97,7 @@ def apply_dimensions(data, default=None):
                 for dim in ('width','height'):
                     slot=len(node['inputs']);node['inputs'].append({'name':dim,'type':'INT','widget':{'name':dim},'link':None})
                     targets.append((graph,parents,node,slot,dim))
-            elif node['type']=='ImageScale' and node.get('title')=='Resize reference to render width and height':
+            elif node['type']=='ImageScale' and node.get('title')==RESIZE:
                 for slot, inp in enumerate(node['inputs']):
                     if inp['name'] in ('width','height'):targets.append((graph,parents,node,slot,inp['name']))
     if not targets:
@@ -179,18 +195,141 @@ def sync_api(api, ui):
                     link=next(link_parts(l) for l in ui['links'] if link_parts(l)[0]==inp['link'])
                     api[nid]['inputs'][inp['name']]=[str(link[1]),link[2]]
 
+def fit_expression(mine, other, step):
+    """One side of a frame with area a*b and the proportions of a c x d image, on the model's grid."""
+    return 'max(64,round(sqrt(a*b*%s/%s)/%d)*%d)'%(mine,other,step,step)
+
+def origin(graph, node, name):
+    """The (node id, slot) feeding a named input."""
+    lid = next(inp['link'] for inp in node['inputs'] if inp['name'] == name)
+    return next(link_parts(l)[1:3] for l in graph['links'] if link_parts(l)[0] == lid)
+
+def fit_frame_to_image(data, graph, image, width, height, targets, step=16):
+    """Point each target's width and height at a frame fitted to an image, in a root graph or a subgraph.
+
+    `image`, `width` and `height` are (node id, slot) origins: the Render controls keep setting the frame's
+    area while the image sets its proportions, so a portrait stays a portrait and a typed size that already
+    matches the image comes back unchanged.
+    """
+    groups = [data] + data.get('definitions', {}).get('subgraphs', [])
+    next_node = max([n['id'] for g in groups for n in g['nodes']] + [data.get('last_node_id') or 0])
+    next_link = max([link_parts(l)[0] for g in groups for l in g.get('links', [])] + [data.get('last_link_id') or 0])
+    flat = bool(graph.get('links')) and not isinstance(graph['links'][0], dict)
+    nodes = {n['id']: n for n in graph['nodes']}
+    def add(node):
+        nonlocal next_node
+        next_node += 1
+        node.update(id=next_node, flags={}, order=0, mode=0, properties={'Node name for S&R': node['type']})
+        graph['nodes'].append(node)
+        nodes[next_node] = node
+        return node
+    def connect(source, source_slot, target, target_slot, kind):
+        nonlocal next_link
+        next_link += 1
+        values = [next_link, source, source_slot, target['id'], target_slot, kind]
+        graph['links'].append(values if flat else dict(zip(('id','origin_id','origin_slot','target_id','target_slot','type'), values)))
+        target['inputs'][target_slot]['link'] = next_link
+        if source == -10:
+            graph['inputs'][source_slot]['linkIds'].append(next_link)
+        else:
+            output = nodes[source]['outputs'][source_slot]
+            output['links'] = (output.get('links') or []) + [next_link]
+    x, y = targets[0]['pos']
+    getter = add({'type': 'GetImageSize', 'title': 'Size of your image', 'pos': [x - 340, y + 330], 'size': [320, 120], 'widgets_values': [],
+                  'inputs': [{'name': 'image', 'type': 'IMAGE', 'link': None}],
+                  'outputs': [{'name': name, 'type': 'INT', 'links': []} for name in ('width', 'height', 'batch_size')]})
+    def fit(title, expression, row):
+        return add({'type': 'ComfyMathExpression', 'title': title, 'pos': [x, y + 330 + row * 200], 'size': [320, 180], 'widgets_values': [expression],
+                    'inputs': [{'name': 'expression', 'type': 'STRING', 'link': None, 'widget': {'name': 'expression'}}] +
+                              [{'name': 'values.' + letter, 'type': 'FLOAT,INT,BOOLEAN', 'link': None} for letter in 'abcd'],
+                    'outputs': [{'name': 'FLOAT', 'type': 'FLOAT', 'links': []}, {'name': 'INT', 'type': 'INT', 'links': []}, {'name': 'BOOL', 'type': 'BOOLEAN', 'links': []}]})
+    fit_w = fit('Fit Frame Width', fit_expression('c', 'd', step), 0)
+    fit_h = fit('Fit Frame Height', fit_expression('d', 'c', step), 1)
+    connect(image[0], image[1], getter, 0, 'IMAGE')
+    for node in (fit_w, fit_h):
+        connect(width[0], width[1], node, 1, 'INT')
+        connect(height[0], height[1], node, 2, 'INT')
+        connect(getter['id'], 0, node, 3, 'INT')
+        connect(getter['id'], 1, node, 4, 'INT')
+    for target in targets:
+        for name, fitted in (('width', fit_w), ('height', fit_h)):
+            slot = next(i for i, inp in enumerate(target['inputs']) if inp['name'] == name)
+            remove_input_link(graph, target, slot)
+            connect(fitted['id'], 1, target, slot, 'INT')
+    data['last_node_id'], data['last_link_id'] = next_node, next_link
+    data.setdefault('state', {}).update(lastNodeId=next_node, lastLinkId=next_link)
+    if 'state' in graph:
+        graph['state'].update(lastNodeId=next_node, lastLinkId=next_link)
+
+def fit_references(data):
+    """Keep whole uploads: each edit reference fits its own shape and the first one shapes the output."""
+    for graph in [data] + data.get('definitions', {}).get('subgraphs', []):
+        scales = [n for n in graph['nodes'] if n['type'] == 'ImageScale' and n.get('title') == RESIZE]
+        latents = [n for n in graph['nodes'] if n['type'] in LATENTS]
+        # The scheduler's GetImageSize reads the reference that sets the output's frame.
+        sized = {link_parts(l)[1] for l in graph.get('links', []) if link_parts(l)[3] in
+                 {n['id'] for n in graph['nodes'] if n['type'] == 'GetImageSize'}}
+        for scale in scales:
+            image, width, height = (origin(graph, scale, name) for name in ('image', 'width', 'height'))
+            fit_frame_to_image(data, graph, image, width, height, [scale] + (latents if scale['id'] in sized else []))
+            scale['title'] = FITTED
+            scale['widgets_values'][3] = 'disabled'
+        # Upstream's multi-reference graphs size the output from the reference and leave Render unplugged.
+        for node in graph['nodes']:
+            if node['type'] != 'ReferenceMultiLatent' or not node['outputs'][2].get('links'):
+                continue
+            latent = next(n for n in latents if not n['outputs'][0].get('links'))
+            moved = node['outputs'][2]['links']
+            for link in graph['links']:
+                if link[0] in moved:
+                    link[1:3] = [latent['id'], 0]
+            latent['outputs'][0]['links'], node['outputs'][2]['links'] = list(moved), []
+            fit_frame_to_image(data, graph, origin(graph, node, 'images.image0'), origin(graph, latent, 'width'), origin(graph, latent, 'height'), [latent])
+    for node in data['nodes']:
+        if node['type'] == 'MarkdownNote':
+            for old, new in SIZE_NOTES.items():
+                node['widgets_values'][0] = node['widgets_values'][0].replace(old, new)
+
+def sync_fitted_api(api, ui):
+    """Flatten fitted subgraphs into the API fixtures under ComfyUI's instance:node ids."""
+    definitions = {g['id']: g for g in ui.get('definitions', {}).get('subgraphs', [])}
+    for instance in ui['nodes']:
+        graph = definitions.get(instance['type'])
+        if graph is None or instance.get('mode') == 4:
+            continue
+        def ref(node, name):
+            source = origin(graph, node, name)
+            if source[0] == -10:
+                outer = origin(ui, instance, graph['inputs'][source[1]]['name'])
+                return [str(outer[0]), outer[1]]
+            return ['%s:%s' % (instance['id'], source[0]), source[1]]
+        for node in graph['nodes']:
+            key = '%s:%s' % (instance['id'], node['id'])
+            title = node.get('title') or ''
+            if node['type'] == 'ImageScale' and title == FITTED:
+                api[key] = {'class_type': 'ImageScale', 'inputs': {'image': ref(node, 'image'), 'upscale_method': node['widgets_values'][0],
+                                                                   'width': ref(node, 'width'), 'height': ref(node, 'height'), 'crop': node['widgets_values'][3]}}
+            elif node['type'] == 'GetImageSize' and title == 'Size of your image':
+                api[key] = {'class_type': 'GetImageSize', 'inputs': {'image': ref(node, 'image')}}
+            elif title.startswith('Fit Frame'):
+                api[key] = {'class_type': 'ComfyMathExpression', 'inputs': {'expression': node['widgets_values'][0],
+                            **{'values.' + letter: ref(node, 'values.' + letter) for letter in 'abcd'}}}
+            elif node['type'] in LATENTS and is_fitted(graph, node) and key in api:
+                api[key]['inputs'].update(width=ref(node, 'width'), height=ref(node, 'height'))
+
 def main():
     root=Path(__file__).resolve().parents[1]
     for path in sorted(root.glob('versions/*/workflows/*.json')):
         if path.name.startswith('LTX25_'):continue
         data=json.loads(path.read_text())
         defaults=(768,448) if 'Ingredients' in path.name else None
-        if apply_dimensions(data,defaults):
-            text=json.dumps(data,indent=2,ensure_ascii=False)+'\n'
-            if json.loads(path.read_text())!=data:path.write_text(text)
-            api_path=path.parent.parent/'api'/path.name
-            if api_path.exists():
-                api=json.loads(api_path.read_text());sync_api(api,data)
-                api_path.write_text(json.dumps(api,indent=2,ensure_ascii=False)+'\n')
+        apply_dimensions(data,defaults)
+        fit_references(data)
+        text=json.dumps(data,indent=2,ensure_ascii=False)+'\n'
+        if json.loads(path.read_text())!=data:path.write_text(text)
+        api_path=path.parent.parent/'api'/path.name
+        if api_path.exists():
+            api=json.loads(api_path.read_text());sync_api(api,data);sync_fitted_api(api,data)
+            api_path.write_text(json.dumps(api,indent=2,ensure_ascii=False)+'\n')
 
 if __name__=='__main__':main()

@@ -1,8 +1,8 @@
 {
   "id": "7c048efb-a059-44e2-970a-43e1eb472d0d",
   "revision": 0,
-  "last_node_id": 97,
-  "last_link_id": 189,
+  "last_node_id": 103,
+  "last_link_id": 213,
   "nodes": [
     {
       "id": 9,
@@ -400,8 +400,8 @@
         "version": 1,
         "state": {
           "lastGroupId": 8,
-          "lastNodeId": 95,
-          "lastLinkId": 189,
+          "lastNodeId": 103,
+          "lastLinkId": 213,
           "lastRerouteId": 0
         },
         "revision": 0,
@@ -431,7 +431,8 @@
             "name": "image",
             "type": "IMAGE",
             "linkIds": [
-              128
+              128,
+              201
             ],
             "localized_name": "image",
             "label": "image_1",
@@ -445,7 +446,8 @@
             "name": "image_1",
             "type": "IMAGE",
             "linkIds": [
-              123
+              123,
+              190
             ],
             "localized_name": "image_1",
             "label": "image_2",
@@ -535,9 +537,10 @@
             "label": "Render Width",
             "type": "INT",
             "linkIds": [
-              182,
-              186,
-              188
+              191,
+              195,
+              202,
+              206
             ],
             "pos": [
               0,
@@ -550,9 +553,10 @@
             "label": "Render Height",
             "type": "INT",
             "linkIds": [
-              184,
-              187,
-              189
+              192,
+              196,
+              203,
+              207
             ],
             "pos": [
               0,
@@ -902,7 +906,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 182
+                "link": 199
               },
               {
                 "name": "height",
@@ -910,7 +914,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 184
+                "link": 200
               }
             ],
             "outputs": [
@@ -939,9 +943,9 @@
               "lanczos",
               1280,
               720,
-              "center"
+              "disabled"
             ],
-            "title": "Resize reference to render width and height"
+            "title": "Resize image to the fitted frame"
           },
           {
             "id": 26,
@@ -1467,7 +1471,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 186
+                "link": 210
               },
               {
                 "name": "height",
@@ -1475,7 +1479,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 187
+                "link": 211
               }
             ],
             "outputs": [
@@ -1505,9 +1509,9 @@
               "lanczos",
               1280,
               720,
-              "center"
+              "disabled"
             ],
-            "title": "Resize reference to render width and height"
+            "title": "Resize image to the fitted frame"
           },
           {
             "id": 66,
@@ -1591,7 +1595,7 @@
                 "widget": {
                   "name": "width"
                 },
-                "link": 188
+                "link": 212
               },
               {
                 "localized_name": "height",
@@ -1600,7 +1604,7 @@
                 "widget": {
                   "name": "height"
                 },
-                "link": 189
+                "link": 213
               }
             ],
             "outputs": [
@@ -1977,6 +1981,392 @@
             "widgets_values": [
               false
             ]
+          },
+          {
+            "type": "GetImageSize",
+            "title": "Size of your image",
+            "pos": [
+              -1610.0003625824997,
+              1519.9998799755056
+            ],
+            "size": [
+              320,
+              120
+            ],
+            "widgets_values": [],
+            "inputs": [
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 190
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  193,
+                  197
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  194,
+                  198
+                ]
+              },
+              {
+                "name": "batch_size",
+                "type": "INT",
+                "links": []
+              }
+            ],
+            "id": 98,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "GetImageSize"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Width",
+            "pos": [
+              -1270.0003625824997,
+              1519.9998799755056
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*c/d)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 191
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 192
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 193
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 194
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  199
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 99,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Height",
+            "pos": [
+              -1270.0003625824997,
+              1719.9998799755056
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*d/c)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 195
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 196
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 197
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 198
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  200
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 100,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          },
+          {
+            "type": "GetImageSize",
+            "title": "Size of your image",
+            "pos": [
+              -1610.0003625824997,
+              1099.9999154355723
+            ],
+            "size": [
+              320,
+              120
+            ],
+            "widgets_values": [],
+            "inputs": [
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 201
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  204,
+                  208
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  205,
+                  209
+                ]
+              },
+              {
+                "name": "batch_size",
+                "type": "INT",
+                "links": []
+              }
+            ],
+            "id": 101,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "GetImageSize"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Width",
+            "pos": [
+              -1270.0003625824997,
+              1099.9999154355723
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*c/d)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 202
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 203
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 204
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 205
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  210,
+                  212
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 102,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Height",
+            "pos": [
+              -1270.0003625824997,
+              1299.9999154355723
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "max(64,round(sqrt(a*b*d/c)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 206
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 207
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 208
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 209
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  211,
+                  213
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "id": 103,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
           }
         ],
         "groups": [
@@ -2386,49 +2776,193 @@
             "type": "BOOLEAN"
           },
           {
-            "id": 182,
+            "id": 190,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 98,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 191,
             "origin_id": -10,
             "origin_slot": 8,
+            "target_id": 99,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 192,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 99,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 193,
+            "origin_id": 98,
+            "origin_slot": 0,
+            "target_id": 99,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 194,
+            "origin_id": 98,
+            "origin_slot": 1,
+            "target_id": 99,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 195,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 100,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 196,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 100,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 197,
+            "origin_id": 98,
+            "origin_slot": 0,
+            "target_id": 100,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 198,
+            "origin_id": 98,
+            "origin_slot": 1,
+            "target_id": 100,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 199,
+            "origin_id": 99,
+            "origin_slot": 1,
             "target_id": 41,
             "target_slot": 1,
             "type": "INT"
           },
           {
-            "id": 184,
-            "origin_id": -10,
-            "origin_slot": 9,
+            "id": 200,
+            "origin_id": 100,
+            "origin_slot": 1,
             "target_id": 41,
             "target_slot": 2,
             "type": "INT"
           },
           {
-            "id": 186,
+            "id": 201,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 101,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 202,
             "origin_id": -10,
             "origin_slot": 8,
+            "target_id": 102,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 203,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 102,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 204,
+            "origin_id": 101,
+            "origin_slot": 0,
+            "target_id": 102,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 205,
+            "origin_id": 101,
+            "origin_slot": 1,
+            "target_id": 102,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 206,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 103,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 207,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 103,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 208,
+            "origin_id": 101,
+            "origin_slot": 0,
+            "target_id": 103,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 209,
+            "origin_id": 101,
+            "origin_slot": 1,
+            "target_id": 103,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 210,
+            "origin_id": 102,
+            "origin_slot": 1,
             "target_id": 45,
             "target_slot": 1,
             "type": "INT"
           },
           {
-            "id": 187,
-            "origin_id": -10,
-            "origin_slot": 9,
+            "id": 211,
+            "origin_id": 103,
+            "origin_slot": 1,
             "target_id": 45,
             "target_slot": 2,
             "type": "INT"
           },
           {
-            "id": 188,
-            "origin_id": -10,
-            "origin_slot": 8,
+            "id": 212,
+            "origin_id": 102,
+            "origin_slot": 1,
             "target_id": 47,
             "target_slot": 0,
             "type": "INT"
           },
           {
-            "id": 189,
-            "origin_id": -10,
-            "origin_slot": 9,
+            "id": 213,
+            "origin_id": 103,
+            "origin_slot": 1,
             "target_id": 47,
             "target_slot": 1,
             "type": "INT"
@@ -2459,7 +2993,7 @@
   },
   "version": 0.4,
   "state": {
-    "lastLinkId": 185,
-    "lastNodeId": 97
+    "lastLinkId": 213,
+    "lastNodeId": 103
   }
 }

@@ -53,7 +53,14 @@ class FluxStudio:
         negative = graph.node('CLIPTextEncode', clip=clip.out(0), text=negative_prompt if guidance > 1.0 else '')
         vae = graph.node('VAELoader', vae_name='flux2-vae.safetensors')
         if reference_image is not None:
-            reference = graph.node('VAEEncode', pixels=reference_image, vae=vae.out(0))
+            # Width and height set the frame's area and the upload sets its shape, so none of it is lost.
+            size = graph.node('GetImageSize', image=reference_image)
+            def fit(mine, other):
+                return graph.node('ComfyMathExpression', expression=f'max(64,round(sqrt(a*b*{mine}/{other})/16)*16)',
+                                  **{'values.a': width, 'values.b': height, 'values.c': size.out(0), 'values.d': size.out(1)}).out(1)
+            width, height = fit('c', 'd'), fit('d', 'c')
+            scaled = graph.node('ImageScale', image=reference_image, upscale_method='lanczos', width=width, height=height, crop='disabled')
+            reference = graph.node('VAEEncode', pixels=scaled.out(0), vae=vae.out(0))
             positive = graph.node('ReferenceLatent', conditioning=positive.out(0), latent=reference.out(0))
             negative = graph.node('ReferenceLatent', conditioning=negative.out(0), latent=reference.out(0))
         latent = graph.node('EmptyFlux2LatentImage', width=width, height=height, batch_size=1)

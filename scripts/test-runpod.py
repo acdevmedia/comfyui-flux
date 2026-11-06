@@ -50,11 +50,12 @@ def is_edit(graph):return any(n['class_type']=='LoadImage' for n in graph.values
 
 def apply_test_settings(graph,reuse):
  """Shrink to 512 and fix the seed so runs are comparable; randomise only when reusing a Pod."""
- for n in graph.values():
+ for nid,n in graph.items():
   c,i=n['class_type'],n['inputs']
   if c.endswith('Studio'):i.update(width=512,height=512)
-  if c in ('EmptySD3LatentImage','EmptyFlux2LatentImage','EmptyLatentImage'):i.update(width=512,height=512)
-  if c=='ImageScaleToTotalPixels':i['megapixels']=0.25
+  # Fitted latents follow the Render controls; PrimitiveInts inside a subgraph are step counts.
+  if c in ('EmptySD3LatentImage','EmptyFlux2LatentImage','EmptyLatentImage') and not isinstance(i['width'],list):i.update(width=512,height=512)
+  if c=='PrimitiveInt' and ':' not in nid:i['value']=512
   # A fixed seed keeps runs comparable; a reused Pod needs a fresh one to defeat ComfyUI's cache.
   seed=random.randrange(1,2**31) if reuse else 42
   for key in ('seed','noise_seed'):

@@ -1,8 +1,8 @@
 {
   "id": "0ae2b50b-b07a-4465-bb7c-d8fe58e8e0ac",
   "revision": 0,
-  "last_node_id": 61,
-  "last_link_id": 85,
+  "last_node_id": 64,
+  "last_link_id": 96,
   "nodes": [
     {
       "id": 2,
@@ -315,7 +315,7 @@
         "Node name for S&R": "MarkdownNote"
       },
       "widgets_values": [
-        "## FLUX 3 Image Klein: editing\n\nSame files and sampler settings as text-to-image (50 steps, cfg 3.5, euler / simple).\n\n**References**: plug more input image to the `Set Reference Multi Latent` node, the first one is `<ref_image_0>` in the prompt, the next `<ref_image_1>`, and so on. Add every reference to **both** the positive and the negative, as the reference pipeline does.\n\n**Size**: the reference is scaled to ~1 MP here and the output latent takes its size. BFL's pipeline keeps references at native size (up to ~16 MP): raise the megapixels for more reference detail at a higher cost.\n\n**Prompting**: write a full caption of the result, with the edit folded in."
+        "## FLUX 3 Image Klein: editing\n\nSame files and sampler settings as text-to-image (50 steps, cfg 3.5, euler / simple).\n\n**References**: plug more input image to the `Set Reference Multi Latent` node, the first one is `<ref_image_0>` in the prompt, the next `<ref_image_1>`, and so on. Add every reference to **both** the positive and the negative, as the reference pipeline does.\n\n**Size**: the reference is scaled to ~1 MP here and kept whole. Render Width and Height set the output's area and the first reference sets its shape, in multiples of 16. BFL's pipeline keeps references at native size (up to ~16 MP): raise the megapixels for more reference detail at a higher cost.\n\n**Prompting**: write a full caption of the result, with the edit folded in."
       ],
       "widgets_values_named": {
         "text": "## FLUX 3 Image Klein: editing\n\nSame files and sampler settings as text-to-image (50 steps, cfg 3.5, euler / simple).\n\n**References**: plug more input image to the `Set Reference Multi Latent` node, the first one is `<ref_image_0>` in the prompt, the next `<ref_image_1>`, and so on. Add every reference to **both** the positive and the negative, as the reference pipeline does.\n\n**Size**: the reference is scaled to ~1 MP here and the output latent takes its size. BFL's pipeline keeps references at native size (up to ~16 MP): raise the megapixels for more reference detail at a higher cost.\n\n**Prompting**: write a full caption of the result, with the edit folded in."
@@ -386,9 +386,7 @@
         {
           "name": "empty_latent",
           "type": "LATENT",
-          "links": [
-            24
-          ]
+          "links": []
         }
       ],
       "properties": {
@@ -521,7 +519,7 @@
       "outputs": [],
       "properties": {},
       "widgets_values": [
-        "Use `Empty Flux 2 Latent` node to customize image size\n\n`Create Bounding Boxes` node for node for creating prompts for precise editing"
+        "Use Render Width and Render Height to set the output's area; the first reference sets its shape\n\n`Create Bounding Boxes` node for node for creating prompts for precise editing"
       ],
       "widgets_values_named": {
         "text": "Use `Empty Flux 2 Latent` node to customize image size\n\n`Create Bounding Boxes` node for node for creating prompts for precise editing"
@@ -550,7 +548,7 @@
           "widget": {
             "name": "width"
           },
-          "link": 84
+          "link": 95
         },
         {
           "name": "height",
@@ -558,14 +556,16 @@
           "widget": {
             "name": "height"
           },
-          "link": 85
+          "link": 96
         }
       ],
       "outputs": [
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": null
+          "links": [
+            24
+          ]
         }
       ],
       "properties": {
@@ -954,7 +954,8 @@
             73,
             77,
             78,
-            80
+            80,
+            86
           ]
         },
         {
@@ -1176,7 +1177,8 @@
           "name": "INT",
           "type": "INT",
           "links": [
-            84
+            87,
+            91
           ]
         }
       ],
@@ -1209,7 +1211,8 @@
           "name": "INT",
           "type": "INT",
           "links": [
-            85
+            88,
+            92
           ]
         }
       ],
@@ -1220,6 +1223,198 @@
         1024,
         "fixed"
       ]
+    },
+    {
+      "type": "GetImageSize",
+      "title": "Size of your image",
+      "pos": [
+        1130,
+        810
+      ],
+      "size": [
+        320,
+        120
+      ],
+      "widgets_values": [],
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 86
+        }
+      ],
+      "outputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            89,
+            93
+          ]
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            90,
+            94
+          ]
+        },
+        {
+          "name": "batch_size",
+          "type": "INT",
+          "links": []
+        }
+      ],
+      "id": 62,
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {
+        "Node name for S&R": "GetImageSize"
+      }
+    },
+    {
+      "type": "ComfyMathExpression",
+      "title": "Fit Frame Width",
+      "pos": [
+        1470,
+        810
+      ],
+      "size": [
+        320,
+        180
+      ],
+      "widgets_values": [
+        "max(64,round(sqrt(a*b*c/d)/16)*16)"
+      ],
+      "inputs": [
+        {
+          "name": "expression",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "expression"
+          }
+        },
+        {
+          "name": "values.a",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 87
+        },
+        {
+          "name": "values.b",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 88
+        },
+        {
+          "name": "values.c",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 89
+        },
+        {
+          "name": "values.d",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 90
+        }
+      ],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": []
+        },
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            95
+          ]
+        },
+        {
+          "name": "BOOL",
+          "type": "BOOLEAN",
+          "links": []
+        }
+      ],
+      "id": 63,
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {
+        "Node name for S&R": "ComfyMathExpression"
+      }
+    },
+    {
+      "type": "ComfyMathExpression",
+      "title": "Fit Frame Height",
+      "pos": [
+        1470,
+        1010
+      ],
+      "size": [
+        320,
+        180
+      ],
+      "widgets_values": [
+        "max(64,round(sqrt(a*b*d/c)/16)*16)"
+      ],
+      "inputs": [
+        {
+          "name": "expression",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "expression"
+          }
+        },
+        {
+          "name": "values.a",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 91
+        },
+        {
+          "name": "values.b",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 92
+        },
+        {
+          "name": "values.c",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 93
+        },
+        {
+          "name": "values.d",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 94
+        }
+      ],
+      "outputs": [
+        {
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": []
+        },
+        {
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            96
+          ]
+        },
+        {
+          "name": "BOOL",
+          "type": "BOOLEAN",
+          "links": []
+        }
+      ],
+      "id": 64,
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {
+        "Node name for S&R": "ComfyMathExpression"
+      }
     }
   ],
   "links": [
@@ -1265,8 +1460,8 @@
     ],
     [
       24,
-      17,
-      2,
+      44,
+      0,
       7,
       3,
       "LATENT"
@@ -1440,17 +1635,89 @@
       "IMAGE"
     ],
     [
-      84,
+      86,
+      54,
+      0,
+      62,
+      0,
+      "IMAGE"
+    ],
+    [
+      87,
       60,
       0,
+      63,
+      1,
+      "INT"
+    ],
+    [
+      88,
+      61,
+      0,
+      63,
+      2,
+      "INT"
+    ],
+    [
+      89,
+      62,
+      0,
+      63,
+      3,
+      "INT"
+    ],
+    [
+      90,
+      62,
+      1,
+      63,
+      4,
+      "INT"
+    ],
+    [
+      91,
+      60,
+      0,
+      64,
+      1,
+      "INT"
+    ],
+    [
+      92,
+      61,
+      0,
+      64,
+      2,
+      "INT"
+    ],
+    [
+      93,
+      62,
+      0,
+      64,
+      3,
+      "INT"
+    ],
+    [
+      94,
+      62,
+      1,
+      64,
+      4,
+      "INT"
+    ],
+    [
+      95,
+      63,
+      1,
       44,
       0,
       "INT"
     ],
     [
-      85,
-      61,
-      0,
+      96,
+      64,
+      1,
       44,
       1,
       "INT"
@@ -1567,7 +1834,7 @@
   },
   "version": 0.4,
   "state": {
-    "lastLinkId": 85,
-    "lastNodeId": 61
+    "lastLinkId": 96,
+    "lastNodeId": 64
   }
 }

@@ -217,11 +217,11 @@
   "75:66": {
     "inputs": {
       "width": [
-        "75:100",
-        0
+        "75:134",
+        1
       ],
       "height": [
-        "75:100",
+        "75:135",
         1
       ],
       "batch_size": 1
@@ -234,20 +234,22 @@
     }
   },
   "75:80": {
+    "class_type": "ImageScale",
     "inputs": {
-      "upscale_method": "nearest-exact",
-      "megapixels": 1,
-      "resolution_steps": 1,
       "image": [
         "76",
         0
-      ]
-    },
-    "class_type": "ImageScaleToTotalPixels",
-    "_meta": {
-      "title": "Scale Image to Total Pixels",
-      "cnr_id": "comfy-core",
-      "ver": "0.8.2"
+      ],
+      "upscale_method": "lanczos",
+      "width": [
+        "75:134",
+        1
+      ],
+      "height": [
+        "75:135",
+        1
+      ],
+      "crop": "disabled"
     }
   },
   "75:100": {
@@ -328,6 +330,59 @@
     "class_type": "PrimitiveInt",
     "inputs": {
       "value": 1024
+    }
+  },
+  "75:133": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "76",
+        0
+      ]
+    }
+  },
+  "75:134": {
+    "class_type": "ComfyMathExpression",
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*c/d)/16)*16)",
+      "values.a": [
+        "131",
+        0
+      ],
+      "values.b": [
+        "132",
+        0
+      ],
+      "values.c": [
+        "75:133",
+        0
+      ],
+      "values.d": [
+        "75:133",
+        1
+      ]
+    }
+  },
+  "75:135": {
+    "class_type": "ComfyMathExpression",
+    "inputs": {
+      "expression": "max(64,round(sqrt(a*b*d/c)/16)*16)",
+      "values.a": [
+        "131",
+        0
+      ],
+      "values.b": [
+        "132",
+        0
+      ],
+      "values.c": [
+        "75:133",
+        0
+      ],
+      "values.d": [
+        "75:133",
+        1
+      ]
     }
   }
 }
