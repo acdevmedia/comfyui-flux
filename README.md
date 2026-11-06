@@ -117,3 +117,7 @@ Build and GPU-validation status must be confirmed in Actions before treating a r
 - **Connect shows ERR_INVALID_RESPONSE:** the same 403, returned with a body the browser cannot render. Treat it as the entry above.
 - **ComfyUI does not become ready:** first boot downloads the pinned weights before ComfyUI starts. Check the Pod logs; the service answers only after it reports device information.
 - **Out of GPU memory:** FLUX.2 `dev` needs an 80 GB card; on a 48 GB card set `MODEL_MODE=turbo` to run Klein 4B. A 24 GB card cannot hold any variant.
+
+## CPU thread sizing
+
+CPU thread pools are sized automatically to the container CPU quota and available CPUs before PyTorch starts, avoiding host-sized pools that can throttle image scaling and export. Set `OMP_NUM_THREADS` and optionally `MKL_NUM_THREADS` to override; startup logs show the selected values. Actual speedup depends on the workload and has not been benchmarked for this revision.
