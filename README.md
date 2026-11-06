@@ -90,9 +90,17 @@ Click any thumbnail to open the viewer. **Left and right arrow keys** move throu
 
 Picks live for the session and are never uploaded. The ribbon reads the recent `/history` entries through ComfyUI's own `/view` endpoint, skips transient previews, and never scans the output directory.
 
+## Browse and download outputs
+
+**Connect → HTTP 3923 / Copyparty** opens a gallery of everything in `/workspace/ComfyUI/output`, newest first. Sign in with the values of Runpod Secrets `COPYPARTY_USERNAME` and `COPYPARTY_SECRET`. Select files to download them, or a whole folder as a ZIP. It is read-only: nothing can be uploaded, changed or deleted, and if either secret is missing it stays off without affecting ComfyUI. The log is `/workspace/logs/copyparty.log`.
+
+`zip`, `unzip` and `aws` are on the path in the terminal for moving outputs off the Pod yourself.
+
 ## Environment variables
 
 - `HF_TOKEN`: Hugging Face read credential, mapped to `{{ RUNPOD_SECRET_HUGGINGFACE_TOKEN }}`. **Required only for `:3` (FLUX 3)**, whose repository is gated and must be accepted by the same account. FLUX.1 and FLUX.2 download anonymously, so the default `:2` Pod needs no token.
+- `COPYPARTY_USERNAME`: `{{ RUNPOD_SECRET_COPYPARTY_USERNAME }}`; login for the file browser on port 3923.
+- `COPYPARTY_PASSWORD`: `{{ RUNPOD_SECRET_COPYPARTY_SECRET }}`; its password. The browser stays off without both.
 - `HF_HOME=/workspace/.cache/huggingface`: Hugging Face cache/metadata location.
 - `MODEL_MODE=dev`: which variant to download — `dev`, `turbo` (Klein 4B) or `both`. `base` or `distilled` limits first-boot downloads. Both variants share the pinned text encoders, prompt upsampler and VAE, so neither choice skips those components.
 - `STUDIO_VERSION=2`: which generation this image serves, baked at build time from the matching `versions/<n>/profile.json`. It selects the weights downloaded on first boot and the workflows installed. Pull the `:1` or `:3` tag for another generation rather than changing this on a running Pod.
