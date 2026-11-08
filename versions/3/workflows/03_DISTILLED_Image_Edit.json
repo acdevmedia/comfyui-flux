@@ -34,11 +34,14 @@
         {
           "name": "expanded_prompt",
           "type": "STRING",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
-        "Node name for S&R": "AcdevFluxStudio"
+        "Node name for S&R": "AcdevFluxStudio",
+        "acdevSeedModes": {
+          "seed": "randomize"
+        }
       },
       "widgets_values": [
         "In <ref_image_0>, turn the afternoon lighting into cool blue evening light. Keep the subject, layout and lettering unchanged.",
@@ -112,7 +115,7 @@
         {
           "name": "MASK",
           "type": "MASK",
-          "links": []
+          "links": null
         }
       ],
       "properties": {

@@ -1,105 +1,15 @@
 {
   "id": "0ae2b50b-b07a-4465-bb7c-d8fe58e8e0ac",
   "revision": 0,
-  "last_node_id": 65,
-  "last_link_id": 98,
+  "last_node_id": 66,
+  "last_link_id": 117,
   "nodes": [
-    {
-      "id": 2,
-      "type": "CLIPLoader",
-      "pos": [
-        -100,
-        20
-      ],
-      "size": [
-        440,
-        120
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "slot_index": 0,
-          "links": [
-            43,
-            81
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPLoader",
-        "models": [
-          {
-            "name": "qwen3vl_4b_int8_convrot.safetensors",
-            "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3vl_4b_int8_convrot.safetensors",
-            "directory": "text_encoders"
-          }
-        ]
-      },
-      "widgets_values": [
-        "qwen3vl_4b_int8_convrot.safetensors",
-        "flux3",
-        "default"
-      ],
-      "widgets_values_named": {
-        "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
-        "type": "flux3",
-        "device": "default"
-      }
-    },
-    {
-      "id": 3,
-      "type": "VAELoader",
-      "pos": [
-        -100,
-        210
-      ],
-      "size": [
-        450,
-        70
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "slot_index": 0,
-          "links": [
-            5,
-            25
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "VAELoader",
-        "models": [
-          {
-            "name": "flux2-vae.safetensors",
-            "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/vae/flux2-vae.safetensors",
-            "directory": "vae"
-          }
-        ]
-      },
-      "widgets_values": [
-        "flux2-vae.safetensors"
-      ],
-      "widgets_values_named": {
-        "vae_name": "flux2-vae.safetensors"
-      }
-    },
     {
       "id": 4,
       "type": "CLIPTextEncode",
       "pos": [
-        420,
-        -140
+        0,
+        0
       ],
       "size": [
         420,
@@ -112,7 +22,7 @@
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 43
+          "link": 111
         },
         {
           "name": "text",
@@ -129,7 +39,7 @@
           "type": "CONDITIONING",
           "slot_index": 0,
           "links": [
-            20
+            101
           ]
         }
       ],
@@ -148,8 +58,8 @@
       "id": 7,
       "type": "KSampler",
       "pos": [
-        1440,
-        -170
+        0,
+        340
       ],
       "size": [
         340,
@@ -162,22 +72,22 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 83
+          "link": 114
         },
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 22
+          "link": 108
         },
         {
           "name": "negative",
           "type": "CONDITIONING",
-          "link": 23
+          "link": 109
         },
         {
           "name": "latent_image",
           "type": "LATENT",
-          "link": 24
+          "link": 110
         }
       ],
       "outputs": [
@@ -186,12 +96,15 @@
           "type": "LATENT",
           "slot_index": 0,
           "links": [
-            4
+            99
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "KSampler"
+        "Node name for S&R": "KSampler",
+        "acdevSeedModes": {
+          "seed": "randomize"
+        }
       },
       "widgets_values": [
         341993890347040,
@@ -213,53 +126,11 @@
       }
     },
     {
-      "id": 8,
-      "type": "VAEDecode",
-      "pos": [
-        1870,
-        -210
-      ],
-      "size": [
-        210,
-        50
-      ],
-      "flags": {
-        "collapsed": false
-      },
-      "order": 21,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "samples",
-          "type": "LATENT",
-          "link": 4
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 5
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "slot_index": 0,
-          "links": [
-            6
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "VAEDecode"
-      }
-    },
-    {
       "id": 9,
       "type": "SaveImage",
       "pos": [
-        2160,
-        -210
+        1060,
+        0
       ],
       "size": [
         530,
@@ -272,7 +143,7 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 6
+          "link": 107
         }
       ],
       "outputs": [
@@ -295,120 +166,11 @@
       }
     },
     {
-      "id": 10,
-      "type": "MarkdownNote",
-      "pos": [
-        -1080,
-        -210
-      ],
-      "size": [
-        360,
-        270
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Notes",
-      "properties": {
-        "Node name for S&R": "MarkdownNote"
-      },
-      "widgets_values": [
-        "## FLUX 3 Image Klein: editing\n\nSame files and sampler settings as text-to-image (50 steps, cfg 3.5, euler / simple).\n\n**References**: plug more input image to the `Set Reference Multi Latent` node, the first one is `<ref_image_0>` in the prompt, the next `<ref_image_1>`, and so on. Add every reference to **both** the positive and the negative, as the reference pipeline does.\n\n**Size**: the reference is scaled to ~1 MP here and kept whole. Render Width and Height set the output's area and the first reference sets its shape, in multiples of 16. BFL's pipeline keeps references at native size (up to ~16 MP): raise the megapixels for more reference detail at a higher cost.\n\n**Prompting**: write a full caption of the result, with the edit folded in."
-      ],
-      "widgets_values_named": {
-        "text": "## FLUX 3 Image Klein: editing\n\nSame files and sampler settings as text-to-image (50 steps, cfg 3.5, euler / simple).\n\n**References**: plug more input image to the `Set Reference Multi Latent` node, the first one is `<ref_image_0>` in the prompt, the next `<ref_image_1>`, and so on. Add every reference to **both** the positive and the negative, as the reference pipeline does.\n\n**Size**: the reference is scaled to ~1 MP here and the output latent takes its size. BFL's pipeline keeps references at native size (up to ~16 MP): raise the megapixels for more reference detail at a higher cost.\n\n**Prompting**: write a full caption of the result, with the edit folded in."
-      },
-      "color": "#222",
-      "bgcolor": "#000"
-    },
-    {
-      "id": 17,
-      "type": "ReferenceMultiLatent",
-      "pos": [
-        980,
-        -140
-      ],
-      "size": [
-        280,
-        170
-      ],
-      "flags": {},
-      "order": 19,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 20
-        },
-        {
-          "name": "negative",
-          "shape": 7,
-          "type": "CONDITIONING",
-          "link": 82
-        },
-        {
-          "name": "vae",
-          "shape": 7,
-          "type": "VAE",
-          "link": 25
-        },
-        {
-          "name": "images.image0",
-          "shape": 7,
-          "type": "IMAGE",
-          "link": 77
-        },
-        {
-          "name": "images.image1",
-          "shape": 7,
-          "type": "IMAGE",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "links": [
-            22
-          ]
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "links": [
-            23
-          ]
-        },
-        {
-          "name": "empty_latent",
-          "type": "LATENT",
-          "links": []
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ReferenceMultiLatent"
-      },
-      "widgets_values": [
-        "resize",
-        1
-      ],
-      "widgets_values_named": {
-        "resolution": "resize",
-        "resolution.megapixels": 1
-      },
-      "color": "#322",
-      "bgcolor": "#533"
-    },
-    {
       "id": 18,
       "type": "ImageCompare",
       "pos": [
-        2730,
-        -210
+        0,
+        680
       ],
       "size": [
         510,
@@ -439,37 +201,11 @@
       "widgets_values_named": {}
     },
     {
-      "id": 26,
-      "type": "MarkdownNote",
-      "pos": [
-        -1570,
-        -210
-      ],
-      "size": [
-        450,
-        650
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "## Input Asset\n\n- [fashion_portrait_blue_silk_gown_vis.png](https://raw.githubusercontent.com/Comfy-Org/workflow_templates/refs/heads/main/input/fashion_portrait_blue_silk_gown_vis.png)\n\n## Model Links\n\n- [Hugging Face:black-forest-labs/flux-3-image-klein-comfy](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy)\n\n> **VRAM tip** — this template ships the quantised base checkpoint to keep the footprint small. With more than 24 GB of VRAM, use the bf16 weights instead: [`flux3-image-klein-base-bf16.safetensors`](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-bf16.safetensors).\n\n**diffusion_models**\n\n- [flux3-image-klein-base-int8-convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-int8-convrot.safetensors)\n\n**text_encoders**\n\n- [qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors)\n- [qwen3vl_4b_int8_convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3vl_4b_int8_convrot.safetensors)\n\n**vae**\n\n- [flux2-vae.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/vae/flux2-vae.safetensors)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 diffusion_models/\n│   │   └── flux3-image-klein-base-int8-convrot.safetensors\n│   ├── 📂 text_encoders/\n│   │   ├── qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors\n│   │   └── qwen3vl_4b_int8_convrot.safetensors\n│   └── 📂 vae/\n│       └── flux2-vae.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
-      ],
-      "widgets_values_named": {
-        "text": "## Input Asset\n\n- [fashion_portrait_blue_silk_gown_vis.png](https://raw.githubusercontent.com/Comfy-Org/workflow_templates/refs/heads/main/input/fashion_portrait_blue_silk_gown_vis.png)\n\n## Model Links\n\n- [Hugging Face:black-forest-labs/flux-3-image-klein-comfy](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy)\n\n> **VRAM tip** — this template ships the quantised base checkpoint to keep the footprint small. With more than 24 GB of VRAM, use the bf16 weights instead: [`flux3-image-klein-base-bf16.safetensors`](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-bf16.safetensors).\n\n**diffusion_models**\n\n- [flux3-image-klein-base-int8-convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-int8-convrot.safetensors)\n\n**text_encoders**\n\n- [qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors)\n- [qwen3vl_4b_int8_convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3vl_4b_int8_convrot.safetensors)\n\n**vae**\n\n- [flux2-vae.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/vae/flux2-vae.safetensors)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 diffusion_models/\n│   │   └── flux3-image-klein-base-int8-convrot.safetensors\n│   ├── 📂 text_encoders/\n│   │   ├── qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors\n│   │   └── qwen3vl_4b_int8_convrot.safetensors\n│   └── 📂 vae/\n│       └── flux2-vae.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
-      },
-      "color": "#222",
-      "bgcolor": "#000"
-    },
-    {
       "id": 34,
       "type": "PreviewAny",
       "pos": [
-        440,
-        490
+        1060,
+        260
       ],
       "size": [
         420,
@@ -482,7 +218,7 @@
         {
           "name": "source",
           "type": "*",
-          "link": 63
+          "link": 113
         }
       ],
       "outputs": [
@@ -490,8 +226,8 @@
           "name": "STRING",
           "type": "STRING",
           "links": [
-            64,
-            71
+            71,
+            64
           ]
         }
       ],
@@ -502,138 +238,11 @@
       "widgets_values_named": {}
     },
     {
-      "id": 35,
-      "type": "MarkdownNote",
-      "pos": [
-        1480,
-        650
-      ],
-      "size": [
-        250,
-        100
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "Use Render Width and Render Height to set the output's area; the first reference sets its shape\n\n`Create Bounding Boxes` node for node for creating prompts for precise editing"
-      ],
-      "widgets_values_named": {
-        "text": "Use `Empty Flux 2 Latent` node to customize image size\n\n`Create Bounding Boxes` node for node for creating prompts for precise editing"
-      },
-      "color": "#222",
-      "bgcolor": "#000"
-    },
-    {
-      "id": 44,
-      "type": "EmptyFlux2LatentImage",
-      "pos": [
-        1470,
-        480
-      ],
-      "size": [
-        270,
-        110
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "width",
-          "type": "INT",
-          "widget": {
-            "name": "width"
-          },
-          "link": 95
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "widget": {
-            "name": "height"
-          },
-          "link": 96
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            24
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "EmptyFlux2LatentImage"
-      },
-      "widgets_values": [
-        1024,
-        1024,
-        1
-      ],
-      "widgets_values_named": {
-        "width": 1024,
-        "height": 1024,
-        "batch_size": 1
-      }
-    },
-    {
-      "id": 46,
-      "type": "CLIPLoader",
-      "pos": [
-        -110,
-        -760
-      ],
-      "size": [
-        440,
-        120
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "slot_index": 0,
-          "links": [
-            54
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPLoader",
-        "models": [
-          {
-            "name": "qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
-            "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
-            "directory": "text_encoders"
-          }
-        ]
-      },
-      "widgets_values": [
-        "qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
-        "flux3",
-        "default"
-      ],
-      "widgets_values_named": {
-        "clip_name": "qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
-        "type": "flux3",
-        "device": "default"
-      }
-    },
-    {
       "id": 47,
       "type": "TextGenerate",
       "pos": [
-        390,
-        -760
+        0,
+        1020
       ],
       "size": [
         400,
@@ -647,13 +256,13 @@
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 54
+          "link": 115
         },
         {
           "name": "image",
           "shape": 7,
           "type": "IMAGE",
-          "link": 66
+          "link": 116
         },
         {
           "name": "video",
@@ -693,7 +302,7 @@
         {
           "name": "thinking",
           "type": "STRING",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -734,8 +343,8 @@
       "id": 48,
       "type": "PrimitiveStringMultiline",
       "pos": [
-        -110,
-        -590
+        0,
+        1360
       ],
       "size": [
         440,
@@ -766,93 +375,11 @@
       }
     },
     {
-      "id": 49,
-      "type": "Flux3LayoutPrompt",
-      "pos": [
-        -90,
-        490
-      ],
-      "size": [
-        400,
-        200
-      ],
-      "flags": {},
-      "order": 13,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "element",
-          "type": "ARRAY",
-          "link": 76
-        }
-      ],
-      "outputs": [
-        {
-          "name": "prompt",
-          "type": "STRING",
-          "links": [
-            63
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Flux3LayoutPrompt"
-      },
-      "widgets_values": [
-        "In <ref_image_0>, change the dress color <obj_1> to red"
-      ],
-      "widgets_values_named": {
-        "prompt": "In <ref_image_0>, change the dress color <obj_1> to red"
-      },
-      "color": "#232",
-      "bgcolor": "#353"
-    },
-    {
-      "id": 50,
-      "type": "BatchImagesNode",
-      "pos": [
-        20,
-        -360
-      ],
-      "size": [
-        140,
-        70
-      ],
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images.image0",
-          "type": "IMAGE",
-          "link": 80
-        },
-        {
-          "name": "images.image1",
-          "shape": 7,
-          "type": "IMAGE",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            66
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "BatchImagesNode"
-      }
-    },
-    {
       "id": 51,
       "type": "ComfySwitchNode",
       "pos": [
-        900,
-        -750
+        0,
+        1700
       ],
       "size": [
         270,
@@ -898,8 +425,8 @@
       "id": 52,
       "type": "PreviewAny",
       "pos": [
-        900,
-        -560
+        1060,
+        520
       ],
       "size": [
         430,
@@ -934,8 +461,8 @@
       "id": 54,
       "type": "LoadImage",
       "pos": [
-        -640,
-        -160
+        0,
+        2040
       ],
       "size": [
         440,
@@ -952,17 +479,15 @@
           "slot_index": 0,
           "links": [
             73,
-            77,
             78,
-            80,
-            86
+            103
           ]
         },
         {
           "name": "MASK",
           "type": "MASK",
           "slot_index": 1,
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -981,8 +506,8 @@
       "id": 55,
       "type": "CreateBoundingBoxes",
       "pos": [
-        -630,
-        390
+        0,
+        2380
       ],
       "size": [
         420,
@@ -1009,18 +534,18 @@
         {
           "name": "preview",
           "type": "IMAGE",
-          "links": []
+          "links": null
         },
         {
           "name": "bboxes",
           "type": "BOUNDING_BOX",
-          "links": []
+          "links": null
         },
         {
           "name": "elements",
           "type": "ARRAY",
           "links": [
-            76
+            100
           ]
         }
       ],
@@ -1072,8 +597,8 @@
       "id": 58,
       "type": "CLIPTextEncode",
       "pos": [
-        420,
-        140
+        0,
+        2720
       ],
       "size": [
         440,
@@ -1086,7 +611,7 @@
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 81
+          "link": 112
         }
       ],
       "outputs": [
@@ -1095,7 +620,7 @@
           "type": "CONDITIONING",
           "slot_index": 0,
           "links": [
-            82
+            102
           ]
         }
       ],
@@ -1113,56 +638,12 @@
       "bgcolor": "#335"
     },
     {
-      "id": 59,
-      "type": "UNETLoader",
-      "pos": [
-        -100,
-        -140
-      ],
-      "size": [
-        440,
-        90
-      ],
-      "flags": {},
-      "order": 9,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "slot_index": 0,
-          "links": [
-            83
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UNETLoader",
-        "models": [
-          {
-            "name": "flux3-image-klein-base-int8-convrot.safetensors",
-            "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-int8-convrot.safetensors",
-            "directory": "diffusion_models"
-          }
-        ]
-      },
-      "widgets_values": [
-        "flux3-image-klein-base-int8-convrot.safetensors",
-        "default"
-      ],
-      "widgets_values_named": {
-        "unet_name": "flux3-image-klein-base-int8-convrot.safetensors",
-        "weight_dtype": "default"
-      }
-    },
-    {
       "id": 60,
       "type": "PrimitiveInt",
       "title": "Render Width",
       "pos": [
-        -400,
-        0
+        0,
+        3060
       ],
       "size": [
         300,
@@ -1177,8 +658,7 @@
           "name": "INT",
           "type": "INT",
           "links": [
-            87,
-            91
+            104
           ]
         }
       ],
@@ -1195,8 +675,8 @@
       "type": "PrimitiveInt",
       "title": "Render Height",
       "pos": [
-        -400,
-        150
+        0,
+        3400
       ],
       "size": [
         300,
@@ -1211,8 +691,7 @@
           "name": "INT",
           "type": "INT",
           "links": [
-            88,
-            92
+            105
           ]
         }
       ],
@@ -1225,214 +704,12 @@
       ]
     },
     {
-      "type": "GetImageSize",
-      "title": "Size of your image",
-      "pos": [
-        1130,
-        810
-      ],
-      "size": [
-        320,
-        120
-      ],
-      "widgets_values": [],
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 86
-        }
-      ],
-      "outputs": [
-        {
-          "name": "width",
-          "type": "INT",
-          "links": [
-            89,
-            93
-          ]
-        },
-        {
-          "name": "height",
-          "type": "INT",
-          "links": [
-            90,
-            94
-          ]
-        },
-        {
-          "name": "batch_size",
-          "type": "INT",
-          "links": []
-        }
-      ],
-      "id": 62,
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "properties": {
-        "Node name for S&R": "GetImageSize"
-      }
-    },
-    {
-      "type": "ComfyMathExpression",
-      "title": "Fit Frame Width",
-      "pos": [
-        1470,
-        810
-      ],
-      "size": [
-        320,
-        180
-      ],
-      "widgets_values": [
-        "a if e else max(64,round(sqrt(a*b*c/d)/16)*16)"
-      ],
-      "inputs": [
-        {
-          "name": "expression",
-          "type": "STRING",
-          "link": null,
-          "widget": {
-            "name": "expression"
-          }
-        },
-        {
-          "name": "values.a",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 87
-        },
-        {
-          "name": "values.b",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 88
-        },
-        {
-          "name": "values.c",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 89
-        },
-        {
-          "name": "values.d",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 90
-        },
-        {
-          "name": "values.e",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 97
-        }
-      ],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": []
-        },
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            95
-          ]
-        },
-        {
-          "name": "BOOL",
-          "type": "BOOLEAN",
-          "links": []
-        }
-      ],
-      "id": 63,
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "properties": {
-        "Node name for S&R": "ComfyMathExpression"
-      }
-    },
-    {
-      "type": "ComfyMathExpression",
-      "title": "Fit Frame Height",
-      "pos": [
-        1470,
-        1010
-      ],
-      "size": [
-        320,
-        180
-      ],
-      "widgets_values": [
-        "b if e else max(64,round(sqrt(a*b*d/c)/16)*16)"
-      ],
-      "inputs": [
-        {
-          "name": "expression",
-          "type": "STRING",
-          "link": null,
-          "widget": {
-            "name": "expression"
-          }
-        },
-        {
-          "name": "values.a",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 91
-        },
-        {
-          "name": "values.b",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 92
-        },
-        {
-          "name": "values.c",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 93
-        },
-        {
-          "name": "values.d",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 94
-        },
-        {
-          "name": "values.e",
-          "type": "FLOAT,INT,BOOLEAN",
-          "link": 98
-        }
-      ],
-      "outputs": [
-        {
-          "name": "FLOAT",
-          "type": "FLOAT",
-          "links": []
-        },
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            96
-          ]
-        },
-        {
-          "name": "BOOL",
-          "type": "BOOLEAN",
-          "links": []
-        }
-      ],
-      "id": 64,
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "properties": {
-        "Node name for S&R": "ComfyMathExpression"
-      }
-    },
-    {
       "id": 65,
       "type": "PrimitiveBoolean",
       "title": "Exact Frame: use Render Width and Height, cropping the image",
       "pos": [
-        -400,
-        330
+        0,
+        3740
       ],
       "size": [
         300,
@@ -1447,8 +724,7 @@
           "name": "BOOLEAN",
           "type": "BOOLEAN",
           "links": [
-            97,
-            98
+            106
           ]
         }
       ],
@@ -1458,57 +734,175 @@
       "widgets_values": [
         false
       ]
+    },
+    {
+      "id": 66,
+      "type": "6956da97-9bde-5ed8-9c05-df5c8d756ab5",
+      "pos": [
+        420,
+        0
+      ],
+      "size": [
+        560,
+        360
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "KSampler",
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 99
+        },
+        {
+          "label": "CreateBoundingBoxes",
+          "localized_name": "element",
+          "name": "element",
+          "type": "ARRAY",
+          "link": 100
+        },
+        {
+          "label": "Positive Prompt",
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 101
+        },
+        {
+          "label": "Negative Prompt",
+          "localized_name": "negative",
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 102
+        },
+        {
+          "label": "LoadImage",
+          "localized_name": "images_image0",
+          "name": "images_image0",
+          "type": "IMAGE",
+          "link": 103
+        },
+        {
+          "label": "Render Width",
+          "localized_name": "values_a",
+          "name": "values_a",
+          "type": "INT",
+          "link": 104
+        },
+        {
+          "label": "Render Height",
+          "localized_name": "values_b",
+          "name": "values_b",
+          "type": "INT",
+          "link": 105
+        },
+        {
+          "label": "Exact Frame: use Render Width and Height, cropping the image",
+          "localized_name": "values_e",
+          "name": "values_e",
+          "type": "BOOLEAN",
+          "link": 106
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            107
+          ]
+        },
+        {
+          "label": "positive",
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            108
+          ]
+        },
+        {
+          "label": "negative",
+          "localized_name": "negative",
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            109
+          ]
+        },
+        {
+          "label": "LATENT",
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            110
+          ]
+        },
+        {
+          "label": "CLIP",
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            111,
+            112
+          ]
+        },
+        {
+          "label": "prompt",
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "links": [
+            113
+          ]
+        },
+        {
+          "label": "MODEL",
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            114
+          ]
+        },
+        {
+          "label": "CLIP",
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            115
+          ]
+        },
+        {
+          "label": "IMAGE",
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            116
+          ]
+        }
+      ],
+      "title": "Model internals",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.39.0"
+      },
+      "widgets_values": [],
+      "widgets_values_named": {}
     }
   ],
   "links": [
-    [
-      4,
-      7,
-      0,
-      8,
-      0,
-      "LATENT"
-    ],
-    [
-      5,
-      3,
-      0,
-      8,
-      1,
-      "VAE"
-    ],
-    [
-      6,
-      8,
-      0,
-      9,
-      0,
-      "IMAGE"
-    ],
-    [
-      22,
-      17,
-      0,
-      7,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      23,
-      17,
-      1,
-      7,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      24,
-      44,
-      0,
-      7,
-      3,
-      "LATENT"
-    ],
     [
       30,
       9,
@@ -1516,22 +910,6 @@
       18,
       1,
       "IMAGE"
-    ],
-    [
-      43,
-      2,
-      0,
-      4,
-      0,
-      "CLIP"
-    ],
-    [
-      63,
-      49,
-      0,
-      34,
-      0,
-      "STRING"
     ],
     [
       68,
@@ -1574,83 +952,11 @@
       "IMAGE"
     ],
     [
-      76,
-      55,
-      2,
-      49,
-      0,
-      "ARRAY"
-    ],
-    [
       78,
       54,
       0,
       18,
       0,
-      "IMAGE"
-    ],
-    [
-      81,
-      2,
-      0,
-      58,
-      0,
-      "CLIP"
-    ],
-    [
-      83,
-      59,
-      0,
-      7,
-      0,
-      "MODEL"
-    ],
-    [
-      20,
-      4,
-      0,
-      17,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      82,
-      58,
-      0,
-      17,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      25,
-      3,
-      0,
-      17,
-      2,
-      "VAE"
-    ],
-    [
-      77,
-      54,
-      0,
-      17,
-      3,
-      "IMAGE"
-    ],
-    [
-      54,
-      46,
-      0,
-      47,
-      0,
-      "CLIP"
-    ],
-    [
-      66,
-      50,
-      0,
-      47,
-      1,
       "IMAGE"
     ],
     [
@@ -1670,116 +976,148 @@
       "STRING"
     ],
     [
-      80,
+      99,
+      7,
+      0,
+      66,
+      0,
+      "LATENT"
+    ],
+    [
+      100,
+      55,
+      2,
+      66,
+      1,
+      "ARRAY"
+    ],
+    [
+      101,
+      4,
+      0,
+      66,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      102,
+      58,
+      0,
+      66,
+      3,
+      "CONDITIONING"
+    ],
+    [
+      103,
       54,
       0,
-      50,
+      66,
+      4,
+      "IMAGE"
+    ],
+    [
+      104,
+      60,
+      0,
+      66,
+      5,
+      "INT"
+    ],
+    [
+      105,
+      61,
+      0,
+      66,
+      6,
+      "INT"
+    ],
+    [
+      106,
+      65,
+      0,
+      66,
+      7,
+      "BOOLEAN"
+    ],
+    [
+      107,
+      66,
+      0,
+      9,
       0,
       "IMAGE"
     ],
     [
-      86,
-      54,
+      108,
+      66,
+      1,
+      7,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      109,
+      66,
+      2,
+      7,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      110,
+      66,
+      3,
+      7,
+      3,
+      "LATENT"
+    ],
+    [
+      111,
+      66,
+      4,
+      4,
       0,
-      62,
+      "CLIP"
+    ],
+    [
+      112,
+      66,
+      4,
+      58,
       0,
+      "CLIP"
+    ],
+    [
+      113,
+      66,
+      5,
+      34,
+      0,
+      "STRING"
+    ],
+    [
+      114,
+      66,
+      6,
+      7,
+      0,
+      "MODEL"
+    ],
+    [
+      115,
+      66,
+      7,
+      47,
+      0,
+      "CLIP"
+    ],
+    [
+      116,
+      66,
+      8,
+      47,
+      1,
       "IMAGE"
-    ],
-    [
-      87,
-      60,
-      0,
-      63,
-      1,
-      "INT"
-    ],
-    [
-      88,
-      61,
-      0,
-      63,
-      2,
-      "INT"
-    ],
-    [
-      89,
-      62,
-      0,
-      63,
-      3,
-      "INT"
-    ],
-    [
-      90,
-      62,
-      1,
-      63,
-      4,
-      "INT"
-    ],
-    [
-      91,
-      60,
-      0,
-      64,
-      1,
-      "INT"
-    ],
-    [
-      92,
-      61,
-      0,
-      64,
-      2,
-      "INT"
-    ],
-    [
-      93,
-      62,
-      0,
-      64,
-      3,
-      "INT"
-    ],
-    [
-      94,
-      62,
-      1,
-      64,
-      4,
-      "INT"
-    ],
-    [
-      95,
-      63,
-      1,
-      44,
-      0,
-      "INT"
-    ],
-    [
-      96,
-      64,
-      1,
-      44,
-      1,
-      "INT"
-    ],
-    [
-      97,
-      65,
-      0,
-      63,
-      5,
-      "BOOLEAN"
-    ],
-    [
-      98,
-      65,
-      0,
-      64,
-      5,
-      "BOOLEAN"
     ]
   ],
   "groups": [
@@ -1893,7 +1231,1176 @@
   },
   "version": 0.4,
   "state": {
-    "lastLinkId": 98,
-    "lastNodeId": 65
+    "lastLinkId": 117,
+    "lastNodeId": 66
+  },
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "6956da97-9bde-5ed8-9c05-df5c8d756ab5",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 66,
+          "lastLinkId": 117,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Model internals",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -510,
+            -760,
+            160,
+            200
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            2470,
+            -760,
+            140,
+            220
+          ]
+        },
+        "inputs": [
+          {
+            "id": "b8a13ca2-4964-551b-9911-5763b4ea3266",
+            "name": "samples",
+            "type": "LATENT",
+            "linkIds": [
+              4
+            ],
+            "localized_name": "samples",
+            "label": "KSampler",
+            "pos": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "3f5a1acb-5d44-5eb9-9412-3d3c73450fc5",
+            "name": "element",
+            "type": "ARRAY",
+            "linkIds": [
+              76
+            ],
+            "localized_name": "element",
+            "label": "CreateBoundingBoxes",
+            "pos": [
+              0,
+              20
+            ]
+          },
+          {
+            "id": "b5c4d3c0-d7d8-58ed-8cae-1675f5a492eb",
+            "name": "positive",
+            "type": "CONDITIONING",
+            "linkIds": [
+              20
+            ],
+            "localized_name": "positive",
+            "label": "Positive Prompt",
+            "pos": [
+              0,
+              40
+            ]
+          },
+          {
+            "id": "45c3fc03-68c9-597d-a9b3-245a608ee8c1",
+            "name": "negative",
+            "type": "CONDITIONING",
+            "linkIds": [
+              82
+            ],
+            "localized_name": "negative",
+            "label": "Negative Prompt",
+            "pos": [
+              0,
+              60
+            ]
+          },
+          {
+            "id": "674cc3f0-bd56-5aa5-bb3d-af50ed14a29c",
+            "name": "images_image0",
+            "type": "IMAGE",
+            "linkIds": [
+              77,
+              80,
+              86
+            ],
+            "localized_name": "images_image0",
+            "label": "LoadImage",
+            "pos": [
+              0,
+              80
+            ]
+          },
+          {
+            "id": "5de7d46f-eebe-54ae-a8ba-c3588d3e9127",
+            "name": "values_a",
+            "type": "INT",
+            "linkIds": [
+              87,
+              91
+            ],
+            "localized_name": "values_a",
+            "label": "Render Width",
+            "pos": [
+              0,
+              100
+            ]
+          },
+          {
+            "id": "08658bc8-516e-5825-8aef-d692b4ed4fa7",
+            "name": "values_b",
+            "type": "INT",
+            "linkIds": [
+              88,
+              92
+            ],
+            "localized_name": "values_b",
+            "label": "Render Height",
+            "pos": [
+              0,
+              120
+            ]
+          },
+          {
+            "id": "327e9a02-c69b-5e33-9303-5f4e8b8ca714",
+            "name": "values_e",
+            "type": "BOOLEAN",
+            "linkIds": [
+              97,
+              98
+            ],
+            "localized_name": "values_e",
+            "label": "Exact Frame: use Render Width and Height, cropping the image",
+            "pos": [
+              0,
+              140
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "336b8850-aeba-5509-bfe1-8b1b174d0ba7",
+            "name": "IMAGE",
+            "type": "IMAGE",
+            "linkIds": [
+              6
+            ],
+            "localized_name": "IMAGE",
+            "label": "IMAGE",
+            "pos": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "8d35a433-2be8-59a6-882e-4c8163758c5d",
+            "name": "positive",
+            "type": "CONDITIONING",
+            "linkIds": [
+              22
+            ],
+            "localized_name": "positive",
+            "label": "positive",
+            "pos": [
+              0,
+              20
+            ]
+          },
+          {
+            "id": "40173205-8e9a-5599-9493-8dcc7bd37a40",
+            "name": "negative",
+            "type": "CONDITIONING",
+            "linkIds": [
+              23
+            ],
+            "localized_name": "negative",
+            "label": "negative",
+            "pos": [
+              0,
+              40
+            ]
+          },
+          {
+            "id": "69d91fd7-3600-509b-bb65-111b503d79ef",
+            "name": "LATENT",
+            "type": "LATENT",
+            "linkIds": [
+              24
+            ],
+            "localized_name": "LATENT",
+            "label": "LATENT",
+            "pos": [
+              0,
+              60
+            ]
+          },
+          {
+            "id": "cbf60c61-ebb8-5f79-b5de-cb311ab20ec0",
+            "name": "CLIP",
+            "type": "CLIP",
+            "linkIds": [
+              43
+            ],
+            "localized_name": "CLIP",
+            "label": "CLIP",
+            "pos": [
+              0,
+              80
+            ]
+          },
+          {
+            "id": "7a92f237-0a50-51c9-a8f4-78ac78aebe69",
+            "name": "prompt",
+            "type": "STRING",
+            "linkIds": [
+              63
+            ],
+            "localized_name": "prompt",
+            "label": "prompt",
+            "pos": [
+              0,
+              100
+            ]
+          },
+          {
+            "id": "4e727a62-2c97-5cc6-8795-467f10d7fed6",
+            "name": "MODEL",
+            "type": "MODEL",
+            "linkIds": [
+              83
+            ],
+            "localized_name": "MODEL",
+            "label": "MODEL",
+            "pos": [
+              0,
+              120
+            ]
+          },
+          {
+            "id": "f5275aa3-042c-5b52-8c5c-8d5e1e9f0e51",
+            "name": "CLIP",
+            "type": "CLIP",
+            "linkIds": [
+              54
+            ],
+            "localized_name": "CLIP",
+            "label": "CLIP",
+            "pos": [
+              0,
+              140
+            ]
+          },
+          {
+            "id": "d7f8fbba-31b3-51e6-9970-5988f1cd34d3",
+            "name": "IMAGE",
+            "type": "IMAGE",
+            "linkIds": [
+              66
+            ],
+            "localized_name": "IMAGE",
+            "label": "IMAGE",
+            "pos": [
+              0,
+              160
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 2,
+            "type": "CLIPLoader",
+            "pos": [
+              -100,
+              20
+            ],
+            "size": [
+              440,
+              120
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "CLIP",
+                "type": "CLIP",
+                "slot_index": 0,
+                "links": [
+                  43
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "CLIPLoader",
+              "models": [
+                {
+                  "name": "qwen3vl_4b_int8_convrot.safetensors",
+                  "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3vl_4b_int8_convrot.safetensors",
+                  "directory": "text_encoders"
+                }
+              ]
+            },
+            "widgets_values": [
+              "qwen3vl_4b_int8_convrot.safetensors",
+              "flux3",
+              "default"
+            ],
+            "widgets_values_named": {
+              "clip_name": "qwen3vl_4b_int8_convrot.safetensors",
+              "type": "flux3",
+              "device": "default"
+            }
+          },
+          {
+            "id": 3,
+            "type": "VAELoader",
+            "pos": [
+              -100,
+              210
+            ],
+            "size": [
+              450,
+              70
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "VAE",
+                "type": "VAE",
+                "slot_index": 0,
+                "links": [
+                  5,
+                  25
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAELoader",
+              "models": [
+                {
+                  "name": "flux2-vae.safetensors",
+                  "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/vae/flux2-vae.safetensors",
+                  "directory": "vae"
+                }
+              ]
+            },
+            "widgets_values": [
+              "flux2-vae.safetensors"
+            ],
+            "widgets_values_named": {
+              "vae_name": "flux2-vae.safetensors"
+            }
+          },
+          {
+            "id": 8,
+            "type": "VAEDecode",
+            "pos": [
+              1870,
+              -210
+            ],
+            "size": [
+              210,
+              50
+            ],
+            "flags": {
+              "collapsed": false
+            },
+            "order": 21,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "samples",
+                "type": "LATENT",
+                "link": 4
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": 5
+              }
+            ],
+            "outputs": [
+              {
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "slot_index": 0,
+                "links": [
+                  6
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAEDecode"
+            }
+          },
+          {
+            "id": 17,
+            "type": "ReferenceMultiLatent",
+            "pos": [
+              980,
+              -140
+            ],
+            "size": [
+              280,
+              170
+            ],
+            "flags": {},
+            "order": 19,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 20
+              },
+              {
+                "name": "negative",
+                "shape": 7,
+                "type": "CONDITIONING",
+                "link": 82
+              },
+              {
+                "name": "vae",
+                "shape": 7,
+                "type": "VAE",
+                "link": 25
+              },
+              {
+                "name": "images.image0",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": 77
+              },
+              {
+                "name": "images.image1",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "links": [
+                  22
+                ]
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "links": [
+                  23
+                ]
+              },
+              {
+                "name": "empty_latent",
+                "type": "LATENT",
+                "links": null
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ReferenceMultiLatent"
+            },
+            "widgets_values": [
+              "resize",
+              1
+            ],
+            "widgets_values_named": {
+              "resolution": "resize",
+              "resolution.megapixels": 1
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+          },
+          {
+            "id": 44,
+            "type": "EmptyFlux2LatentImage",
+            "pos": [
+              1470,
+              480
+            ],
+            "size": [
+              270,
+              110
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "widget": {
+                  "name": "width"
+                },
+                "link": 95
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "widget": {
+                  "name": "height"
+                },
+                "link": 96
+              }
+            ],
+            "outputs": [
+              {
+                "name": "LATENT",
+                "type": "LATENT",
+                "links": [
+                  24
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "EmptyFlux2LatentImage"
+            },
+            "widgets_values": [
+              1024,
+              1024,
+              1
+            ],
+            "widgets_values_named": {
+              "width": 1024,
+              "height": 1024,
+              "batch_size": 1
+            }
+          },
+          {
+            "id": 46,
+            "type": "CLIPLoader",
+            "pos": [
+              -110,
+              -760
+            ],
+            "size": [
+              440,
+              120
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "CLIP",
+                "type": "CLIP",
+                "slot_index": 0,
+                "links": [
+                  54
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "CLIPLoader",
+              "models": [
+                {
+                  "name": "qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
+                  "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
+                  "directory": "text_encoders"
+                }
+              ]
+            },
+            "widgets_values": [
+              "qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
+              "flux3",
+              "default"
+            ],
+            "widgets_values_named": {
+              "clip_name": "qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors",
+              "type": "flux3",
+              "device": "default"
+            }
+          },
+          {
+            "id": 49,
+            "type": "Flux3LayoutPrompt",
+            "pos": [
+              -90,
+              490
+            ],
+            "size": [
+              400,
+              200
+            ],
+            "flags": {},
+            "order": 13,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "element",
+                "type": "ARRAY",
+                "link": 76
+              }
+            ],
+            "outputs": [
+              {
+                "name": "prompt",
+                "type": "STRING",
+                "links": [
+                  63
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "Flux3LayoutPrompt"
+            },
+            "widgets_values": [
+              "In <ref_image_0>, change the dress color <obj_1> to red"
+            ],
+            "widgets_values_named": {
+              "prompt": "In <ref_image_0>, change the dress color <obj_1> to red"
+            },
+            "color": "#232",
+            "bgcolor": "#353"
+          },
+          {
+            "id": 50,
+            "type": "BatchImagesNode",
+            "pos": [
+              20,
+              -360
+            ],
+            "size": [
+              140,
+              70
+            ],
+            "flags": {},
+            "order": 12,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "images.image0",
+                "type": "IMAGE",
+                "link": 80
+              },
+              {
+                "name": "images.image1",
+                "shape": 7,
+                "type": "IMAGE",
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [
+                  66
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "BatchImagesNode"
+            }
+          },
+          {
+            "id": 59,
+            "type": "UNETLoader",
+            "pos": [
+              -100,
+              -140
+            ],
+            "size": [
+              440,
+              90
+            ],
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "MODEL",
+                "type": "MODEL",
+                "slot_index": 0,
+                "links": [
+                  83
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "UNETLoader",
+              "models": [
+                {
+                  "name": "flux3-image-klein-base-int8-convrot.safetensors",
+                  "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-int8-convrot.safetensors",
+                  "directory": "diffusion_models"
+                }
+              ]
+            },
+            "widgets_values": [
+              "flux3-image-klein-base-int8-convrot.safetensors",
+              "default"
+            ],
+            "widgets_values_named": {
+              "unet_name": "flux3-image-klein-base-int8-convrot.safetensors",
+              "weight_dtype": "default"
+            }
+          },
+          {
+            "type": "GetImageSize",
+            "title": "Size of your image",
+            "pos": [
+              1130,
+              810
+            ],
+            "size": [
+              320,
+              120
+            ],
+            "widgets_values": [],
+            "inputs": [
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 86
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  89,
+                  93
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  90,
+                  94
+                ]
+              },
+              {
+                "name": "batch_size",
+                "type": "INT",
+                "links": null
+              }
+            ],
+            "id": 62,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "GetImageSize"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Width",
+            "pos": [
+              1470,
+              810
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "a if e else max(64,round(sqrt(a*b*c/d)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 87
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 88
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 89
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 90
+              },
+              {
+                "name": "values.e",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 97
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": null
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  95
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": null
+              }
+            ],
+            "id": 63,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          },
+          {
+            "type": "ComfyMathExpression",
+            "title": "Fit Frame Height",
+            "pos": [
+              1470,
+              1010
+            ],
+            "size": [
+              320,
+              180
+            ],
+            "widgets_values": [
+              "b if e else max(64,round(sqrt(a*b*d/c)/16)*16)"
+            ],
+            "inputs": [
+              {
+                "name": "expression",
+                "type": "STRING",
+                "link": null,
+                "widget": {
+                  "name": "expression"
+                }
+              },
+              {
+                "name": "values.a",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 91
+              },
+              {
+                "name": "values.b",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 92
+              },
+              {
+                "name": "values.c",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 93
+              },
+              {
+                "name": "values.d",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 94
+              },
+              {
+                "name": "values.e",
+                "type": "FLOAT,INT,BOOLEAN",
+                "link": 98
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": null
+              },
+              {
+                "name": "INT",
+                "type": "INT",
+                "links": [
+                  96
+                ]
+              },
+              {
+                "name": "BOOL",
+                "type": "BOOLEAN",
+                "links": null
+              }
+            ],
+            "id": 64,
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "properties": {
+              "Node name for S&R": "ComfyMathExpression"
+            }
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 5,
+            "origin_id": 3,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 1,
+            "type": "VAE"
+          },
+          {
+            "id": 25,
+            "origin_id": 3,
+            "origin_slot": 0,
+            "target_id": 17,
+            "target_slot": 2,
+            "type": "VAE"
+          },
+          {
+            "id": 89,
+            "origin_id": 62,
+            "origin_slot": 0,
+            "target_id": 63,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 90,
+            "origin_id": 62,
+            "origin_slot": 1,
+            "target_id": 63,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 93,
+            "origin_id": 62,
+            "origin_slot": 0,
+            "target_id": 64,
+            "target_slot": 3,
+            "type": "INT"
+          },
+          {
+            "id": 94,
+            "origin_id": 62,
+            "origin_slot": 1,
+            "target_id": 64,
+            "target_slot": 4,
+            "type": "INT"
+          },
+          {
+            "id": 95,
+            "origin_id": 63,
+            "origin_slot": 1,
+            "target_id": 44,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 96,
+            "origin_id": 64,
+            "origin_slot": 1,
+            "target_id": 44,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 4,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 0,
+            "type": "LATENT"
+          },
+          {
+            "id": 76,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 49,
+            "target_slot": 0,
+            "type": "ARRAY"
+          },
+          {
+            "id": 20,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 17,
+            "target_slot": 0,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 82,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 17,
+            "target_slot": 1,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 77,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 17,
+            "target_slot": 3,
+            "type": "IMAGE"
+          },
+          {
+            "id": 80,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 50,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 86,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 62,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 87,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 63,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 91,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 64,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 88,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 63,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 92,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 64,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 97,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 63,
+            "target_slot": 5,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 98,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 64,
+            "target_slot": 5,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 6,
+            "origin_id": 8,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 22,
+            "origin_id": 17,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 23,
+            "origin_id": 17,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 2,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 24,
+            "origin_id": 44,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 3,
+            "type": "LATENT"
+          },
+          {
+            "id": 43,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 4,
+            "type": "CLIP"
+          },
+          {
+            "id": 63,
+            "origin_id": 49,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 5,
+            "type": "STRING"
+          },
+          {
+            "id": 83,
+            "origin_id": 59,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 6,
+            "type": "MODEL"
+          },
+          {
+            "id": 54,
+            "origin_id": 46,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 7,
+            "type": "CLIP"
+          },
+          {
+            "id": 66,
+            "origin_id": 50,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 8,
+            "type": "IMAGE"
+          }
+        ],
+        "extra": {}
+      }
+    ]
   }
 }

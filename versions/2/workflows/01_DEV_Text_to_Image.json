@@ -48,38 +48,6 @@
       ]
     },
     {
-      "id": 66,
-      "type": "MarkdownNote",
-      "pos": [
-        -1470.000060929043,
-        -69.99998767116955
-      ],
-      "size": [
-        510,
-        970
-      ],
-      "flags": {
-        "collapsed": false
-      },
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "title": "Model links",
-      "properties": {
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.7",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "Guide: [Subgraph](https://docs.comfy.org/interface/features/subgraph)\n\n## Model Links\n\n- [Hugging Face:Comfy-Org/flux2-dev](https://huggingface.co/Comfy-Org/flux2-dev)\n- [ModelScope:Comfy-Org/flux2-dev](https://modelscope.cn/models/Comfy-Org/flux2-dev)\n\n**vae**\n\n- [flux2-vae.safetensors](https://huggingface.co/black-forest-labs/FLUX.2-small-decoder/resolve/main/flux2-vae.safetensors) (238 MB)\n\n**text_encoders**\n\n- [mistral_3_small_flux2_fp8.safetensors](https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/text_encoders/mistral_3_small_flux2_fp8.safetensors) (33.14 GB)\n\n**loras**\n\n- [Flux2TurboComfyv2.safetensors](https://huggingface.co/ByteZSzn/Flux.2-Turbo-ComfyUI/resolve/main/Flux2TurboComfyv2.safetensors) (2.57 GB)\n\n**diffusion_models**\n\n- [flux2_dev_fp8mixed.safetensors](https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/diffusion_models/flux2_dev_fp8mixed.safetensors) (33.02 GB)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 vae/\n│   │   └── flux2-vae.safetensors\n│   ├── 📂 text_encoders/\n│   │   └── mistral_3_small_flux2_fp8.safetensors\n│   ├── 📂 loras/\n│   │   └── Flux2TurboComfyv2.safetensors\n│   └── 📂 diffusion_models/\n│       └── flux2_dev_fp8mixed.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
-      ],
-      "color": "#222",
-      "bgcolor": "#000"
-    },
-    {
       "id": 98,
       "type": "e3a57dc6-b2bf-4d05-927d-3715b40d2a77",
       "pos": [
@@ -202,6 +170,9 @@
           },
           "version": "7.7",
           "input_ue_unconnectable": {}
+        },
+        "acdevSeedModes": {
+          "noise_seed": "randomize"
         }
       },
       "widgets_values": []

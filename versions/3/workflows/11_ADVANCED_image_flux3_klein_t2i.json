@@ -1,15 +1,15 @@
 {
   "id": "e8f30439-267f-45de-b260-db0d114b2c85",
   "revision": 0,
-  "last_node_id": 27,
-  "last_link_id": 47,
+  "last_node_id": 28,
+  "last_link_id": 50,
   "nodes": [
     {
       "id": 9,
       "type": "SaveImage",
       "pos": [
-        720,
-        -130
+        1060,
+        0
       ],
       "size": [
         570,
@@ -46,8 +46,8 @@
       "id": 18,
       "type": "3301b744-2960-415a-83b0-fe8a89d99fdb",
       "pos": [
-        260,
-        -130
+        0,
+        0
       ],
       "size": [
         420,
@@ -147,7 +147,10 @@
         }
       ],
       "properties": {
-        "previewExposures": []
+        "previewExposures": [],
+        "acdevSeedModes": {
+          "seed": "randomize"
+        }
       },
       "widgets_values": [
         "close up profile of a young male athlete with closed eyes pressing his sweaty forehead against a soccer ball, right hand gripping the ball, stark white background, athletic jacket, white ball with jagged red graphic patterns, high contrast studio lighting, highly detailed skin texture, sharp focus Absolutely no text, no typography, no letters, no words, no numbers, no logos, no watermark, no captions, pure imagery only.",
@@ -183,63 +186,11 @@
       }
     },
     {
-      "id": 20,
-      "type": "MarkdownNote",
-      "pos": [
-        -570,
-        -130
-      ],
-      "size": [
-        470,
-        660
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "Guide: [Subgraph](https://docs.comfy.org/interface/features/subgraph)\n\n## Model Links\n\n- [Hugging Face:black-forest-labs/flux-3-image-klein-comfy](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy)\n\n**text_encoders**\n\n- [qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors)\n- [qwen3vl_4b_int8_convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3vl_4b_int8_convrot.safetensors)\n\n> **VRAM tip** — this template ships the quantised base checkpoint to keep the footprint small. With more than 24 GB of VRAM, use the bf16 weights instead: [`flux3-image-klein-base-bf16.safetensors`](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-bf16.safetensors).\n\n**diffusion_models**\n\n- [flux3-image-klein-base-int8-convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-int8-convrot.safetensors)\n\n**vae**\n\n- [flux2-vae.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/vae/flux2-vae.safetensors)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 text_encoders/\n│   │   ├── qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors\n│   │   └── qwen3vl_4b_int8_convrot.safetensors\n│   ├── 📂 diffusion_models/\n│   │   └── flux3-image-klein-base-int8-convrot.safetensors\n│   └── 📂 vae/\n│       └── flux2-vae.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
-      ],
-      "widgets_values_named": {
-        "text": "Guide: [Subgraph](https://docs.comfy.org/interface/features/subgraph)\n\n## Model Links\n\n- [Hugging Face:black-forest-labs/flux-3-image-klein-comfy](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy)\n\n**text_encoders**\n\n- [qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors)\n- [qwen3vl_4b_int8_convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/text_encoders/qwen3vl_4b_int8_convrot.safetensors)\n\n> **VRAM tip** — this template ships the quantised base checkpoint to keep the footprint small. With more than 24 GB of VRAM, use the bf16 weights instead: [`flux3-image-klein-base-bf16.safetensors`](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-bf16.safetensors).\n\n**diffusion_models**\n\n- [flux3-image-klein-base-int8-convrot.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/diffusion_models/flux3-image-klein-base-int8-convrot.safetensors)\n\n**vae**\n\n- [flux2-vae.safetensors](https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy/resolve/main/vae/flux2-vae.safetensors)\n\n\n## Model Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 text_encoders/\n│   │   ├── qwen3.5_9b_flux3_prompt_upsampler_int8_convrot.safetensors\n│   │   └── qwen3vl_4b_int8_convrot.safetensors\n│   ├── 📂 diffusion_models/\n│   │   └── flux3-image-klein-base-int8-convrot.safetensors\n│   └── 📂 vae/\n│       └── flux2-vae.safetensors\n```\n\n## Report Issue\n\nNote: Please update ComfyUI first ([guide](https://docs.comfy.org/installation/update_comfyui)) and prepare required models. Desktop/Cloud updates follow stable releases, so some nightly-supported models may not be available yet.\n\n- Cannot run / runtime errors: [ComfyUI/issues](https://github.com/comfyanonymous/ComfyUI/issues)\n- UI / frontend issues: [ComfyUI_frontend/issues](https://github.com/Comfy-Org/ComfyUI_frontend/issues)\n- Workflow issues: [workflow_templates/issues](https://github.com/Comfy-Org/workflow_templates/issues)\n"
-      },
-      "color": "#222",
-      "bgcolor": "#000"
-    },
-    {
-      "id": 24,
-      "type": "MarkdownNote",
-      "pos": [
-        -10,
-        1130
-      ],
-      "size": [
-        210,
-        90
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "Plug the `STRING` output into the `prompt` input of the `Text to Image (FLUX 3 Image Klein SD)` node when you want to use bounding box\n"
-      ],
-      "widgets_values_named": {
-        "text": "Plug the `STRING` output into the `prompt` input of the `Text to Image (FLUX 3 Image Klein SD)` node when you want to use bounding box\n"
-      },
-      "color": "#222",
-      "bgcolor": "#000"
-    },
-    {
       "id": 25,
       "type": "CreateBoundingBoxes",
       "pos": [
-        -550,
-        630
+        0,
+        340
       ],
       "size": [
         420,
@@ -266,18 +217,18 @@
         {
           "name": "preview",
           "type": "IMAGE",
-          "links": []
+          "links": null
         },
         {
           "name": "bboxes",
           "type": "BOUNDING_BOX",
-          "links": []
+          "links": null
         },
         {
           "name": "elements",
           "type": "ARRAY",
           "links": [
-            47
+            48
           ]
         }
       ],
@@ -301,8 +252,8 @@
       "id": 26,
       "type": "PreviewAny",
       "pos": [
-        -90,
-        900
+        1060,
+        260
       ],
       "size": [
         390,
@@ -315,14 +266,14 @@
         {
           "name": "source",
           "type": "*",
-          "link": 46
+          "link": 49
         }
       ],
       "outputs": [
         {
           "name": "STRING",
           "type": "STRING",
-          "links": []
+          "links": null
         }
       ],
       "properties": {
@@ -332,44 +283,48 @@
       "widgets_values_named": {}
     },
     {
-      "id": 27,
-      "type": "Flux3LayoutPrompt",
+      "id": 28,
+      "type": "ab679e07-0622-5523-98e9-2a34db3eda0d",
       "pos": [
-        -100,
-        640
+        420,
+        0
       ],
       "size": [
-        400,
-        200
+        560,
+        150
       ],
-      "flags": {},
-      "order": 5,
+      "flags": {
+        "collapsed": true
+      },
+      "order": 0,
       "mode": 0,
       "inputs": [
         {
+          "label": "CreateBoundingBoxes",
+          "localized_name": "element",
           "name": "element",
           "type": "ARRAY",
-          "link": 47
+          "link": 48
         }
       ],
       "outputs": [
         {
+          "label": "prompt",
+          "localized_name": "prompt",
           "name": "prompt",
           "type": "STRING",
           "links": [
-            46
+            49
           ]
         }
       ],
+      "title": "Model internals",
       "properties": {
-        "Node name for S&R": "Flux3LayoutPrompt"
+        "cnr_id": "comfy-core",
+        "ver": "0.39.0"
       },
-      "widgets_values": [
-        ""
-      ],
-      "widgets_values_named": {
-        "prompt": ""
-      }
+      "widgets_values": [],
+      "widgets_values_named": {}
     }
   ],
   "links": [
@@ -382,20 +337,20 @@
       "IMAGE"
     ],
     [
-      46,
-      27,
+      48,
+      25,
+      2,
+      28,
+      0,
+      "ARRAY"
+    ],
+    [
+      49,
+      28,
       0,
       26,
       0,
       "STRING"
-    ],
-    [
-      47,
-      25,
-      2,
-      27,
-      0,
-      "ARRAY"
     ]
   ],
   "groups": [
@@ -1776,6 +1731,132 @@
             "origin_slot": 0,
             "target_id": 11,
             "target_slot": 5,
+            "type": "STRING"
+          }
+        ],
+        "extra": {}
+      },
+      {
+        "id": "ab679e07-0622-5523-98e9-2a34db3eda0d",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 28,
+          "lastLinkId": 50,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Model internals",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -500,
+            640,
+            160,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            500,
+            640,
+            140,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "f7539e9e-2419-581c-a165-e59b039dd629",
+            "name": "element",
+            "type": "ARRAY",
+            "linkIds": [
+              47
+            ],
+            "localized_name": "element",
+            "label": "CreateBoundingBoxes",
+            "pos": [
+              0,
+              0
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "cd183644-1078-5db0-a834-614a098e2ba2",
+            "name": "prompt",
+            "type": "STRING",
+            "linkIds": [
+              46
+            ],
+            "localized_name": "prompt",
+            "label": "prompt",
+            "pos": [
+              0,
+              0
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 27,
+            "type": "Flux3LayoutPrompt",
+            "pos": [
+              -100,
+              640
+            ],
+            "size": [
+              400,
+              200
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "element",
+                "type": "ARRAY",
+                "link": 47
+              }
+            ],
+            "outputs": [
+              {
+                "name": "prompt",
+                "type": "STRING",
+                "links": [
+                  46
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "Flux3LayoutPrompt"
+            },
+            "widgets_values": [
+              ""
+            ],
+            "widgets_values_named": {
+              "prompt": ""
+            }
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 47,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 27,
+            "target_slot": 0,
+            "type": "ARRAY"
+          },
+          {
+            "id": 46,
+            "origin_id": 27,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
             "type": "STRING"
           }
         ],
