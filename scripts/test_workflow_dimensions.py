@@ -154,7 +154,9 @@ def check_studio():
         def finalize(self):return self.nodes
     module=types.ModuleType('comfy_execution.graph_utils');module.GraphBuilder=GraphBuilder
     sys.modules.setdefault('comfy_execution',types.ModuleType('comfy_execution'));sys.modules['comfy_execution.graph_utils']=module
-    spec=importlib.util.spec_from_file_location('acdev_studio',ROOT/'custom_nodes/acdev_studio/__init__.py')
+    studio_path=ROOT/'custom_nodes/acdev_studio/__init__.py'
+    if not studio_path.exists():studio_path=ROOT/'ComfyUI/custom_nodes/acdev_studio/__init__.py'
+    spec=importlib.util.spec_from_file_location('acdev_studio',studio_path)
     studio=importlib.util.module_from_spec(spec);spec.loader.exec_module(studio)
     def expand(**extra):
         built=studio.FluxStudio().generate('p','n','base',1280,720,1,4,1.0,'euler','simple',False,1024,**extra)['expand']
