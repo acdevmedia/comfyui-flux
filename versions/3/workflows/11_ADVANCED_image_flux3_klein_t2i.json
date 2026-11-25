@@ -1331,8 +1331,8 @@
               "Node name for S&R": "EmptyFlux2LatentImage"
             },
             "widgets_values": [
-              1024,
-              1024,
+              1280,
+              720,
               1
             ],
             "widgets_values_named": {

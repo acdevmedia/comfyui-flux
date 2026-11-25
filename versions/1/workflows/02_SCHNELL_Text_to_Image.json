@@ -611,8 +611,8 @@
               "Node name for S&R": "EmptySD3LatentImage"
             },
             "widgets_values": [
-              1024,
-              1024,
+              1280,
+              720,
               1
             ],
             "color": "#323",

@@ -8,7 +8,7 @@
       "width": 1280,
       "height": 720,
       "seed": 0,
-      "steps": 15,
+      "steps": 8,
       "guidance": 1.0,
       "sampler": "er_sde",
       "scheduler": "simple",
